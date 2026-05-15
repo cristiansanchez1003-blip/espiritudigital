@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Espíritu Digital | Web Dev &amp; AI Agency</title>
+
+<!-- Open Graph / Facebook / WhatsApp -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://espiritudigital.cl/servicios">
+<meta property="og:title" content="Servicios Espíritu Digital">
+<meta property="og:description" content="Desarrollo web premium y soluciones de inteligencia artificial de vanguardia.">
+<meta property="og:image" content="https://espiritudigital.cl/og-image.png">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:title" content="Servicios Espíritu Digital">
+<meta property="twitter:description" content="Desarrollo web premium y soluciones de inteligencia artificial de vanguardia.">
+<meta property="twitter:image" content="https://espiritudigital.cl/og-image.png">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    
+    <!-- JSON-LD Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Servicios de Software y AI | Espíritu Digital",
+      "description": "Explora las soluciones de vanguardia en desarrollo web y agentes de inteligencia artificial de Espíritu Digital.",
+      "publisher": {
+        "@type": "ProfessionalService",
+        "name": "Espíritu Digital",
+        "url": "https://espiritudigital.cl",
+        "logo": "https://espiritudigital.cl/logotipo.jpeg"
+      }
+    }
+    </script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#282d00",
+                        "on-surface-variant": "#dcbed4",
+                        "secondary-fixed": "#7df4ff",
+                        "surface-container": "#201f20",
+                        "tertiary-fixed": "#daed5c",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "outline": "#a4899d",
+                        "primary-container": "#ff00ff",
+                        "primary-fixed-dim": "#ffabf3",
+                        "background": "#131314",
+                        "surface": "#131314",
+                        "on-surface": "#e5e2e3",
+                        "surface-bright": "#3a393a",
+                        "primary": "#ffabf3",
+                        "error": "#ffb4ab",
+                        "inverse-on-surface": "#313031",
+                        "outline-variant": "#564052",
+                        "on-primary-fixed-variant": "#810081",
+                        "on-secondary-container": "#00686f",
+                        "on-error": "#690005",
+                        "surface-tint": "#ffabf3",
+                        "on-tertiary-fixed-variant": "#434b00",
+                        "tertiary-container": "#8a9a00",
+                        "secondary": "#d3fbff",
+                        "on-tertiary": "#2d3400",
+                        "surface-variant": "#353436",
+                        "tertiary": "#bfd043",
+                        "on-primary": "#5b005b",
+                        "surface-dim": "#131314",
+                        "secondary-fixed-dim": "#00dbe9",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#1c1b1c",
+                        "surface-container-highest": "#353436",
+                        "error-container": "#93000a",
+                        "inverse-primary": "#a900a9",
+                        "on-background": "#e5e2e3",
+                        "on-secondary": "#00363a",
+                        "on-primary-fixed": "#380038",
+                        "secondary-container": "#00eefc",
+                        "on-tertiary-fixed": "#1a1e00",
+                        "tertiary-fixed-dim": "#bfd043",
+                        "inverse-surface": "#e5e2e3",
+                        "on-primary-container": "#510051",
+                        "surface-container-high": "#2a2a2b",
+                        "primary-fixed": "#ffd7f5",
+                        "on-secondary-fixed": "#002022",
+                        "surface-container-lowest": "#0e0e0f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "section-gap": "120px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "base": "8px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Montserrat"],
+                        "headline-lg": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "display-lg": ["Montserrat"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg-mobile": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-lg": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        html { scroll-behavior: smooth; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-card-hover {
+            transition: all 0.3s ease;
+        }
+        .glass-card-hover:hover {
+            border-color: rgba(0, 238, 252, 0.5);
+            box-shadow: inset 0 0 20px rgba(0, 238, 252, 0.1), 0 0 15px rgba(0, 238, 252, 0.2);
+        }
+        .glow-button-primary {
+            background: linear-gradient(135deg, #ff00ff, #00eefc);
+            transition: all 0.3s ease;
+        }
+        .glow-button-primary:hover {
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.6);
+        }
+        .glow-button-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid #00eefc;
+            transition: all 0.3s ease;
+        }
+        .glow-button-secondary:hover {
+            box-shadow: 0 0 15px rgba(0, 238, 252, 0.4);
+            background: rgba(0, 238, 252, 0.1);
+        }
+        
+        .interactive-list-item {
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        .interactive-list-item::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #ff00ff;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .interactive-list-item:hover {
+            transform: translateX(4px);
+        }
+        .interactive-list-item:hover::before {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-[#050505] text-on-surface min-h-screen font-body-md text-body-md overflow-x-hidden selection:bg-primary-container selection:text-white">
+<!-- TopNavBar Component -->
+<header class="bg-surface/30 backdrop-blur-lg dark:bg-surface/30 sticky top-0 w-full z-50 border-b border-white/10 shadow-none">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<img alt="Logo Espíritu Digital" class="h-10 w-10 object-contain rounded-full shadow-[0_0_15px_rgba(255,0,255,0.4)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnHq2_a4EyBC1SxuqLYXR4vJCo45RikarHxblhzNx5wxa1CVTGJw0TJe9JlzY54unzED26OAt-d8GsP0_RlzyssFd0pq705pnIZaDGBUGFYp0nxo81UJ3cOiP-b55NnJup7dQ1uDnE8N4vAXjnUlWQYBNj03lXNnH41X6UBIpRc4OEFoCq3o-ISK5RyK62-6tKngXVc4EG0NwhiFG2HNeWvjTOfvdqdYeygHyoKKo6Hovt0fo_5oQc1Xz73zuOM2AeIZB6Uc0WYLE"/>
+<span class="font-headline-md text-headline-md font-bold text-on-surface tracking-tighter">Espíritu Digital</span>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<!-- Highlighted generic item based on intent (Servicios is active for an agency landing page) -->
+<a class="text-secondary-container dark:text-secondary-container font-bold relative after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-secondary-container after:rounded-full after:shadow-[0_0_8px_rgba(0,238,252,0.8)] hover:text-primary transition-all duration-300 active:scale-95" href="#servicios">Servicios</a>
+<a class="text-on-surface/70 dark:text-on-surface/70 font-medium hover:text-on-surface hover:text-primary transition-all duration-300 active:scale-95" href="#agentes">Agentes AI</a>
+<a class="text-on-surface/70 dark:text-on-surface/70 font-medium hover:text-on-surface hover:text-primary transition-all duration-300 active:scale-95" href="#soluciones">Soluciones</a>
+<a class="text-on-surface/70 dark:text-on-surface/70 font-medium hover:text-on-surface hover:text-primary transition-all duration-300 active:scale-95" href="#nosotros">Nosotros</a>
+</nav>
+<button class="hidden md:block text-primary dark:text-primary font-label-md text-label-md px-6 py-2 rounded-full border border-primary/50 hover:bg-primary/10 transition-colors active:scale-95 duration-200">
+                Contáctanos
+            </button>
+<button class="md:hidden text-on-surface p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative pt-32 pb-section-gap px-margin-mobile md:px-margin-desktop flex flex-col items-center justify-center min-h-[90vh] text-center overflow-hidden">
+<!-- Background Elements -->
+<div class="absolute inset-0 z-0 pointer-events-none">
+<div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary-container/10 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-secondary-container/10 rounded-full blur-[150px]"></div>
+</div>
+<div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
+<div class="mb-8 p-1 rounded-full bg-gradient-to-r from-primary-container to-secondary-container">
+<img alt="Logo Espíritu Digital Hero" class="w-24 h-24 rounded-full bg-surface-container-lowest object-cover p-2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnHq2_a4EyBC1SxuqLYXR4vJCo45RikarHxblhzNx5wxa1CVTGJw0TJe9JlzY54unzED26OAt-d8GsP0_RlzyssFd0pq705pnIZaDGBUGFYp0nxo81UJ3cOiP-b55NnJup7dQ1uDnE8N4vAXjnUlWQYBNj03lXNnH41X6UBIpRc4OEFoCq3o-ISK5RyK62-6tKngXVc4EG0NwhiFG2HNeWvjTOfvdqdYeygHyoKKo6Hovt0fo_5oQc1Xz73zuOM2AeIZB6Uc0WYLE"/>
+</div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-transparent bg-clip-text bg-gradient-to-r from-white via-on-surface to-surface-variant mb-6 leading-tight">
+                    Impulsamos tu negocio al futuro con <span class="text-secondary-fixed">Inteligencia Artificial</span>.
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-12">
+                    En Espíritu Digital diseñamos experiencias web de élite y agentes de IA que automatizan tu éxito.
+                </p>
+<div class="flex flex-col sm:flex-row gap-6 w-full sm:w-auto">
+<button class="glow-button-primary font-label-md text-label-md text-white px-8 py-4 rounded-lg font-bold flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+                        Probar Robot.ia
+                    </button>
+<button class="glow-button-secondary font-label-md text-label-md text-secondary-container px-8 py-4 rounded-lg font-bold flex items-center justify-center gap-2">
+                        Nuestros Servicios
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Conceptual Tech Loop Visual -->
+<div class="relative z-10 mt-20 w-full max-w-5xl mx-auto h-[300px] glass-panel rounded-xl overflow-hidden flex items-center justify-center group" data-alt="A sleek, high-tech abstract 3D visualization of an artificial intelligence neural network processing data. The scene features glowing magenta and cyan digital nodes connected by luminous pathways against a deep, void-like black background. The lighting is dramatic, emphasizing a futuristic, premium cyber-aesthetic typical of cutting-edge tech agencies.">
+<div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&amp;fit=crop&amp;w=1200&amp;q=80')] bg-cover bg-center opacity-20 mix-blend-screen group-hover:scale-105 transition-transform duration-1000"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent"></div>
+<div class="text-center relative z-20">
+<span class="material-symbols-outlined text-6xl text-secondary-container animate-pulse">memory</span>
+</div>
+</div>
+</section>
+<!-- Section 2: Empathy -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop relative">
+<div class="max-w-container-max mx-auto">
+<div class="glass-panel rounded-xl p-8 md:p-16 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary-container/5 rounded-full blur-[80px]"></div>
+<div class="grid md:grid-cols-2 gap-12 items-center relative z-10">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-white mb-6">El mercado digital en Chile cambió. <span class="text-primary-container">¿Tu negocio también?</span></h2>
+<div class="space-y-6 font-body-lg text-body-lg text-on-surface-variant">
+<p>Depender exclusivamente de respuestas manuales en WhatsApp o mantener un sitio web desactualizado ya no es suficiente en un entorno hipercompetitivo.</p>
+<p>Tus clientes esperan respuestas inmediatas, 24/7, y una experiencia digital sin fricciones que refleje la calidad de tus servicios.</p>
+<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 text-label-sm font-label-sm mt-4">
+<span class="material-symbols-outlined text-sm">update</span>
+                                    Es hora de evolucionar
+                                </div>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<div class="glass-panel p-6 rounded-lg border-l-4 border-l-error/50 opacity-80">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-error">cancel</span>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Ayer</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Clientes perdidos por demoras en responder. Sitios web estáticos que no convierten.</p>
+</div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-lg border-l-4 border-l-secondary-container glow-card">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary-container">check_circle</span>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Hoy con Espíritu Digital</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Agentes de IA cerrando ventas 24/7. Plataformas web que dominan el SEO.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Services (Bento Grid) -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop bg-surface/50 relative" id="servicios">
+<div class="max-w-container-max mx-auto">
+<div class="text-center mb-16">
+<span class="text-secondary-fixed font-label-md text-label-md tracking-widest uppercase mb-2 block">Nuestras Soluciones</span>
+<h2 class="font-display-lg-mobile md:font-headline-lg text-display-lg-mobile md:text-headline-lg text-white">Ecosistema Digital Premium</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Service 1 -->
+<div class="glass-panel rounded-xl p-8 glass-card-hover group flex flex-col h-full">
+<div class="w-14 h-14 rounded-lg bg-surface-bright flex items-center justify-center mb-6 border border-white/10 group-hover:border-secondary-container transition-colors">
+<span class="material-symbols-outlined text-3xl text-secondary-fixed">web</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-white mb-4">Diseño Web Vanguardista</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">Desarrollo web de alto rendimiento optimizado para SEO y AEO (Optimización para Motores de Respuesta AI). Arquitectura moderna que convierte visitantes en clientes.</p>
+<ul class="space-y-3 font-label-sm text-label-sm text-on-surface/80 mt-auto">
+<li class="interactive-list-item flex items-center gap-2 pl-2">
+<span class="material-symbols-outlined text-xs text-secondary-container">done</span> UI/UX Premium
+                            </li>
+<li class="interactive-list-item flex items-center gap-2 pl-2">
+<span class="material-symbols-outlined text-xs text-secondary-container">done</span> Arquitectura SEO
+                            </li>
+</ul>
+</div>
+<!-- Service 2 -->
+<div class="glass-panel rounded-xl p-8 glass-card-hover group flex flex-col h-full border-secondary-container/30 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary-container/10 blur-[40px] -mr-10 -mt-10 rounded-full"></div>
+<div class="w-14 h-14 rounded-lg bg-surface-bright flex items-center justify-center mb-6 border border-white/10 group-hover:border-primary-container transition-colors relative z-10">
+<span class="material-symbols-outlined text-3xl text-primary-container" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-white mb-4 relative z-10">Agentes de IA (Robot.ia)</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow relative z-10">Asistentes virtuales entrenados con la información de tu negocio. Responden dudas, agendan citas y cierran ventas en WhatsApp y web, 24/7 sin descanso.</p>
+<div class="mt-auto">
+<span class="inline-block px-3 py-1 rounded-full bg-primary-container/10 text-primary-fixed text-label-sm font-label-sm border border-primary-container/20 mb-4">Producto Estrella</span>
+</div>
+</div>
+<!-- Service 3 -->
+<div class="glass-panel rounded-xl p-8 glass-card-hover group flex flex-col h-full">
+<div class="w-14 h-14 rounded-lg bg-surface-bright flex items-center justify-center mb-6 border border-white/10 group-hover:border-tertiary-fixed transition-colors">
+<span class="material-symbols-outlined text-3xl text-tertiary-fixed">schema</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-white mb-4">Automatización de Procesos</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">Conectamos tus herramientas (CRM, Email, ERP) mediante workflows inteligentes. Eliminamos tareas repetitivas para que tu equipo se enfoque en el crecimiento.</p>
+<ul class="space-y-3 font-label-sm text-label-sm text-on-surface/80 mt-auto">
+<li class="interactive-list-item flex items-center gap-2 pl-2">
+<span class="material-symbols-outlined text-xs text-tertiary-fixed">done</span> Workflows a medida
+                            </li>
+<li class="interactive-list-item flex items-center gap-2 pl-2">
+<span class="material-symbols-outlined text-xs text-tertiary-fixed">done</span> Integración API
+                            </li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Highlights -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop">
+<div class="max-w-container-max mx-auto border-t border-b border-white/5 py-16 relative">
+<div class="grid md:grid-cols-2 gap-16 items-center">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-white mb-6">Tecnología Local, <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-container to-secondary-container">Estándar Global.</span></h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8">Nacidos en el Cajón del Maipo, operando desde Santiago para el mundo. Combinamos la cercanía del trato humano con el poder de los modelos fundacionales más avanzados del planeta.</p>
+<div class="space-y-6">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-bright flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-secondary-fixed">location_on</span>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-white">Cercanía Local</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Entendemos el mercado chileno. Comunicación directa sin intermediarios.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-bright flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary-fixed">psychology</span>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-white">Innovación IA</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Impulsados por Gemini, GPT-4 y tecnologías Open Source de vanguardia.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-bright flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-tertiary-fixed">trending_up</span>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-white">Escalabilidad</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Soluciones construidas hoy, preparadas para el volumen de mañana.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative h-[400px] rounded-xl overflow-hidden glass-panel group" data-alt="A hyper-realistic aerial nighttime view of Santiago, Chile blending seamlessly into a glowing digital map of the world. Digital data streams in vibrant cyan and magenta shoot out from the city center, symbolizing local technology reaching a global standard. The aesthetic is cinematic, dark, and highly futuristic, aligning with a premium digital agency brand.">
+<div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1596422846543-75c6fc197f0a?auto=format&amp;fit=crop&amp;w=800&amp;q=80')] bg-cover bg-center opacity-40 mix-blend-luminosity group-hover:opacity-60 transition-opacity duration-500" data-location="Santiago, Chile" style=""></div>
+<div class="absolute inset-0 bg-gradient-to-tr from-[#050505] via-transparent to-primary-container/20"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-section-gap px-margin-mobile md:px-margin-desktop text-center relative overflow-hidden">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-64 bg-secondary-container/20 blur-[120px] rounded-full pointer-events-none"></div>
+<div class="relative z-10 max-w-3xl mx-auto glass-panel rounded-2xl p-12 md:p-20 border border-secondary-container/30">
+<h2 class="font-display-lg-mobile md:font-headline-lg text-display-lg-mobile md:text-headline-lg text-white mb-6">¿Listo para digitalizar tu Marca?</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10">Agenda una sesión estratégica gratuita y descubre cómo la Inteligencia Artificial y un diseño web de élite pueden multiplicar tus resultados.</p>
+<button class="glow-button-primary font-label-md text-label-md text-white px-10 py-5 rounded-lg font-bold text-lg inline-flex items-center gap-3">
+                    Quiero mi transformación
+                    <span class="material-symbols-outlined">rocket_launch</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest w-full mt-section-gap border-t border-outline-variant/20 shadow-none">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-12 gap-8 max-w-container-max mx-auto">
+<div class="flex flex-col gap-4 items-center md:items-start">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary">Espíritu Digital</span>
+<p class="font-body-md text-body-md text-on-surface-variant/70 text-sm">© 2024 Espíritu Digital. Innovación desde Chile para el mundo.</p>
+</div>
+<nav class="flex flex-wrap justify-center gap-6">
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-secondary-fixed transition-colors duration-300 group" href="#"><span class="inline-block group-hover:translate-x-1 transition-transform">Proyectos</span></a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-secondary-fixed transition-colors duration-300 group" href="#"><span class="inline-block group-hover:translate-x-1 transition-transform">Blog</span></a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-secondary-fixed transition-colors duration-300 group" href="#"><span class="inline-block group-hover:translate-x-1 transition-transform">Privacidad</span></a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-secondary-fixed transition-colors duration-300 group" href="#"><span class="inline-block group-hover:translate-x-1 transition-transform">Términos</span></a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:text-secondary-fixed transition-colors duration-300 group" href="#"><span class="inline-block group-hover:translate-x-1 transition-transform">Contacto</span></a>
+</nav>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espíritu Digital | Web Dev & AI Agency</title>
+    
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://espiritudigital.cl/">
+    <meta property="og:title" content="Espíritu Digital | Forjando el Futuro con IA">
+    <meta property="og:description" content="Agencia boutique en Chile especializada en desarrollo web premium y agentes de IA autónomos. Llevamos tu negocio al siguiente nivel.">
+    <meta property="og:image" content="https://espiritudigital.cl/og-image.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://espiritudigital.cl/">
+    <meta property="twitter:title" content="Espíritu Digital | Web Dev & AI Agency">
+    <meta property="twitter:description" content="Agencia boutique en Chile especializada en desarrollo web premium y agentes de IA autónomos.">
+    <meta property="twitter:image" content="https://espiritudigital.cl/og-image.png">
+    <!-- Favicon -->
+    <link rel="icon" href="logotipo.jpeg" type="image/jpeg">
+    
+    <!-- Premium Fonts (User Defined) -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- JSON-LD Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "Espíritu Digital",
+      "url": "https://espiritudigital.cl",
+      "logo": "https://espiritudigital.cl/logotipo.jpeg",
+      "image": "https://espiritudigital.cl/robot.ia.jpeg",
+      "description": "Agencia boutique de software y AI en Chile. Especialistas en desarrollo web premium, agentes de IA autónomos y automatización inteligente.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Santiago",
+        "addressRegion": "Región Metropolitana",
+        "addressCountry": "CL"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": -33.4489,
+        "longitude": -70.6693
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+56-9-4974-5384",
+        "contactType": "customer service",
+        "areaServed": "CL",
+        "availableLanguage": ["Spanish", "English"]
+      },
+      "sameAs": [
+        "https://www.instagram.com/espiritudigital.cl/"
+      ],
+      "service": [
+        {
+          "@type": "Service",
+          "name": "Desarrollo Web de Élite",
+          "description": "Sitios web ultra-rápidos y responsivos con diseño vanguardista."
+        },
+        {
+          "@type": "Service",
+          "name": "Agentes de IA Autónomos",
+          "description": "Integración de modelos como Gemini y GPT para automatización de ventas y atención."
+        }
+      ]
+    }
+    </script>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        magenta: {
+                            400: '#f056ff',
+                            500: '#d900ff',
+                            600: '#b000cc',
+                        },
+                        dark: {
+                            900: '#030303',
+                            800: '#0a0a0a',
+                            700: '#141414',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Base Dark Theme */
+        body {
+            background-color: #030303;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* 1. Hero Animations (Fade-in Up) */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            opacity: 0;
+        }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+
+        /* 2. Soft Float Animation for Robot.ia */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* 3. Glassmorphism Styles */
+        .glass-nav {
+            background: rgba(3, 3, 3, 0.4);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(217, 0, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(217, 0, 255, 0.1);
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        /* 4. Glow Effects (Hover effects potentes en botones) */
+        .glow-btn {
+            background: linear-gradient(135deg, #d900ff 0%, #8a2be2 100%);
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(217, 0, 255, 0.3);
+        }
+        .glow-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: inherit;
+            background: linear-gradient(135deg, #d900ff 0%, #8a2be2 100%);
+            filter: blur(15px);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+        .glow-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 25px rgba(217, 0, 255, 0.6);
+        }
+        .glow-btn:hover::before {
+            opacity: 0.7;
+        }
+
+        /* Resplandor magenta sutil para Robot.ia */
+        .robot-glow {
+            filter: drop-shadow(0 0 35px rgba(217, 0, 255, 0.45));
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #d900ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* 5. Parallax Wrapper */
+        .parallax-wrapper {
+            will-change: transform;
+            transition: transform 0.1s linear;
+        }
+        
+        /* 6. Branding Watermark (Marca de agua sutil) */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90vw;
+            height: 90vw;
+            max-width: 800px;
+            max-height: 800px;
+            background-image: url('logotipo.jpeg');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.015; /* Sutil */
+            z-index: 0;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            filter: grayscale(100%);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-magenta-500 selection:text-white">
+
+    <!-- Navbar Sticky con efecto blur -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Branding Logotipo Izquierdo -->
+                <div class="flex items-center gap-3 cursor-pointer">
+                    <img src="logotipo.jpeg" alt="Espíritu Digital Logo" class="h-10 w-10 rounded-full object-cover shadow-[0_0_15px_rgba(217,0,255,0.4)]">
+                    <span class="font-heading font-bold text-xl tracking-wide text-white">Espíritu Digital</span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#inicio" class="text-gray-300 hover:text-white transition-colors duration-300 text-sm font-medium">Inicio</a>
+                    <a href="#robotia" class="text-gray-300 hover:text-magenta-400 transition-colors duration-300 text-sm font-medium">Robot.ia</a>
+                    <a href="#servicios" class="text-gray-300 hover:text-white transition-colors duration-300 text-sm font-medium">Servicios</a>
+                    <a href="#portafolio" class="text-gray-300 hover:text-white transition-colors duration-300 text-sm font-medium">Portafolio</a>
+                    <a href="demo.html" class="px-5 py-2 rounded-full border border-magenta-500 text-magenta-400 hover:bg-magenta-500/10 transition-colors text-sm font-medium">Prueba la Demo</a>
+                    <a href="https://wa.me/56949745384" target="_blank" class="glow-btn px-6 py-2.5 rounded-full text-white font-medium text-sm">
+                        Agendar Demo
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button class="text-gray-300 hover:text-white focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section (Impacto Total) -->
+    <section id="inicio" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Video (Humo magenta) -->
+        <!-- Lazy loading via preload="metadata" and poster image -->
+        <video autoplay loop muted playsinline preload="metadata" class="absolute w-full h-full object-cover z-0" poster="logotipo.jpeg">
+            <source src="Humo_magenta.mp4" type="video/mp4">
+        </video>
+        
+        <!-- Overlay oscuro gradiente sobre el video -->
+        <div class="absolute inset-0 bg-gradient-to-b from-dark-900/80 via-dark-900/50 to-dark-900 z-10"></div>
+        
+        <!-- Contenido Hero (Animación Fade-in Up) -->
+        <div class="relative z-20 text-center px-4 max-w-5xl mx-auto flex flex-col items-center mt-10">
+            <h1 class="font-heading text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6 animate-fade-in-up tracking-tighter drop-shadow-lg">
+                Forjando el futuro con <br/>
+                <span class="text-gradient">Espíritu Digital</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl font-light animate-fade-in-up delay-100 drop-shadow-md">
+                Creamos experiencias web de élite y automatizamos tu negocio con Inteligencia Artificial. Prepárate para dominar tu industria.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-5 animate-fade-in-up delay-200">
+                <a href="https://wa.me/56949745384" target="_blank" class="glow-btn px-8 py-4 rounded-full text-white font-semibold text-lg flex items-center justify-center gap-3">
+                    Hablar con un Experto <i class="fa-solid fa-whatsapp"></i>
+                </a>
+                <a href="#servicios" class="px-8 py-4 rounded-full text-white font-semibold text-lg border border-white/20 hover:bg-white/10 hover:border-white/40 transition-all duration-300 backdrop-blur-sm">
+                    Descubrir Servicios
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Robot.ia -->
+    <section id="robotia" class="py-24 md:py-32 relative overflow-hidden bg-dark-800">
+        <!-- Marca de agua en sección clave -->
+        <div class="watermark"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <!-- Imagen Robot.ia con Flotación suave y Drop-shadow -->
+                <div class="order-2 lg:order-1 flex justify-center relative">
+                    <div class="absolute inset-0 bg-magenta-500/20 blur-[100px] rounded-full w-3/4 h-3/4 m-auto pointer-events-none"></div>
+                    <img src="robot.ia.jpeg" alt="Mascot Robot.ia" class="relative z-10 w-full max-w-md rounded-3xl robot-glow animate-float object-cover border border-white/5 shadow-2xl">
+                </div>
+                
+                <div class="order-1 lg:order-2">
+                    <div class="inline-block px-4 py-1.5 rounded-full bg-magenta-500/10 border border-magenta-500/30 text-magenta-400 font-medium text-sm mb-6 shadow-[0_0_10px_rgba(217,0,255,0.2)]">
+                        <i class="fa-solid fa-microchip mr-2"></i> Agentes IA Autónomos
+                    </div>
+                    <h2 class="font-heading text-4xl md:text-5xl font-bold mb-6">Te presentamos a <span class="text-magenta-500 drop-shadow-[0_0_15px_rgba(217,0,255,0.4)]">Robot.ia</span></h2>
+                    <p class="text-gray-400 text-lg mb-8 leading-relaxed font-light">
+                        El cerebro digital detrás de las marcas más eficientes. Robot.ia está diseñado para interactuar, aprender y automatizar procesos complejos, elevando el rendimiento de tu negocio sin descanso.
+                    </p>
+                    <ul class="space-y-5 mb-10">
+                        <li class="flex items-center text-gray-300 font-medium">
+                            <span class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mr-4 border border-white/10 text-magenta-500 shadow-inner">
+                                <i class="fa-solid fa-check text-sm"></i>
+                            </span>
+                            Atención al cliente y ventas 24/7
+                        </li>
+                        <li class="flex items-center text-gray-300 font-medium">
+                            <span class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mr-4 border border-white/10 text-magenta-500 shadow-inner">
+                                <i class="fa-solid fa-check text-sm"></i>
+                            </span>
+                            Respuestas hiper-personalizadas
+                        </li>
+                        <li class="flex items-center text-gray-300 font-medium">
+                            <span class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mr-4 border border-white/10 text-magenta-500 shadow-inner">
+                                <i class="fa-solid fa-check text-sm"></i>
+                            </span>
+                            Integración nativa con WhatsApp y Web
+                        </li>
+                    </ul>
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6 mt-8">
+                        <a href="demo.html" class="glow-btn px-8 py-3 rounded-full text-white font-semibold text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-terminal"></i> Prueba la Demo
+                        </a>
+                        <a href="https://wa.me/56949745384" target="_blank" class="text-magenta-400 font-semibold hover:text-magenta-300 transition-all duration-300 flex items-center gap-2 group text-base">
+                            Implementar en mi empresa 
+                            <i class="fa-solid fa-arrow-right transform group-hover:translate-x-2 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section (Glassmorphism) -->
+    <section id="servicios" class="py-24 md:py-32 relative bg-dark-900 border-y border-white/5">
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-magenta-600/10 rounded-full blur-[150px] pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-20">
+                <div class="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm mb-6">
+                    Soluciones Exclusivas
+                </div>
+                <h2 class="font-heading text-4xl md:text-5xl font-bold mb-4">Experiencias <span class="text-magenta-500">Premium</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg font-light">Combinamos diseño vanguardista con inteligencia artificial para crear ecosistemas digitales que dominan el mercado.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="glass-card p-10 rounded-3xl group cursor-default">
+                    <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:bg-magenta-500/20 group-hover:text-magenta-400 group-hover:border-magenta-500/30 transition-all duration-300 text-3xl text-white shadow-lg">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold mb-4">Desarrollo Web Élite</h3>
+                    <p class="text-gray-400 text-base font-light leading-relaxed">
+                        Sitios web ultra-rápidos, responsivos y con animaciones fluidas que cautivan a tu audiencia desde el primer segundo. Optimizados para conversión.
+                    </p>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="glass-card p-10 rounded-3xl group cursor-default relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-40 h-40 bg-magenta-500/10 blur-[40px] -mr-10 -mt-10 rounded-full pointer-events-none"></div>
+                    <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:bg-magenta-500/20 group-hover:text-magenta-400 group-hover:border-magenta-500/30 transition-all duration-300 text-3xl text-white shadow-lg relative z-10">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold mb-4 relative z-10">Agentes AI a Medida</h3>
+                    <p class="text-gray-400 text-base font-light leading-relaxed relative z-10">
+                        Automatizamos tus operaciones mediante asistentes virtuales que trabajan por ti ininterrumpidamente, multiplicando tu productividad.
+                    </p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="glass-card p-10 rounded-3xl group cursor-default">
+                    <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:bg-magenta-500/20 group-hover:text-magenta-400 group-hover:border-magenta-500/30 transition-all duration-300 text-3xl text-white shadow-lg">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold mb-4">UI/UX Futurista</h3>
+                    <p class="text-gray-400 text-base font-light leading-relaxed">
+                        Interfaces de usuario hermosas e intuitivas. Aplicamos glassmorphism, tipografías perfectas y micro-interacciones de alta gama.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio / Mockups Section (Parallax & Asymmetric Grid) -->
+    <section id="portafolio" class="py-24 md:py-32 relative bg-dark-800 overflow-hidden">
+        <div class="absolute bottom-0 left-0 w-[800px] h-[800px] bg-magenta-600/5 rounded-full blur-[150px] pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+                <div class="max-w-2xl">
+                    <div class="inline-block px-4 py-1.5 rounded-full bg-magenta-500/10 border border-magenta-500/30 text-magenta-400 font-medium text-sm mb-6 shadow-[0_0_10px_rgba(217,0,255,0.2)]">
+                        Casos de Éxito
+                    </div>
+                    <h2 class="font-heading text-4xl md:text-5xl font-bold mb-4">Nuestro <span class="text-magenta-500">Portafolio</span></h2>
+                    <p class="text-gray-400 text-lg font-light">Proyectos que redefinen el estándar visual y funcional. Descubre cómo se ve la perfección técnica.</p>
+                </div>
+                <a href="https://wa.me/56949745384" target="_blank" class="px-8 py-3 rounded-full border border-white/20 text-white hover:bg-white/10 hover:border-white/50 transition-all duration-300 font-medium">
+                    Inicia tu Proyecto
+                </a>
+            </div>
+
+            <!-- Asymmetric Grid (Laptop & Mobile) -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center">
+                
+                <!-- Mockup Laptop -->
+                <div class="md:col-span-7 group rounded-3xl overflow-hidden relative glass-card p-3 parallax-container transform transition-transform duration-700 hover:scale-[1.02]">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/20 to-transparent z-10"></div>
+                    <img src="mockup%202.jpeg" alt="Laptop Web Design Mockup" class="w-full h-[550px] object-cover rounded-2xl parallax-element" data-speed="0.04">
+                    <div class="absolute bottom-10 left-10 z-20">
+                        <span class="px-4 py-1.5 bg-black/60 backdrop-blur-md rounded-full text-xs font-semibold mb-4 inline-block border border-white/10 text-magenta-400 tracking-wider uppercase">Plataforma Web</span>
+                        <h3 class="font-heading text-3xl font-bold text-white drop-shadow-md">E-commerce Élite</h3>
+                    </div>
+                </div>
+
+                <!-- Mockup Mobile -->
+                <div class="md:col-span-5 group rounded-3xl overflow-hidden relative glass-card p-3 parallax-container transform transition-transform duration-700 hover:scale-[1.02] mt-0 md:mt-24">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/20 to-transparent z-10"></div>
+                    <img src="mockup%20barber%201.jpeg" alt="Mobile App Design Mockup" class="w-full h-[600px] object-cover rounded-2xl parallax-element object-center" data-speed="0.07">
+                    <div class="absolute bottom-10 left-10 z-20">
+                        <span class="px-4 py-1.5 bg-black/60 backdrop-blur-md rounded-full text-xs font-semibold mb-4 inline-block border border-white/10 text-magenta-400 tracking-wider uppercase">App Mobile</span>
+                        <h3 class="font-heading text-3xl font-bold text-white drop-shadow-md">Sistema de Reservas</h3>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer con Branding y Logotipo -->
+    <footer class="bg-[#020202] pt-24 pb-8 border-t border-white/10 relative overflow-hidden">
+        <!-- Logotipo como marca de agua en footer -->
+        <img src="logotipo.jpeg" alt="Footer Watermark" class="absolute right-[-5%] bottom-[-10%] w-[600px] opacity-[0.04] pointer-events-none filter grayscale">
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <!-- Branding -->
+                <div class="md:col-span-2">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="logotipo.jpeg" alt="Espíritu Digital Logo Footer" class="h-14 w-14 rounded-full object-cover shadow-[0_0_20px_rgba(217,0,255,0.4)]">
+                        <span class="font-heading font-bold text-3xl tracking-wide text-white">Espíritu Digital</span>
+                    </div>
+                    <p class="text-gray-400 max-w-sm mb-8 leading-relaxed text-sm font-light">
+                        Agencia de vanguardia especializada en diseño web de alta gama e integración de Inteligencia Artificial para marcas que buscan dominar su industria.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="https://www.instagram.com/espiritudigital.cl/" target="_blank" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-magenta-500 hover:shadow-[0_0_15px_rgba(217,0,255,0.5)] transition-all duration-300 border border-white/10 text-lg">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-magenta-500 hover:shadow-[0_0_15px_rgba(217,0,255,0.5)] transition-all duration-300 border border-white/10 text-lg">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-magenta-500 hover:shadow-[0_0_15px_rgba(217,0,255,0.5)] transition-all duration-300 border border-white/10 text-lg">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Links -->
+                <div>
+                    <h4 class="font-heading font-bold text-white mb-6 text-lg">Plataforma</h4>
+                    <ul class="space-y-4 text-sm font-light">
+                        <li><a href="#inicio" class="text-gray-400 hover:text-magenta-400 transition-colors">Inicio</a></li>
+                        <li><a href="#robotia" class="text-gray-400 hover:text-magenta-400 transition-colors">Robot.ia</a></li>
+                        <li><a href="#servicios" class="text-gray-400 hover:text-magenta-400 transition-colors">Servicios</a></li>
+                        <li><a href="#portafolio" class="text-gray-400 hover:text-magenta-400 transition-colors">Portafolio</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contacto -->
+                <div id="contacto">
+                    <h4 class="font-heading font-bold text-white mb-6 text-lg">Contacto</h4>
+                    <ul class="space-y-4 text-sm text-gray-400 font-light">
+                        <li class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 text-magenta-400">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            hello@espiritudigital.cl
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 text-magenta-400">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            Santiago, Chile
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 font-light">
+                <p>&copy; 2024 Espíritu Digital. Todos los derechos reservados.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-gray-300 transition-colors">Políticas de Privacidad</a>
+                    <a href="#" class="hover:text-gray-300 transition-colors">Términos Legales</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts de Interacción y Animación -->
+    <script>
+        // 1. Sticky Navbar Effect (Blur + Padding transition)
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-2', 'shadow-[0_10px_30px_rgba(0,0,0,0.5)]');
+                navbar.classList.remove('py-4');
+                navbar.style.background = 'rgba(3, 3, 3, 0.7)'; // Más oscuro al bajar
+            } else {
+                navbar.classList.add('py-4');
+                navbar.classList.remove('py-2', 'shadow-[0_10px_30px_rgba(0,0,0,0.5)]');
+                navbar.style.background = 'rgba(3, 3, 3, 0.4)';
+            }
+        });
+        if (window.scrollY <= 50) navbar.classList.add('py-4');
+
+        // 2. Parallax Effect Suave para los Mockups
+        document.addEventListener('DOMContentLoaded', () => {
+            const parallaxElements = document.querySelectorAll('.parallax-element');
+            let ticking = false;
+
+            const handleScroll = () => {
+                const scrollY = window.scrollY;
+                parallaxElements.forEach(el => {
+                    const speed = parseFloat(el.getAttribute('data-speed')) || 0.05;
+                    const offset = scrollY * speed;
+                    // Mueve la imagen sutilmente
+                    el.style.transform = `translateY(${offset}px)`;
+                });
+            };
+
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        handleScroll();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+        });
+
+        // 3. Smooth Scrolling para Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80, // Compensar altura del navbar
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

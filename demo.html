@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espíritu Digital | Demo Robot.ia Autónoma</title>
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://espiritudigital.cl/demo.html">
+    <meta property="og:title" content="Demo Robot.ia | Espíritu Digital">
+    <meta property="og:description" content="Prueba la potencia de Robot.ia, nuestro agente autónomo con Gemini 3.1 Flash Lite.">
+    <meta property="og:image" content="https://espiritudigital.cl/og-image.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Demo Robot.ia | Espíritu Digital">
+    <meta property="twitter:description" content="Prueba la potencia de Robot.ia, nuestro agente autónomo con Gemini 3.1 Flash Lite.">
+    <meta property="twitter:image" content="https://espiritudigital.cl/og-image.png">
+    <link rel="icon" href="logotipo.jpeg" type="image/jpeg">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- JSON-LD Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Demo Robot.ia Autónoma | Espíritu Digital",
+      "description": "Demostración interactiva de Robot.ia, el agente de inteligencia artificial autónomo de Espíritu Digital.",
+      "publisher": {
+        "@type": "ProfessionalService",
+        "name": "Espíritu Digital",
+        "url": "https://espiritudigital.cl",
+        "logo": "https://espiritudigital.cl/logotipo.jpeg"
+      }
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        magenta: {
+                            400: '#f056ff',
+                            500: '#d900ff',
+                            600: '#b000cc',
+                        },
+                        dark: {
+                            900: '#030303',
+                            800: '#0a0a0a',
+                            700: '#141414',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            color: #ffffff;
+            margin: 0;
+            overflow: hidden;
+            /* Experiencia inmersiva */
+            background-color: #030303;
+        }
+
+        /* Glass Panel Styling */
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .chat-container {
+            background: rgba(3, 3, 3, 0.45);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* Glow Effects */
+        .glow-text {
+            text-shadow: 0 0 15px rgba(217, 0, 255, 0.6);
+        }
+
+        .glow-box {
+            box-shadow: 0 0 20px rgba(217, 0, 255, 0.3);
+        }
+
+        /* Status Dot Animations */
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .status-online {
+            background-color: #00ff00;
+            box-shadow: 0 0 12px #00ff00;
+            animation: pulse-green 2s infinite;
+        }
+
+        .status-connecting {
+            background-color: #ffa500;
+            box-shadow: 0 0 12px #ffa500;
+            animation: pulse-orange 1.5s infinite;
+        }
+
+        .status-error {
+            background-color: #ff0000;
+            box-shadow: 0 0 12px #ff0000;
+        }
+
+        @keyframes pulse-green {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(0, 255, 0, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+            }
+        }
+
+        @keyframes pulse-orange {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 165, 0, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(255, 165, 0, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 165, 0, 0);
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(217, 0, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(217, 0, 255, 0.6);
+        }
+
+        /* Mensajes */
+        .msg-bot {
+            background: rgba(217, 0, 255, 0.08);
+            border: 1px solid rgba(217, 0, 255, 0.2);
+            border-left: 3px solid #d900ff;
+            color: #e2e8f0;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .msg-user {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-right: 3px solid #ffffff;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Input */
+        .chat-input {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: rgba(217, 0, 255, 0.5);
+            box-shadow: 0 0 20px rgba(217, 0, 255, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* Typing Indicator */
+        .typing-indicator span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #d900ff;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .typing-indicator span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        /* Typewriter Cursor */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background-color: #d900ff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="h-screen w-screen flex flex-col md:flex-row antialiased relative">
+
+    <!-- Background Video (Humo Magenta) -->
+    <div class="absolute inset-0 z-[-1] pointer-events-none">
+        <video autoplay loop muted playsinline class="w-full h-full object-cover">
+            <source src="Humo_magenta.mp4" type="video/mp4">
+        </video>
+        <!-- Oscurecimiento premium para contraste -->
+        <div class="absolute inset-0 bg-gradient-to-b from-dark-900/90 via-dark-900/70 to-dark-900/90"></div>
+    </div>
+
+    <!-- Panel Lateral Izquierdo -->
+    <aside
+        class="glass-panel w-full md:w-1/4 lg:w-1/5 h-auto md:h-full flex flex-col justify-between p-6 z-10 shrink-0">
+        <div>
+            <!-- Botón Volver -->
+            <div class="flex items-center gap-3 mb-10 cursor-pointer group" onclick="window.location.href='index.html'">
+                <div
+                    class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-magenta-500/20 group-hover:border-magenta-500/50 transition-all">
+                    <i
+                        class="fa-solid fa-chevron-left text-gray-400 group-hover:text-magenta-400 transition-colors text-sm"></i>
+                </div>
+                <span
+                    class="font-heading font-medium text-sm text-gray-400 group-hover:text-white transition-colors">Cerrar
+                    Sesión</span>
+            </div>
+
+            <!-- Mascot -->
+            <div class="flex flex-col items-center mt-8 mb-8">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-magenta-500/30 blur-[40px] rounded-full"></div>
+                    <img src="robot.ia.jpeg" alt="Robot.ia"
+                        class="w-28 h-28 rounded-full object-cover border-2 border-magenta-500/50 relative z-10 shadow-[0_0_25px_rgba(217,0,255,0.5)]">
+                </div>
+                <h2 class="mt-6 font-heading font-bold text-2xl text-white glow-text">Robot.ia</h2>
+                <p
+                    class="text-[10px] text-magenta-400 font-mono mt-2 bg-magenta-500/10 px-3 py-1 rounded-full border border-magenta-500/20">
+                    Modelo: gemini-3.1-flash-lite</p>
+            </div>
+
+            <!-- Consola de Estado -->
+            <div class="bg-black/60 rounded-xl p-5 border border-white/10 shadow-inner mt-10">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs text-gray-400 font-mono">STATUS DE RED</span>
+                    <div class="flex items-center gap-2 bg-white/5 px-2 py-0.5 rounded border border-white/10">
+                        <div id="status-dot" class="status-dot status-connecting"></div>
+                        <span id="status-text"
+                            class="text-xs font-bold text-orange-400 font-mono tracking-wider">CONECTANDO</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mb-4 border-t border-white/5 pt-3">
+                    <span class="text-xs text-gray-500 font-mono">CONEXIÓN</span>
+                    <span class="text-xs font-mono text-gray-300">Directa (Client-Side)</span>
+                </div>
+                <div class="flex items-center justify-between border-t border-white/5 pt-3">
+                    <span class="text-xs text-gray-500 font-mono">MEMORIA</span>
+                    <span class="text-xs font-mono text-gray-300">Activada</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden md:flex flex-col items-center">
+            <img src="logotipo.jpeg" class="w-10 h-10 rounded-full opacity-20 filter grayscale mb-3" alt="Watermark">
+            <p class="text-[10px] text-gray-600 font-mono text-center">Protocolo de Google AI<br>Espíritu Digital</p>
+        </div>
+    </aside>
+
+    <!-- Área de Chat -->
+    <main class="flex-1 flex flex-col h-full relative z-0 chat-container">
+        <!-- Header Mobile -->
+        <div
+            class="md:hidden p-4 border-b border-white/5 flex items-center justify-between bg-black/60 backdrop-blur-md sticky top-0 z-20">
+            <div class="flex items-center gap-3">
+                <img src="robot.ia.jpeg" class="w-8 h-8 rounded-full border border-magenta-500">
+                <div>
+                    <span class="font-heading font-bold text-sm block leading-none">Robot.ia</span>
+                    <span id="mobile-status" class="text-[10px] text-orange-400 font-mono flex items-center gap-1 mt-1">
+                        <div id="mobile-status-dot" class="status-dot status-connecting" style="width:6px; height:6px;">
+                        </div> Conectando...
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensajes -->
+        <div id="chat-box" class="flex-1 overflow-y-auto p-6 md:p-10 space-y-6 scroll-smooth pb-32">
+            <div class="flex justify-start slide-in">
+                <div
+                    class="max-w-[90%] md:max-w-[75%] msg-bot rounded-2xl rounded-tl-sm p-5 text-sm md:text-base leading-relaxed shadow-lg">
+                    <span id="initial-msg"></span><span class="cursor" id="initial-cursor"></span>
+                </div>
+            </div>
+        </div>
+
+        <div id="typing-indicator" class="hidden absolute bottom-[100px] left-10 z-10 px-6 pb-2">
+            <div
+                class="bg-black/80 rounded-2xl rounded-tl-sm px-5 py-3 border border-magenta-500/30 flex items-center gap-1 typing-indicator shadow-[0_0_15px_rgba(217,0,255,0.2)]">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+
+        <!-- Input Area Absoluto inferior -->
+        <div class="absolute bottom-0 left-0 w-full p-4 md:p-8 bg-gradient-to-t from-black via-black/90 to-transparent">
+            <form id="chat-form" class="relative max-w-4xl mx-auto flex items-end gap-3">
+                <div class="relative flex-1">
+                    <textarea id="user-input" rows="1" placeholder="Escribe tu comando o mensaje aquí..."
+                        class="w-full chat-input rounded-2xl py-4 pl-6 pr-12 resize-none font-mono text-sm shadow-inner"
+                        required disabled></textarea>
+                </div>
+                <button type="submit"
+                    class="shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-magenta-500 to-magenta-600 hover:from-magenta-400 hover:to-magenta-500 text-white flex items-center justify-center transition-all glow-box transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                    id="send-btn" disabled>
+                    <i class="fa-solid fa-paper-plane text-xl"></i>
+                </button>
+            </form>
+            <div class="max-w-4xl mx-auto flex justify-between mt-3 px-2">
+                <p class="text-[10px] text-gray-500 font-mono"><i class="fa-solid fa-bolt mr-1"></i> Gemini 3.1 Flash Lite
+                    Autónomo</p>
+                <p class="text-[10px] text-gray-500 font-mono hidden md:block">Las respuestas pueden demorar unos ms
+                    según la API.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Import Map para la SDK de Google (ESM) -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
+
+    <!-- Script Principal Autónomo (Client-Side) -->
+    <script type="module">
+        import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+
+        const API_KEY = "TU_KEY_REAL";
+
+        let chatSession = null;
+
+        // Elementos UI
+        const chatBox = document.getElementById('chat-box');
+        const chatForm = document.getElementById('chat-form');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const typingIndicator = document.getElementById('typing-indicator');
+        const statusText = document.getElementById('status-text');
+        const statusDot = document.getElementById('status-dot');
+        const mobileStatus = document.getElementById('mobile-status');
+        const mobileStatusDot = document.getElementById('mobile-status-dot');
+
+        // Inicialización de la IA
+        async function initializeAI() {
+            try {
+                if (!API_KEY) {
+                    throw new Error("API Key faltante");
+                }
+
+                const genAI = new GoogleGenerativeAI(API_KEY);
+
+                const model = genAI.getGenerativeModel({
+                    model: "gemini-3.1-flash-lite",
+                    systemInstruction: `
+                        Eres Robot.ia,
+                        agente IA futurista de Espíritu Digital.
+                        Responde de manera corporativa,
+                        elegante y precisa.
+                    `
+                });
+
+                chatSession = model.startChat({
+                    generationConfig: {
+                        maxOutputTokens: 600,
+                        temperature: 0.7,
+                    }
+                });
+
+                console.log("IA conectada");
+
+                // Actualizar UI a Online
+                statusText.innerText = 'ONLINE';
+                statusText.className = 'text-xs font-bold text-green-400 font-mono tracking-wider';
+                statusDot.className = 'status-dot status-online';
+
+                mobileStatus.innerHTML = '<div class="status-dot status-online" style="width:6px; height:6px;"></div> Online';
+                mobileStatus.className = 'text-[10px] text-green-400 font-mono flex items-center gap-1 mt-1';
+
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+
+            } catch (err) {
+                console.error(err);
+                statusText.innerText = 'ERROR API';
+                statusText.className = 'text-xs font-bold text-red-500 font-mono tracking-wider';
+                statusDot.className = 'status-dot status-error';
+                addBotMessage("> ERROR CRÍTICO: No se pudo enlazar con los servidores de Google AI. Verifica la API KEY en el código fuente.");
+            }
+        }
+
+        // Efecto Typewriter (Renderizado carácter por carácter realista)
+        function typeWriter(element, text, speed = 15, callback) {
+            let i = 0;
+            element.innerHTML = '';
+
+            function type() {
+                if (i < text.length) {
+                    if (text.charAt(i) === '\n') {
+                        element.innerHTML += '<br>';
+                    } else {
+                        // Interpretar negritas de markdown simple (**) 
+                        // Nota: Para una implementación completa se requeriría un parser (como marked.js), 
+                        // pero se mantiene simple para la inmersión del typewriter.
+                        element.innerHTML += text.charAt(i);
+                    }
+                    i++;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                    // Variación de velocidad sutil para simular tipeo real de una IA rápida
+                    let currentSpeed = speed + (Math.random() * 10 - 5);
+                    setTimeout(type, currentSpeed);
+                } else {
+                    // Limpieza final de markdown simple (rudimentario para mantener la velocidad)
+                    element.innerHTML = element.innerHTML.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    if (callback) callback();
+                }
+            }
+            type();
+        }
+
+        // Auto-resize textarea
+        userInput.addEventListener('input', function () {
+            this.style.height = 'auto';
+            let newHeight = this.scrollHeight;
+            if (newHeight > 150) newHeight = 150;
+            this.style.height = newHeight + 'px';
+            if (this.value === '') this.style.height = 'auto';
+        });
+
+        userInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                chatForm.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Bienvenida Inmersiva
+        window.addEventListener('DOMContentLoaded', () => {
+            const initialText = "> INICIANDO SECUENCIA AUTÓNOMA...\n> CARGANDO MODELO: GEMINI-3.1-FLASH-LITE.\n\nHola, soy Robot.ia. Mi núcleo cognitivo ahora se ejecuta de forma independiente. ¿En qué te puedo ayudar hoy?";
+            const msgSpan = document.getElementById('initial-msg');
+            const cursor = document.getElementById('initial-cursor');
+
+            setTimeout(() => {
+                typeWriter(msgSpan, initialText, 25, () => {
+                    cursor.remove();
+                    initializeAI(); // Inicializa la SDK después de la bienvenida
+                });
+            }, 500);
+        });
+
+        function addUserMessage(text) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex justify-end slide-in';
+            wrapper.innerHTML = `
+                <div class="max-w-[90%] md:max-w-[75%] msg-user rounded-2xl rounded-tr-sm p-4 text-sm md:text-base leading-relaxed shadow-lg">
+                    ${text.replace(/\n/g, '<br>')}
+                </div>
+            `;
+            chatBox.appendChild(wrapper);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function addBotMessage(text) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex justify-start slide-in mb-6';
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'max-w-[90%] md:max-w-[75%] msg-bot rounded-2xl rounded-tl-sm p-5 text-sm md:text-base leading-relaxed shadow-lg relative';
+
+            const textSpan = document.createElement('span');
+            const cursor = document.createElement('span');
+            cursor.className = 'cursor';
+
+            msgDiv.appendChild(textSpan);
+            msgDiv.appendChild(cursor);
+            wrapper.appendChild(msgDiv);
+            chatBox.appendChild(wrapper);
+
+            typeWriter(textSpan, text, 12, () => {
+                cursor.remove();
+            });
+        }
+
+        // Lógica de Comunicación Directa (Gemini SDK)
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = userInput.value.trim();
+            if (!text || !chatSession) return;
+
+            addUserMessage(text);
+
+            userInput.value = '';
+            userInput.style.height = 'auto';
+            userInput.disabled = true;
+            sendBtn.disabled = true;
+
+            typingIndicator.classList.remove('hidden');
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                // Envía el mensaje directamente a Google AI.
+                // chatSession ya contiene el historial de la conversación actual.
+                const result = await chatSession.sendMessage(text);
+                const responseText = result.response.text();
+
+                typingIndicator.classList.add('hidden');
+                addBotMessage(responseText);
+
+            } catch (error) {
+                typingIndicator.classList.add('hidden');
+                console.error("Gemini Error:", error);
+
+                // Manejo específico de Errores (Ej: 429 - Cuota excedida / Rate Limit)
+                if (error.message && (error.message.includes('429') || error.status === 429)) {
+                    addBotMessage("> Robot.ia está recalibrando sus sistemas por alto flujo de red. Intenta en 15 segundos.");
+                } else {
+                    addBotMessage("> ERROR DE COMUNICACIÓN. La red neuronal ha encontrado un fallo temporal. " + error.message);
+                }
+            } finally {
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                userInput.focus();
+            }
+        });
+    </script>
+</body>
+
+</html>
