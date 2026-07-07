@@ -466,6 +466,69 @@ class Component extends DCLogic {
   // agent_id público de Alma. La API key JAMÁS va en el cliente.
   AGENT_ID = 'agent_0201kwr46s6bfv297ms35q25f3ce';
 
+  // ---------- personalización por nicho (URL ?nicho=…) ----------
+  // La URL trae solo una LLAVE (?nicho=dental); nunca texto libre. La landing la
+  // busca en este diccionario cerrado y pasa el saludo+contexto a Alma como
+  // variables dinámicas. Así se personaliza por rubro sin tocar el prompt base
+  // ni poder inyectar instrucciones desde la URL.
+  NICHO_DEFAULT = {
+    saludo_alma: '¡Hola! Soy Alma, una agente de inteligencia artificial. ¿Y cuál es tu nombre?',
+    contexto_nicho: 'El visitante llegó por la web general de Espíritu Digital; su rubro aún no se conoce, pregúntaselo con naturalidad.',
+  };
+  NICHOS = {
+    dental: {
+      saludo_alma: '¡Hola! Soy Alma, la IA de Espíritu Digital. Ayudo harto a clínicas dentales a no perder pacientes. ¿Cuál es tu nombre?',
+      contexto_nicho: 'El visitante llegó desde una campaña para clínicas y consultas dentales. Dolor típico: pierden pacientes por no contestar llamadas o WhatsApp a tiempo y por horas perdidas en la agenda. Servicio más relevante: un agente de IA por voz y chat que agenda, recuerda y filtra pacientes 24/7. Usa ejemplos y vocabulario de este rubro.',
+    },
+    medico: {
+      saludo_alma: '¡Hola! Soy Alma, la IA de Espíritu Digital. Ayudo harto a centros médicos con sus agendas. ¿Cuál es tu nombre?',
+      contexto_nicho: 'El visitante llegó desde una campaña para consultas, clínicas y centros médicos. Dolor típico: secretaría saturada, pacientes que no logran agendar y muchas inasistencias. Servicio más relevante: un agente de IA que agenda, confirma citas y responde consultas frecuentes 24/7. Adapta ejemplos al rubro salud, sin dar consejo médico.',
+    },
+    mecanico: {
+      saludo_alma: '¡Hola! Soy Alma, la IA de Espíritu Digital. Ayudo harto a talleres a no perder clientes. ¿Cuál es tu nombre?',
+      contexto_nicho: 'El visitante llegó desde una campaña para talleres mecánicos y automotrices. Dolor típico: se pierden clientes porque nadie contesta mientras trabajan bajo un auto. Servicio más relevante: un agente de IA que agenda, cotiza servicios básicos y captura los datos del vehículo 24/7. Usa ejemplos de taller.',
+    },
+    restaurante: {
+      saludo_alma: '¡Hola! Soy Alma, la IA de Espíritu Digital. Ayudo harto a restoranes y cafés con sus reservas. ¿Cuál es tu nombre?',
+      contexto_nicho: 'El visitante llegó desde una campaña para restoranes, cafés y delivery. Dolor típico: se pierden reservas y pedidos por no contestar en hora peak. Servicio más relevante: un agente de IA que toma reservas, responde el menú y captura pedidos 24/7. Usa ejemplos de gastronomía.',
+    },
+    belleza: {
+      saludo_alma: '¡Hola! Soy Alma, la IA de Espíritu Digital. Ayudo harto a peluquerías y centros de estética con su agenda. ¿Cuál es tu nombre?',
+      contexto_nicho: 'El visitante llegó desde una campaña para peluquerías, barberías, centros de estética y spa. Dolor típico: agenda por WhatsApp que satura y citas perdidas. Servicio más relevante: un agente de IA que agenda, recuerda y rellena las horas libres 24/7. Usa ejemplos de belleza y estética.',
+    },
+    inmobiliaria: {
+      saludo_alma: '¡Hola! Soy Alma, la IA de Espíritu Digital. Ayudo harto a corredoras de propiedades con sus leads. ¿Cuál es tu nombre?',
+      contexto_nicho: 'El visitante llegó desde una campaña para corredoras y corredores de propiedades. Dolor típico: leads que llegan y no se responden a tiempo, y mucho tiempo filtrando curiosos. Servicio más relevante: un agente de IA que califica interesados, agenda visitas y responde dudas de propiedades 24/7. Usa ejemplos inmobiliarios.',
+    },
+    retail: {
+      saludo_alma: '¡Hola! Soy Alma, la IA de Espíritu Digital. Ayudo harto a tiendas y ecommerce con sus ventas. ¿Cuál es tu nombre?',
+      contexto_nicho: 'El visitante llegó desde una campaña para tiendas y ecommerce. Dolor típico: consultas de stock, precios y despacho que no se alcanzan a responder y ventas que se enfrían. Servicio más relevante: un agente de IA que responde dudas, recomienda productos y captura pedidos 24/7. Usa ejemplos de retail y ecommerce.',
+    },
+    fitness: {
+      saludo_alma: '¡Hola! Soy Alma, la IA de Espíritu Digital. Ayudo harto a gimnasios con sus inscripciones. ¿Cuál es tu nombre?',
+      contexto_nicho: 'El visitante llegó desde una campaña para gimnasios, boxes y entrenadores. Dolor típico: consultas de planes y horarios sin responder, y bajas por poco seguimiento. Servicio más relevante: un agente de IA que informa planes, agenda clases de prueba y hace seguimiento 24/7. Usa ejemplos de fitness.',
+    },
+  };
+  // alias → llave canónica (por si el link usa otra palabra)
+  NICHO_ALIAS = {
+    dentista: 'dental', odontologia: 'dental',
+    salud: 'medico', clinica: 'medico', doctor: 'medico', consulta: 'medico',
+    taller: 'mecanico', automotriz: 'mecanico', auto: 'mecanico',
+    gastronomia: 'restaurante', cafe: 'restaurante', cafeteria: 'restaurante', comida: 'restaurante',
+    estetica: 'belleza', peluqueria: 'belleza', barberia: 'belleza', spa: 'belleza', peluqueria2: 'belleza',
+    propiedades: 'inmobiliaria', corredora: 'inmobiliaria', corretaje: 'inmobiliaria',
+    tienda: 'retail', ecommerce: 'retail', comercio: 'retail',
+    gimnasio: 'fitness', gym: 'fitness', box: 'fitness',
+  };
+
+  nichoVars() {
+    try {
+      const raw = (new URLSearchParams(location.search).get('nicho') || '').toLowerCase().trim();
+      const key = this.NICHO_ALIAS[raw] || raw;
+      return this.NICHOS[key] || this.NICHO_DEFAULT;
+    } catch (e) { return this.NICHO_DEFAULT; }
+  }
+
   startCall = async () => {
     if (this.state.callState !== 'idle') return;
     this.setState({ callState: 'connecting', seconds: 0 });
@@ -476,6 +539,7 @@ class Component extends DCLogic {
       this.convo = await Conversation.startSession({
         agentId: this.AGENT_ID,
         connectionType: 'webrtc',
+        dynamicVariables: this.nichoVars(),
         onConnect: () => {
           clearInterval(this.timer);
           this.timer = setInterval(() => this.setState(s => ({ seconds: s.seconds + 1 })), 1000);
