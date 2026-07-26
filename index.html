@@ -131,11 +131,34 @@
         }
 
         /* 3. Glassmorphism Styles */
-        .glass-nav {
-            background: rgba(3, 3, 3, 0.4);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        .nav-transparent {
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-bottom: 1px solid transparent;
+        }
+
+        .nav-scrolled {
+            background: rgba(3, 3, 3, 0.68);
+            backdrop-filter: blur(18px) saturate(145%);
+            -webkit-backdrop-filter: blur(18px) saturate(145%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.42);
+        }
+
+        #mobile-menu {
+            background: rgba(3, 3, 3, 0.82);
+            backdrop-filter: blur(18px) saturate(145%);
+            -webkit-backdrop-filter: blur(18px) saturate(145%);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        #inicio video {
+            display: block;
+            min-width: 100%;
+            min-height: 100%;
+            background: #030303 url('hero-poster.webp') center / cover no-repeat;
         }
         
         .glass-card {
@@ -221,7 +244,6 @@
 
         /* 7. Accesibilidad: respeta a quienes prefieren menos movimiento */
         @media (prefers-reduced-motion: reduce) {
-            #inicio video { display: none; }
             .animate-fade-in-up,
             .animate-float,
             .parallax-element {
@@ -235,8 +257,8 @@
 </head>
 <body class="antialiased selection:bg-magenta-500 selection:text-white">
 
-    <!-- Navbar Sticky con efecto blur -->
-    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+    <!-- Navbar Sticky con efecto transparente/glass -->
+    <nav class="fixed w-full z-50 nav-transparent transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <!-- Branding Logotipo Izquierdo -->
@@ -249,12 +271,14 @@
                 </div>
                 
                 <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-8">
+                <div class="hidden md:flex items-center space-x-6">
                     <a href="#inicio" class="text-gray-300 hover:text-white transition-colors duration-300 text-sm font-medium">Inicio</a>
                     <a href="#robotia" class="text-gray-300 hover:text-magenta-400 transition-colors duration-300 text-sm font-medium">Robot.ia</a>
                     <a href="#servicios" class="text-gray-300 hover:text-white transition-colors duration-300 text-sm font-medium">Servicios</a>
                     <a href="#portafolio" class="text-gray-300 hover:text-white transition-colors duration-300 text-sm font-medium">Portafolio</a>
                     <a href="alma/" class="px-5 py-2 rounded-full border border-magenta-500 text-magenta-400 hover:bg-magenta-500/10 transition-colors text-sm font-medium">Habla con Alma</a>
+                    <a href="https://smartmenu.espiritudigital.cl" target="_blank" rel="noopener" class="px-5 py-2 rounded-full border border-white/20 text-white hover:border-magenta-400 hover:bg-white/10 transition-colors text-sm font-medium">Conoce SmartMenu</a>
+                    <a href="demo.html" class="px-5 py-2 rounded-full border border-magenta-500 text-magenta-400 hover:bg-magenta-500/10 transition-colors text-sm font-medium">Prueba la Demo</a>
                     <a href="https://wa.me/56949745384" target="_blank" class="glow-btn px-6 py-2.5 rounded-full text-white font-medium text-sm">
                         Agendar Demo
                     </a>
@@ -262,10 +286,23 @@
 
                 <!-- Mobile menu button -->
                 <div class="md:hidden flex items-center">
-                    <button class="text-gray-300 hover:text-white focus:outline-none">
+                    <button id="mobile-menu-toggle" type="button" aria-label="Abrir menu" aria-controls="mobile-menu" aria-expanded="false" class="text-gray-300 hover:text-white focus:outline-none">
                         <i class="fa-solid fa-bars text-2xl"></i>
                     </button>
                 </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col gap-4">
+                <a href="#inicio" class="text-gray-200 hover:text-white transition-colors text-sm font-medium">Inicio</a>
+                <a href="#robotia" class="text-gray-200 hover:text-magenta-400 transition-colors text-sm font-medium">Robot.ia</a>
+                <a href="#servicios" class="text-gray-200 hover:text-white transition-colors text-sm font-medium">Servicios</a>
+                <a href="#portafolio" class="text-gray-200 hover:text-white transition-colors text-sm font-medium">Portafolio</a>
+                <a href="https://smartmenu.espiritudigital.cl" target="_blank" rel="noopener" class="px-5 py-3 rounded-full border border-white/20 text-white hover:border-magenta-400 hover:bg-white/10 transition-colors text-sm font-medium text-center">Conoce SmartMenu</a>
+                <a href="demo.html" class="px-5 py-3 rounded-full border border-magenta-500 text-magenta-400 hover:bg-magenta-500/10 transition-colors text-sm font-medium text-center">Prueba la Demo</a>
+                <a href="https://wa.me/56949745384" target="_blank" class="glow-btn px-6 py-3 rounded-full text-white font-medium text-sm text-center">
+                    Agendar Demo
+                </a>
             </div>
         </div>
     </nav>
@@ -273,7 +310,7 @@
     <!-- Hero Section (Impacto Total) -->
     <section id="inicio" class="relative h-screen flex items-center justify-center overflow-hidden">
         <!-- Background Video (Humo magenta) — decorativo, optimizado -->
-        <video autoplay loop muted playsinline preload="metadata" aria-hidden="true" class="absolute w-full h-full object-cover z-0" poster="hero-poster.webp">
+        <video id="hero-video" autoplay loop muted playsinline webkit-playsinline preload="auto" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover z-0" poster="hero-poster.webp">
             <source src="hero-video.mp4" type="video/mp4">
         </video>
         
@@ -289,9 +326,9 @@
             <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl font-light animate-fade-in-up delay-100 drop-shadow-md">
                 Agencia de desarrollo web y agentes de IA en Chile. Diseñamos experiencias web de élite y automatizamos tu negocio con inteligencia artificial para que atraigas más clientes y domines tu industria.
             </p>
-            <div class="flex flex-col sm:flex-row gap-5 animate-fade-in-up delay-200">
-                <a href="https://wa.me/56949745384" target="_blank" class="glow-btn px-8 py-4 rounded-full text-white font-semibold text-lg flex items-center justify-center gap-3">
-                    Hablar con un Experto <i class="fa-solid fa-whatsapp"></i>
+            <div class="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-4 animate-fade-in-up delay-200">
+                <a href="https://smartmenu.espiritudigital.cl" target="_blank" rel="noopener" class="px-8 py-4 rounded-full text-white font-semibold text-lg border border-magenta-500/70 hover:bg-magenta-500/10 hover:border-magenta-400 transition-all duration-300 backdrop-blur-sm flex items-center justify-center gap-3">
+                    Conoce SmartMenu <i class="fa-solid fa-utensils"></i>
                 </a>
                 <a href="#servicios" class="px-8 py-4 rounded-full text-white font-semibold text-lg border border-white/20 hover:bg-white/10 hover:border-white/40 transition-all duration-300 backdrop-blur-sm">
                     Descubrir Servicios
@@ -588,6 +625,67 @@
             }
         });
         if (window.scrollY <= 50) navbar.classList.add('py-4');
+        navbar.style.background = '';
+
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+
+        const updateNavbar = () => {
+            const isScrolled = window.scrollY > 40;
+            navbar.style.background = isScrolled ? 'rgba(3, 3, 3, 0.68)' : 'transparent';
+            navbar.style.backdropFilter = isScrolled ? 'blur(18px) saturate(145%)' : 'none';
+            navbar.style.webkitBackdropFilter = isScrolled ? 'blur(18px) saturate(145%)' : 'none';
+            navbar.style.borderBottom = isScrolled ? '1px solid rgba(255, 255, 255, 0.09)' : '1px solid transparent';
+            navbar.style.boxShadow = isScrolled ? '0 10px 30px rgba(0, 0, 0, 0.42)' : 'none';
+            navbar.classList.toggle('nav-scrolled', isScrolled);
+            navbar.classList.toggle('nav-transparent', !isScrolled);
+            navbar.classList.toggle('py-2', isScrolled);
+            navbar.classList.toggle('py-4', !isScrolled);
+            navbar.classList.remove('shadow-[0_10px_30px_rgba(0,0,0,0.5)]');
+        };
+
+        updateNavbar();
+        window.addEventListener('scroll', updateNavbar, { passive: true });
+
+        if (mobileMenuToggle && mobileMenu) {
+            mobileMenuToggle.addEventListener('click', () => {
+                const isOpen = !mobileMenu.classList.contains('hidden');
+                mobileMenu.classList.toggle('hidden', isOpen);
+                mobileMenuToggle.setAttribute('aria-expanded', String(!isOpen));
+            });
+
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
+
+        const heroVideo = document.getElementById('hero-video');
+        const playHeroVideo = () => {
+            if (!heroVideo) return;
+
+            heroVideo.muted = true;
+            heroVideo.defaultMuted = true;
+            heroVideo.setAttribute('muted', '');
+            heroVideo.setAttribute('playsinline', '');
+            heroVideo.setAttribute('webkit-playsinline', '');
+
+            const playPromise = heroVideo.play();
+            if (playPromise && typeof playPromise.catch === 'function') {
+                playPromise.catch(() => {
+                    document.addEventListener('touchstart', playHeroVideo, { once: true, passive: true });
+                    document.addEventListener('click', playHeroVideo, { once: true });
+                });
+            }
+        };
+
+        if (heroVideo) {
+            heroVideo.addEventListener('loadeddata', playHeroVideo, { once: true });
+            heroVideo.addEventListener('canplay', playHeroVideo, { once: true });
+            playHeroVideo();
+        }
 
         // Año automático en el footer (evita el © desactualizado)
         const anioEl = document.getElementById('anio-actual');
