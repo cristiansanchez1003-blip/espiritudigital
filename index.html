@@ -167,6 +167,44 @@
             background: rgba(255, 255, 255, 0.04);
         }
 
+        .case-carousel {
+            display: flex;
+            gap: 1rem;
+            margin-left: -1rem;
+            margin-right: -1rem;
+            overflow-x: auto;
+            padding: 0 1rem 1.5rem;
+            scroll-padding: 1rem;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .case-carousel::-webkit-scrollbar {
+            display: none;
+        }
+        .case-card {
+            flex: 0 0 min(86vw, 24rem);
+            scroll-snap-align: center;
+        }
+        .case-sabores { order: 1; }
+        .case-ao { order: 2; }
+        .case-vigila { order: 3; }
+        .case-vitrales { order: 4; }
+        .case-mistergas { order: 5; }
+        @media (min-width: 768px) {
+            .case-carousel {
+                display: grid;
+                gap: 2rem;
+                margin-left: 0;
+                margin-right: 0;
+                overflow: visible;
+                padding: 0;
+                scroll-snap-type: none;
+            }
+            .case-card {
+                flex: initial;
+            }
+        }
+
         /* 4. Glow Effects (Hover effects potentes en botones) */
         .glow-btn {
             background: linear-gradient(135deg, #d900ff 0%, #8a2be2 100%);
@@ -316,8 +354,26 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                <a href="https://www.aoconstrucciones.cl" target="_blank" rel="noopener" class="group glass-card rounded-3xl overflow-hidden block relative">
+            <div class="case-carousel md:grid-cols-2 xl:grid-cols-3">
+                <a href="https://espiritu-digital-demo.onrender.com" target="_blank" rel="noopener" class="case-card case-sabores group glass-card rounded-3xl overflow-hidden block relative">
+                    <div class="relative h-[34rem] overflow-hidden bg-dark-900">
+                        <video class="case-video w-full h-full object-contain bg-black transition-transform duration-700 group-hover:scale-[1.015]" autoplay loop muted playsinline webkit-playsinline preload="metadata" poster="caso-saboresdelsur-poster.webp" aria-label="Video del sitio web de Supermercado Sabores del Sur">
+                            <source src="caso-saboresdelsur-video.mp4" type="video/mp4">
+                        </video>
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent pointer-events-none"></div>
+                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-magenta-400 text-xs font-semibold tracking-wider uppercase">Supermercado · E-commerce con IA</span>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-heading text-2xl font-bold text-white">Supermercado Sabores del Sur</h3>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-gray-500 group-hover:text-magenta-400 transition-colors"></i>
+                        </div>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed mb-5">Una tienda de barrio transformada en experiencia digital: catálogo online, compra rápida y un agente de IA preparado para responder cuando el equipo está atendiendo el negocio real.</p>
+                        <div class="flex items-center gap-2 text-magenta-400 text-sm font-medium"><i class="fa-solid fa-arrow-trend-up"></i> Venta digital con atención inteligente 24/7</div>
+                    </div>
+                </a>
+
+                <a href="https://www.aoconstrucciones.cl" target="_blank" rel="noopener" class="case-card case-ao group glass-card rounded-3xl overflow-hidden block relative">
                     <div class="relative h-[34rem] overflow-hidden bg-dark-900">
                         <video class="case-video w-full h-full object-contain bg-black transition-transform duration-700 group-hover:scale-[1.015]" autoplay loop muted playsinline webkit-playsinline preload="metadata" poster="caso-aoconstrucciones-poster.webp" aria-label="Video del sitio web de AO Construcciones">
                             <source src="caso-aoconstrucciones-video.mp4" type="video/mp4">
@@ -330,12 +386,12 @@
                             <h3 class="font-heading text-2xl font-bold text-white">AO Construcciones</h3>
                             <i class="fa-solid fa-arrow-up-right-from-square text-gray-500 group-hover:text-magenta-400 transition-colors"></i>
                         </div>
-                        <p class="text-gray-400 text-sm font-light leading-relaxed mb-5">Una constructora con trayectoria convirtió su experiencia en una vitrina profesional: portafolio editable, identidad más sólida y un camino directo para transformar visitas en solicitudes reales.</p>
-                        <div class="flex items-center gap-2 text-magenta-400 text-sm font-medium"><i class="fa-solid fa-arrow-trend-up"></i> Más confianza, más cotizaciones, mejor cierre comercial</div>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed mb-5">Una gran empresa de construcción convirtió su trayectoria en una vitrina profesional: proyectos visibles, portafolio editable y una presencia digital que transmite confianza antes de la primera reunión.</p>
+                        <div class="flex items-center gap-2 text-magenta-400 text-sm font-medium"><i class="fa-solid fa-arrow-trend-up"></i> Marca más fuerte, más cotizaciones, mejor cierre comercial</div>
                     </div>
                 </a>
 
-                <a href="https://www.vitralesdelcajon.cl" target="_blank" rel="noopener" class="group glass-card rounded-3xl overflow-hidden block relative">
+                <a href="https://www.vitralesdelcajon.cl" target="_blank" rel="noopener" class="case-card case-vitrales group glass-card rounded-3xl overflow-hidden block relative">
                     <div class="relative h-[34rem] overflow-hidden bg-dark-900">
                         <video class="case-video w-full h-full object-contain bg-black transition-transform duration-700 group-hover:scale-[1.015]" autoplay loop muted playsinline webkit-playsinline preload="metadata" poster="caso-vitralesdelcajon-poster.webp" aria-label="Video de la tienda online Vitrales del Cajón">
                             <source src="caso-vitralesdelcajon-video.mp4" type="video/mp4">
@@ -353,7 +409,7 @@
                     </div>
                 </a>
 
-                <a href="https://www.mistergas.cl" target="_blank" rel="noopener" class="group glass-card rounded-3xl overflow-hidden block relative">
+                <a href="https://www.mistergas.cl" target="_blank" rel="noopener" class="case-card case-mistergas group glass-card rounded-3xl overflow-hidden block relative">
                     <div class="relative h-[34rem] overflow-hidden bg-dark-900">
                         <video class="case-video w-full h-full object-contain bg-black transition-transform duration-700 group-hover:scale-[1.015]" autoplay loop muted playsinline webkit-playsinline preload="metadata" poster="caso-mistergas-poster.webp" aria-label="Video del sitio web MisterGas">
                             <source src="caso-mistergas-video.mp4" type="video/mp4">
@@ -371,39 +427,24 @@
                     </div>
                 </a>
 
-                <article class="group glass-card rounded-3xl overflow-hidden block relative">
+                <article class="case-card case-vigila group glass-card rounded-3xl overflow-hidden block relative">
                     <div class="relative h-[34rem] overflow-hidden bg-dark-900">
-                        <video class="case-video w-full h-full object-contain bg-black transition-transform duration-700 group-hover:scale-[1.015]" autoplay loop muted playsinline webkit-playsinline preload="metadata" poster="caso-vigila-poster.webp" aria-label="Video del sitio web Vigila">
+                        <video class="case-video w-full h-full object-contain bg-black transition-transform duration-700 group-hover:scale-[1.015]" autoplay loop muted playsinline webkit-playsinline preload="metadata" poster="caso-vigila-poster.webp" aria-label="Video del sitio web VigilaWeb">
                             <source src="caso-vigila-video.mp4" type="video/mp4">
                         </video>
                         <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent pointer-events-none"></div>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-magenta-400 text-xs font-semibold tracking-wider uppercase">E-commerce · Producto digital</span>
+                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-magenta-400 text-xs font-semibold tracking-wider uppercase">Televigilancia · E-commerce</span>
                     </div>
                     <div class="p-8">
                         <div class="flex items-center justify-between mb-3">
-                            <h3 class="font-heading text-2xl font-bold text-white">Vigila</h3>
+                            <h3 class="font-heading text-2xl font-bold text-white">VigilaWeb</h3>
                             <i class="fa-solid fa-arrow-up-right-from-square text-gray-500 group-hover:text-magenta-400 transition-colors"></i>
                         </div>
-                        <p class="text-gray-400 text-sm font-light leading-relaxed mb-5">Una propuesta de seguridad para el hogar llevada a una página clara, directa y preparada para vender: beneficios arriba, objeciones resueltas y una ruta de compra sin ruido.</p>
-                        <div class="flex items-center gap-2 text-magenta-400 text-sm font-medium"><i class="fa-solid fa-arrow-trend-up"></i> Mensaje simple, producto claro y compra más rápida</div>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed mb-5">Una empresa dedicada a distribuir cámaras de televigilancia llevó su oferta a una web clara, directa y preparada para vender: beneficios visibles, compra simple y confianza desde el primer segundo.</p>
+                        <div class="flex items-center gap-2 text-magenta-400 text-sm font-medium"><i class="fa-solid fa-arrow-trend-up"></i> Producto claro, compra más rápida y mayor confianza</div>
                     </div>
                 </article>
 
-                <a href="https://espiritu-digital-demo.onrender.com" target="_blank" rel="noopener" class="group glass-card rounded-3xl overflow-hidden block relative md:col-span-2 xl:col-span-1">
-                    <div class="relative h-[34rem] overflow-hidden bg-gradient-to-br from-magenta-600/25 via-dark-700 to-dark-900">
-                        <img src="mockup-ecommerce.webp" alt="Tienda online del Supermercado Sabores del Sur en Puente Alto con agente de IA, por Espíritu Digital" loading="lazy" decoding="async" width="800" height="480" class="w-full h-full object-contain p-6 transition-transform duration-700 group-hover:scale-[1.015]">
-                        <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/10 to-transparent"></div>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-magenta-400 text-xs font-semibold tracking-wider uppercase">E-commerce · Agente de IA</span>
-                    </div>
-                    <div class="p-8">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="font-heading text-2xl font-bold text-white">Sabores del Sur</h3>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-gray-500 group-hover:text-magenta-400 transition-colors"></i>
-                        </div>
-                        <p class="text-gray-400 text-sm font-light leading-relaxed mb-5">Una tienda online pensada para vender más allá del mesón: catálogo digital, experiencia de compra ordenada y un agente de IA listo para atender preguntas cuando el equipo no puede.</p>
-                        <div class="flex items-center gap-2 text-magenta-400 text-sm font-medium"><i class="fa-solid fa-arrow-trend-up"></i> Venta digital con atención inteligente 24/7</div>
-                    </div>
-                </a>
             </div>
         </div>
     </section>
