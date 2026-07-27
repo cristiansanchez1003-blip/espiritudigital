@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Espíritu Digital | Web Dev & AI Agency</title>
+    <title>Espíritu Digital | Agencia de Desarrollo Web, Marketing Digital e IA en Chile</title>
+    <meta name="description" content="Espíritu Digital es una agencia digital en Chile especializada en desarrollo de páginas web, marketing digital, e-commerce, agentes de IA y automatización para negocios que quieren vender más.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://espiritudigital.cl/">
+    <meta name="theme-color" content="#030303">
     
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://espiritudigital.cl/">
-    <meta property="og:title" content="Espíritu Digital | Forjando el Futuro con IA">
-    <meta property="og:description" content="Agencia boutique en Chile especializada en desarrollo web premium y agentes de IA autónomos. Llevamos tu negocio al siguiente nivel.">
+    <meta property="og:title" content="Espíritu Digital | Agencia de Desarrollo Web, Marketing Digital e IA en Chile">
+    <meta property="og:description" content="Desarrollamos páginas web, estrategias digitales, e-commerce y agentes de IA para negocios en Chile que quieren captar más clientes y vender mejor.">
     <meta property="og:image" content="https://espiritudigital.cl/og-image.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://espiritudigital.cl/">
-    <meta property="twitter:title" content="Espíritu Digital | Web Dev & AI Agency">
-    <meta property="twitter:description" content="Agencia boutique en Chile especializada en desarrollo web premium y agentes de IA autónomos.">
+    <meta property="twitter:title" content="Espíritu Digital | Agencia Digital en Chile">
+    <meta property="twitter:description" content="Páginas web, marketing digital, e-commerce, agentes de IA y automatización para negocios que quieren crecer.">
     <meta property="twitter:image" content="https://espiritudigital.cl/og-image.png">
     <!-- Favicon -->
     <link rel="icon" href="logotipo.webp" type="image/webp">
@@ -30,44 +34,110 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "ProfessionalService",
-      "name": "Espíritu Digital",
-      "url": "https://espiritudigital.cl",
-      "logo": "https://espiritudigital.cl/logotipo.jpeg",
-      "image": "https://espiritudigital.cl/robot.ia.jpeg",
-      "description": "Agencia boutique de software y AI en Chile. Especialistas en desarrollo web premium, agentes de IA autónomos y automatización inteligente.",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Santiago",
-        "addressRegion": "Región Metropolitana",
-        "addressCountry": "CL"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": -33.4489,
-        "longitude": -70.6693
-      },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+56-9-4974-5384",
-        "contactType": "customer service",
-        "areaServed": "CL",
-        "availableLanguage": ["Spanish", "English"]
-      },
-      "sameAs": [
-        "https://www.instagram.com/espiritudigital.cl/",
-        "https://www.tiktok.com/@espiritudigital.cl"
-      ],
-      "service": [
+      "@graph": [
         {
-          "@type": "Service",
-          "name": "Desarrollo Web de Élite",
-          "description": "Sitios web ultra-rápidos y responsivos con diseño vanguardista."
+          "@type": "WebSite",
+          "@id": "https://espiritudigital.cl/#website",
+          "url": "https://espiritudigital.cl/",
+          "name": "Espíritu Digital",
+          "inLanguage": "es-CL",
+          "publisher": {
+            "@id": "https://espiritudigital.cl/#organization"
+          }
         },
         {
-          "@type": "Service",
-          "name": "Agentes de IA Autónomos",
-          "description": "Integración de modelos como Gemini y GPT para automatización de ventas y atención."
+          "@type": ["Organization", "ProfessionalService"],
+          "@id": "https://espiritudigital.cl/#organization",
+          "name": "Espíritu Digital",
+          "url": "https://espiritudigital.cl/",
+          "logo": "https://espiritudigital.cl/logotipo.webp",
+          "image": "https://espiritudigital.cl/og-image.png",
+          "description": "Agencia digital en Chile especializada en desarrollo de páginas web, marketing digital, e-commerce, agentes de IA y automatización comercial.",
+          "email": "hello@espiritudigital.cl",
+          "telephone": "+56-9-4974-5384",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Santiago",
+            "addressRegion": "Región Metropolitana",
+            "addressCountry": "CL"
+          },
+          "areaServed": [
+            { "@type": "Country", "name": "Chile" },
+            { "@type": "AdministrativeArea", "name": "Región Metropolitana" },
+            { "@type": "City", "name": "Santiago" }
+          ],
+          "sameAs": [
+            "https://www.instagram.com/espiritudigital.cl/",
+            "https://www.tiktok.com/@espiritudigital.cl"
+          ],
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Servicios digitales de Espíritu Digital",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Desarrollo de páginas web en Chile",
+                  "description": "Diseño y desarrollo de sitios web rápidos, responsivos, optimizados para SEO y preparados para convertir visitas en clientes."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Marketing digital y estrategia de ventas",
+                  "description": "Estrategia digital, embudos de conversión, contenido y optimización de presencia online para negocios en Chile."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Agentes de IA y automatización",
+                  "description": "Asistentes inteligentes para atención, ventas, WhatsApp, formularios, seguimiento comercial y automatización de procesos."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "E-commerce y catálogos digitales",
+                  "description": "Tiendas online, catálogos digitales y experiencias de compra para negocios que quieren vender por internet."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://espiritudigital.cl/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "¿Espíritu Digital desarrolla páginas web para negocios en Chile?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sí. Espíritu Digital desarrolla páginas web, sitios corporativos, tiendas online y landing pages para negocios en Chile que necesitan captar clientes y vender mejor."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿También hacen marketing digital y estrategia de ventas?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sí. Además del desarrollo web, trabajamos estrategia digital, copywriting, rutas de conversión, automatización y herramientas de IA para mejorar la captación de clientes."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Qué diferencia a Espíritu Digital de una agencia tradicional?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Combinamos diseño web, estrategia comercial, automatización e inteligencia artificial para crear sistemas digitales que no solo se ven bien, sino que ayudan a vender."
+              }
+            }
+          ]
         }
       ]
     }
@@ -326,7 +396,7 @@
                 <span class="text-gradient font-brand tracking-normal">Espíritu Digital</span>
             </h1>
             <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl font-light animate-fade-in-up delay-100 drop-shadow-md">
-                Agencia de desarrollo web y agentes de IA en Chile. Diseñamos experiencias web de élite y automatizamos tu negocio con inteligencia artificial para que atraigas más clientes y domines tu industria.
+                Agencia digital en Chile especializada en desarrollo de páginas web, marketing digital, e-commerce y agentes de IA. Diseñamos sistemas de venta online para que tu negocio atraiga más clientes, responda más rápido y convierta mejor.
             </p>
             <div class="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-4 animate-fade-in-up delay-200">
                 <a href="https://smartmenu.espiritudigital.cl" target="_blank" rel="noopener" class="px-8 py-4 rounded-full text-white font-semibold text-lg border border-magenta-500/70 hover:bg-magenta-500/10 hover:border-magenta-400 transition-all duration-300 backdrop-blur-sm flex items-center justify-center gap-3">
@@ -458,8 +528,8 @@
                 <div class="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm mb-6">
                     Soluciones Exclusivas
                 </div>
-                <h2 class="font-heading text-4xl md:text-5xl font-bold mb-4">Experiencias <span class="text-magenta-500">Premium</span></h2>
-                <p class="text-gray-400 max-w-2xl mx-auto text-lg font-light">Combinamos diseño vanguardista con inteligencia artificial para crear ecosistemas digitales que dominan el mercado.</p>
+                <h2 class="font-heading text-4xl md:text-5xl font-bold mb-4">Agencia digital para negocios que quieren <span class="text-magenta-500">vender más</span></h2>
+                <p class="text-gray-400 max-w-3xl mx-auto text-lg font-light">Creamos páginas web, tiendas online, estrategias de marketing digital y automatizaciones con IA para empresas en Chile que necesitan una presencia online clara, profesional y enfocada en conversión.</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -468,9 +538,9 @@
                     <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:bg-magenta-500/20 group-hover:text-magenta-400 group-hover:border-magenta-500/30 transition-all duration-300 text-3xl text-white shadow-lg">
                         <i class="fa-solid fa-code"></i>
                     </div>
-                    <h3 class="font-heading text-2xl font-bold mb-4">Desarrollo Web Élite</h3>
+                    <h3 class="font-heading text-2xl font-bold mb-4">Desarrollo de páginas web</h3>
                     <p class="text-gray-400 text-base font-light leading-relaxed">
-                        Sitios web ultra-rápidos, responsivos y con animaciones fluidas que cautivan a tu audiencia desde el primer segundo. Optimizados para conversión.
+                        Sitios web rápidos, responsivos y optimizados para SEO local. Construimos páginas corporativas, landing pages y experiencias digitales pensadas para captar clientes desde Google.
                     </p>
                 </div>
 
@@ -480,9 +550,9 @@
                     <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:bg-magenta-500/20 group-hover:text-magenta-400 group-hover:border-magenta-500/30 transition-all duration-300 text-3xl text-white shadow-lg relative z-10">
                         <i class="fa-solid fa-brain"></i>
                     </div>
-                    <h3 class="font-heading text-2xl font-bold mb-4 relative z-10">Agentes AI a Medida</h3>
+                    <h3 class="font-heading text-2xl font-bold mb-4 relative z-10">Marketing digital e IA</h3>
                     <p class="text-gray-400 text-base font-light leading-relaxed relative z-10">
-                        Automatizamos tus operaciones mediante asistentes virtuales que trabajan por ti ininterrumpidamente, multiplicando tu productividad.
+                        Diseñamos estrategias de venta, embudos, copywriting y agentes de IA que responden consultas, califican prospectos y ayudan a convertir conversaciones en oportunidades.
                     </p>
                 </div>
 
@@ -491,11 +561,39 @@
                     <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:bg-magenta-500/20 group-hover:text-magenta-400 group-hover:border-magenta-500/30 transition-all duration-300 text-3xl text-white shadow-lg">
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
                     </div>
-                    <h3 class="font-heading text-2xl font-bold mb-4">UI/UX Futurista</h3>
+                    <h3 class="font-heading text-2xl font-bold mb-4">E-commerce y automatización</h3>
                     <p class="text-gray-400 text-base font-light leading-relaxed">
-                        Interfaces de usuario hermosas e intuitivas. Aplicamos glassmorphism, tipografías perfectas y micro-interacciones de alta gama.
+                        Implementamos tiendas online, catálogos digitales, formularios inteligentes y flujos automatizados para que tu negocio atienda, venda y haga seguimiento con menos fricción.
                     </p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SEO -->
+    <section id="preguntas" class="py-20 md:py-28 relative bg-dark-800 border-b border-white/5">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12">
+                <div class="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-gray-300 font-medium text-sm mb-6">
+                    Preguntas frecuentes
+                </div>
+                <h2 class="font-heading text-3xl md:text-5xl font-bold mb-5">Qué hace Espíritu Digital por tu negocio</h2>
+                <p class="text-gray-400 text-lg font-light max-w-3xl">Si buscas una agencia digital, una empresa de desarrollo web o un equipo que combine marketing, diseño e inteligencia artificial, estas son las preguntas que normalmente aparecen antes de partir.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <article class="glass-card p-7 rounded-2xl">
+                    <h3 class="font-heading text-xl font-bold mb-3">¿Desarrollan páginas web para empresas en Chile?</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed font-light">Sí. Creamos sitios corporativos, landing pages, tiendas online y catálogos digitales para negocios que necesitan verse profesionales y captar clientes desde Google.</p>
+                </article>
+                <article class="glass-card p-7 rounded-2xl">
+                    <h3 class="font-heading text-xl font-bold mb-3">¿También trabajan marketing digital?</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed font-light">Sí. Unimos copywriting, estrategia de venta, experiencia de usuario, SEO y automatización para que la web no sea solo bonita: tiene que ayudar a vender.</p>
+                </article>
+                <article class="glass-card p-7 rounded-2xl">
+                    <h3 class="font-heading text-xl font-bold mb-3">¿Pueden integrar inteligencia artificial?</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed font-light">Sí. Implementamos agentes de IA para atención, ventas, seguimiento comercial, WhatsApp y procesos internos según la operación de cada negocio.</p>
+                </article>
             </div>
         </div>
     </section>
@@ -517,7 +615,7 @@
                         <span class="font-heading font-bold text-3xl tracking-wide text-white">Espíritu Digital</span>
                     </div>
                     <p class="text-gray-400 max-w-sm mb-8 leading-relaxed text-sm font-light">
-                        Agencia de vanguardia especializada en diseño web de alta gama e integración de Inteligencia Artificial para marcas que buscan dominar su industria.
+                        Agencia digital en Chile especializada en desarrollo web, marketing digital, e-commerce, automatización e inteligencia artificial para marcas que quieren crecer con presencia online real.
                     </p>
                     <div class="flex gap-4">
                         <a href="https://www.instagram.com/espiritudigital.cl/" target="_blank" rel="noopener" aria-label="Instagram de Espíritu Digital" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-magenta-500 hover:shadow-[0_0_15px_rgba(217,0,255,0.5)] transition-all duration-300 border border-white/10 text-lg">
