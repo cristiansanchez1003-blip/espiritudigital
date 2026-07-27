@@ -244,6 +244,7 @@
             margin-right: -1rem;
             overflow-x: auto;
             padding: 0 1rem 1.5rem;
+            scroll-behavior: smooth;
             scroll-padding: 1rem;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
@@ -748,6 +749,65 @@
             video.addEventListener('canplay', playCaseVideo, { once: true });
             playCaseVideo();
         });
+
+        const caseCarousel = document.querySelector('.case-carousel');
+        const mobileCarouselQuery = window.matchMedia('(max-width: 767px)');
+        let caseCarouselTimer;
+
+        const getOrderedCaseCards = () => {
+            if (!caseCarousel) return [];
+            return Array.from(caseCarousel.querySelectorAll('.case-card'))
+                .sort((a, b) => a.offsetLeft - b.offsetLeft);
+        };
+
+        const getCaseCardScrollLeft = card => card.offsetLeft - caseCarousel.offsetLeft;
+
+        const stopCaseCarousel = () => {
+            if (caseCarouselTimer) {
+                window.clearInterval(caseCarouselTimer);
+                caseCarouselTimer = undefined;
+            }
+        };
+
+        const startCaseCarousel = () => {
+            if (!caseCarousel || !mobileCarouselQuery.matches) {
+                stopCaseCarousel();
+                return;
+            }
+
+            const cards = getOrderedCaseCards();
+            if (cards.length < 2) return;
+
+            stopCaseCarousel();
+            caseCarouselTimer = window.setInterval(() => {
+                const orderedCards = getOrderedCaseCards();
+                const currentIndex = orderedCards.reduce((closestIndex, card, index) => {
+                    const closestDistance = Math.abs(getCaseCardScrollLeft(orderedCards[closestIndex]) - caseCarousel.scrollLeft);
+                    const cardDistance = Math.abs(getCaseCardScrollLeft(card) - caseCarousel.scrollLeft);
+                    return cardDistance < closestDistance ? index : closestIndex;
+                }, 0);
+                const nextIndex = (currentIndex + 1) % orderedCards.length;
+
+                caseCarousel.scrollTo({
+                    left: getCaseCardScrollLeft(orderedCards[nextIndex]),
+                    behavior: 'smooth'
+                });
+            }, 2000);
+        };
+
+        if (caseCarousel) {
+            startCaseCarousel();
+            if (typeof mobileCarouselQuery.addEventListener === 'function') {
+                mobileCarouselQuery.addEventListener('change', startCaseCarousel);
+            } else if (typeof mobileCarouselQuery.addListener === 'function') {
+                mobileCarouselQuery.addListener(startCaseCarousel);
+            }
+            window.addEventListener('resize', startCaseCarousel);
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) stopCaseCarousel();
+                else startCaseCarousel();
+            });
+        }
 
         // Año automático en el footer (evita el © desactualizado)
         const anioEl = document.getElementById('anio-actual');
