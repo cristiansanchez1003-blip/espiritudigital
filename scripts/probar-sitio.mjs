@@ -7,7 +7,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { crearServidor } from './servidor-local.mjs';
+import { crearServidor } from './servidor-vercel.mjs';
 
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');

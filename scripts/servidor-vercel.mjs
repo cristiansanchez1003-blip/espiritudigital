@@ -1,7 +1,7 @@
 // Servidor local que emula cómo Vercel sirve este sitio estático según vercel.json.
 // Sin dependencias: solo módulos de Node.
 //
-// Uso:  node scripts/servidor-local.mjs [puerto]      (por defecto 4173)
+// Uso:  node scripts/servidor-vercel.mjs [puerto]      (por defecto 4173)
 //
 // Emula, en el mismo orden que el enrutador de Vercel:
 //   1. cleanUrls: /pagina.html y /carpeta/index.html redirigen (308) a /pagina y /carpeta.
@@ -188,7 +188,7 @@ export function crearServidor({ raiz = RAIZ_POR_DEFECTO, config = leerConfig(rai
   });
 }
 
-// Ejecución directa: node scripts/servidor-local.mjs [puerto]
+// Ejecución directa: node scripts/servidor-vercel.mjs [puerto]
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const puerto = Number(process.argv[2] || process.env.PORT || 4173);
   crearServidor().listen(puerto, '127.0.0.1', () => {

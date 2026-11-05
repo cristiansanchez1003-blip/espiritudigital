@@ -71,7 +71,7 @@ No hay Google Tag Manager, GA4, Google Ads, píxel de Meta ni Microsoft Clarity 
 | --- | --- |
 | `4466a03` | `.gitignore` ignora `docs/plan/`: los documentos internos del plan nunca van a un repositorio público. |
 | `72b475a` | `vercel.json` nuevo; enlaces internos, canónicas y `og:url` sin `.html`; Alma con rutas absolutas (`/alma/support.js`, `/alma/uploads/...`) y canónica `/alma`; `demo.html` apunta a `/alma`. |
-| `c7f57c3` | `scripts/servidor-local.mjs`: servidor sin dependencias que emula `vercel.json`. |
+| `c7f57c3` | Servidor sin dependencias que emula `vercel.json`; hoy se llama `scripts/servidor-vercel.mjs` para no chocar con el `scripts/servidor-local.mjs` de la rama de la landing. |
 | `a40ae2d` | Carrusel de casos: salen Vigila y Sabores del Sur (solo del HTML; videos y portadas siguen en el repo). Entra Imprenta Express con una captura real (`caso-imprentaexpress-poster.webp`, 540 × 1169) y enlace en pestaña nueva con `rel="noopener"`. Las reglas `.case-sabores` y `.case-vigila` se reemplazaron por el orden de las 4 tarjetas, y en pantallas de 1280 px o más van en una fila de 4 para no dejar una tarjeta sola. |
 | `5b699a4` | La tarjeta "E-commerce y automatización" enlaza "Ver planes de tienda online" a `/tiendas-online`. |
 | `624b22a` | Política de privacidad reescrita según el deber de información del art. 14 ter de la Ley 19.628, reformada por la Ley 21.719. |
@@ -98,11 +98,11 @@ No hay Google Tag Manager, GA4, Google Ads, píxel de Meta ni Microsoft Clarity 
 | `/alma` | 200, pero sin `support.js` | 200 y funciona |
 | `/demo.html` | 200 | 308 → `/demo`, que lleva a `/alma` |
 | `/code.html` | 200 | 308 → `/code` |
-| `/tiendas-online?h=precio&gclid=…` | 404 | 200 sin redirección, cuando exista `tiendas-online/index.html` |
+| `/tiendas-online?h=precio&gclid=…` | 404 | 200 sin redirección, cuando llegue `tiendas-online.html` de la rama de la landing |
 
 - Las redirecciones son 308, según la documentación de Vercel. En el servidor local conservan los parámetros (`gclid`, `utm_*`); la documentación de Vercel no lo dice para `redirects`, así que se confirma en la vista previa (prueba 1.10 del plan). Las URLs de los anuncios no pasan por ninguna redirección.
 - **Riesgo encontrado y corregido:** con `trailingSlash: false`, `/alma/` pasa a `/alma` y las rutas relativas de Alma se resolvían contra la raíz. Por eso ahora son absolutas.
-- **Aviso para la rama de la landing:** `tiendas-online/index.html` se servirá en `/tiendas-online`, sin barra. Sus archivos deben enlazarse con rutas absolutas (`/assets/tiendas-online/…`, `/api/lead`); una ruta relativa como `estilos.css` se pediría a `/estilos.css`.
+- **Compatibilidad con la rama de la landing:** esa rama arma `tiendas-online.html` y `tiendas-online/casos.html`, `planes.html` y `gracias.html`. Con `cleanUrls` se sirven en `/tiendas-online`, `/tiendas-online/casos`, etc., sin barra. Revisé sus páginas (solo lectura): usan rutas absolutas y enlazan a `/politica-privacidad` y `/terminos`, así que calzan con este `vercel.json`. Esa rama no trae `vercel.json` propio: depende de este.
 - Las URLs de los anuncios deben ir sin barra final: `/tiendas-online/` redirige y suma un salto.
 - No hay `404.html`: Vercel muestra su página de error por defecto.
 
@@ -129,7 +129,7 @@ Mercado Pago va sin cifra: su página de comisiones pide iniciar sesión y no se
 ## 3. Cómo se prueba
 
 ```bash
-node scripts/servidor-local.mjs      # sirve el sitio en http://127.0.0.1:4173 como lo haría Vercel
+node scripts/servidor-vercel.mjs     # sirve el sitio en http://127.0.0.1:4173 como lo haría Vercel
 node scripts/probar-sitio.mjs        # 61 pruebas; sale con código 1 si alguna falla
 ```
 
