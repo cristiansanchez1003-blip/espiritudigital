@@ -256,11 +256,10 @@
             flex: 0 0 min(86vw, 24rem);
             scroll-snap-align: center;
         }
-        .case-sabores { order: 1; }
+        .case-imprenta { order: 1; }
         .case-ao { order: 2; }
-        .case-vigila { order: 3; }
-        .case-vitrales { order: 4; }
-        .case-mistergas { order: 5; }
+        .case-vitrales { order: 3; }
+        .case-mistergas { order: 4; }
         @media (min-width: 768px) {
             .case-carousel {
                 display: grid;
@@ -374,7 +373,7 @@
                 <!-- Navbar Actions -->
                 <div class="flex items-center gap-2 sm:gap-3">
                     <a href="https://smartmenu.espiritudigital.cl" target="_blank" rel="noopener" class="px-3 py-2 sm:px-5 rounded-full border border-white/20 text-white hover:border-magenta-400 hover:bg-white/10 transition-colors text-xs sm:text-sm font-medium whitespace-nowrap">Conoce SmartMenu</a>
-                    <a href="alma/" class="px-3 py-2 sm:px-5 rounded-full border border-magenta-500 text-magenta-400 hover:bg-magenta-500/10 transition-colors text-xs sm:text-sm font-medium whitespace-nowrap">Habla con Alma</a>
+                    <a href="/alma" class="px-3 py-2 sm:px-5 rounded-full border border-magenta-500 text-magenta-400 hover:bg-magenta-500/10 transition-colors text-xs sm:text-sm font-medium whitespace-nowrap">Habla con Alma</a>
                 </div>
             </div>
         </div>
@@ -425,22 +424,20 @@
                 </p>
             </div>
 
-            <div class="case-carousel md:grid-cols-2 xl:grid-cols-3">
-                <a href="https://espiritu-digital-demo.onrender.com" target="_blank" rel="noopener" class="case-card case-sabores group glass-card rounded-3xl overflow-hidden block relative">
+            <div class="case-carousel md:grid-cols-2 xl:grid-cols-4">
+                <a href="https://imprentaexpresslaflorida.cl" target="_blank" rel="noopener" class="case-card case-imprenta group glass-card rounded-3xl overflow-hidden block relative">
                     <div class="relative h-[34rem] overflow-hidden bg-dark-900">
-                        <video class="case-video w-full h-full object-contain bg-black transition-transform duration-700 group-hover:scale-[1.015]" autoplay loop muted playsinline webkit-playsinline preload="metadata" poster="caso-saboresdelsur-poster.webp" aria-label="Video del sitio web de Supermercado Sabores del Sur">
-                            <source src="caso-saboresdelsur-video.mp4" type="video/mp4">
-                        </video>
+                        <img src="caso-imprentaexpress-poster.webp" alt="Tienda online de Imprenta Express en un celular: buscador, categorías de talonarios, tarjetas y timbres, y carro de compras" width="540" height="1169" loading="lazy" decoding="async" class="w-full h-full object-contain bg-black transition-transform duration-700 group-hover:scale-[1.015]">
                         <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent pointer-events-none"></div>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-magenta-400 text-xs font-semibold tracking-wider uppercase">Supermercado · E-commerce con IA</span>
+                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-magenta-400 text-xs font-semibold tracking-wider uppercase">Imprenta · Tienda online</span>
                     </div>
                     <div class="p-8">
                         <div class="flex items-center justify-between mb-3">
-                            <h3 class="font-heading text-2xl font-bold text-white">Supermercado Sabores del Sur</h3>
+                            <h3 class="font-heading text-2xl font-bold text-white">Imprenta Express</h3>
                             <i class="fa-solid fa-arrow-up-right-from-square text-gray-500 group-hover:text-magenta-400 transition-colors"></i>
                         </div>
-                        <p class="text-gray-400 text-sm font-light leading-relaxed mb-5">Una tienda de barrio transformada en experiencia digital: catálogo online, compra rápida y un agente de IA preparado para responder cuando el equipo está atendiendo el negocio real.</p>
-                        <div class="flex items-center gap-2 text-magenta-400 text-sm font-medium"><i class="fa-solid fa-arrow-trend-up"></i> Venta digital con atención inteligente 24/7</div>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed mb-5">Imprenta con 10 categorías de productos, de tarjetas y pendones a timbres y talonarios. Carro de compras, pago con Flow y Mercado Pago, cotizador y guía para enviar archivos.</p>
+                        <div class="flex items-center gap-2 text-magenta-400 text-sm font-medium"><i class="fa-solid fa-cart-shopping"></i> Tienda real: entra y agrega algo al carro</div>
                     </div>
                 </a>
 
@@ -498,24 +495,6 @@
                     </div>
                 </a>
 
-                <article class="case-card case-vigila group glass-card rounded-3xl overflow-hidden block relative">
-                    <div class="relative h-[34rem] overflow-hidden bg-dark-900">
-                        <video class="case-video w-full h-full object-contain bg-black transition-transform duration-700 group-hover:scale-[1.015]" autoplay loop muted playsinline webkit-playsinline preload="metadata" poster="caso-vigila-poster.webp" aria-label="Video del sitio web VigilaWeb">
-                            <source src="caso-vigila-video.mp4" type="video/mp4">
-                        </video>
-                        <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent pointer-events-none"></div>
-                        <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-magenta-400 text-xs font-semibold tracking-wider uppercase">Televigilancia · E-commerce</span>
-                    </div>
-                    <div class="p-8">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="font-heading text-2xl font-bold text-white">VigilaWeb</h3>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-gray-500 group-hover:text-magenta-400 transition-colors"></i>
-                        </div>
-                        <p class="text-gray-400 text-sm font-light leading-relaxed mb-5">Una empresa dedicada a distribuir cámaras de televigilancia llevó su oferta a una web clara, directa y preparada para vender: beneficios visibles, compra simple y confianza desde el primer segundo.</p>
-                        <div class="flex items-center gap-2 text-magenta-400 text-sm font-medium"><i class="fa-solid fa-arrow-trend-up"></i> Producto claro, compra más rápida y mayor confianza</div>
-                    </div>
-                </article>
-
             </div>
         </div>
     </section>
@@ -566,6 +545,9 @@
                     <p class="text-gray-400 text-base font-light leading-relaxed">
                         Implementamos tiendas online, catálogos digitales, formularios inteligentes y flujos automatizados para que tu negocio atienda, venda y haga seguimiento con menos fricción.
                     </p>
+                    <a href="/tiendas-online" class="mt-6 inline-flex items-center gap-2 text-magenta-400 hover:text-white font-medium transition-colors">
+                        Ver planes de tienda online <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -661,8 +643,8 @@
             <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 font-light">
                 <p>&copy; <span id="anio-actual">2026</span> Espíritu Digital. Todos los derechos reservados.</p>
                 <div class="flex gap-6">
-                    <a href="politica-privacidad.html" class="hover:text-gray-300 transition-colors">Políticas de Privacidad</a>
-                    <a href="terminos.html" class="hover:text-gray-300 transition-colors">Términos Legales</a>
+                    <a href="/politica-privacidad" class="hover:text-gray-300 transition-colors">Políticas de Privacidad</a>
+                    <a href="/terminos" class="hover:text-gray-300 transition-colors">Términos Legales</a>
                 </div>
             </div>
         </div>
