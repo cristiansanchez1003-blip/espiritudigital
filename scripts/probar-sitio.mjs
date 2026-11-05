@@ -128,6 +128,20 @@ try {
     }
   }
 
+  // Las demás páginas existentes siguen funcionando
+  {
+    const terminos = await abrir(browser, BASE, '/terminos.html');
+    revisar('/terminos.html termina en /terminos con 200 y sin errores de consola',
+      new URL(terminos.page.url()).pathname === '/terminos' && terminos.respuesta.status() === 200 && terminos.errores.length === 0,
+      terminos.page.url() + ' ' + terminos.errores.join(' | '));
+    await terminos.page.close();
+    const demo = await abrir(browser, BASE, '/demo.html');
+    revisar('/demo.html sigue llevando a Alma', new URL(demo.page.url()).pathname === '/alma', demo.page.url());
+    await demo.page.close();
+    const code = await fetch(BASE + '/code', { redirect: 'manual' });
+    revisar('/code sigue respondiendo 200', code.status === 200, String(code.status));
+  }
+
   // 5. Alma sigue funcionando sin barra final (rutas absolutas)
   {
     const { page, fallidos } = await abrir(browser, BASE, '/alma');

@@ -130,8 +130,10 @@ Mercado Pago va sin cifra: su página de comisiones pide iniciar sesión y no se
 
 ```bash
 node scripts/servidor-local.mjs      # sirve el sitio en http://127.0.0.1:4173 como lo haría Vercel
-node scripts/probar-sitio.mjs        # 58 pruebas; sale con código 1 si alguna falla
+node scripts/probar-sitio.mjs        # 61 pruebas; sale con código 1 si alguna falla
 ```
+
+Requiere Node 18 o más y Playwright con Chromium (`npm install playwright` y `npx playwright install chromium` en una carpeta fuera del repositorio, o global). El repositorio sigue sin `package.json`. El servidor local no emula funciones `/api` ni encabezados.
 
 `probar-sitio.mjs` levanta el servidor local y usa Playwright con Chromium. Revisa:
 
@@ -140,13 +142,14 @@ node scripts/probar-sitio.mjs        # 58 pruebas; sale con código 1 si alguna 
 - La portada enlaza a `/tiendas-online`.
 - `/privacidad` redirige con 308 a `/politica-privacidad`, también en el navegador.
 - Las URLs antiguas con `.html` y `/alma/` redirigen, y los parámetros se conservan.
+- Los términos cargan sin errores en `/terminos`, `/demo.html` sigue llevando a Alma y `/code` responde.
 - Alma carga completa en `/alma`.
 - La política cubre los puntos obligatorios, no tiene `TODO` y no se desborda a 360 px.
 - El artículo a 360 px no se desborda, tiene entre 1.000 y 1.400 palabras, su JSON-LD es válido y coincide con el H1, trae los precios con y sin IVA, el mensaje de WhatsApp exacto y el enlace a `/tiendas-online`.
 - El sitemap es XML válido, trae las URLs nuevas y ninguna con `.html`, barra final o gracias.
 - Ningún enlace interno ni canónica usa `.html`, y ninguna página publicable contiene `TODO-CRISTIAN`.
 
-Resultado al cierre: **58 de 58**. Para comprobar que las pruebas detectan fallas, se rompieron a propósito en una copia Alma, el JSON-LD, el sitemap y el carrusel: las 5 pruebas afectadas fallaron.
+Resultado al cierre: **61 de 61**. Para comprobar que las pruebas detectan fallas, se rompieron a propósito en una copia Alma, el JSON-LD, el sitemap y el carrusel: las 5 pruebas afectadas fallaron.
 
 ## 4. Puntos de la Fase 0 que siguen abiertos
 
