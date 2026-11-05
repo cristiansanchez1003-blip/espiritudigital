@@ -1,0 +1,61 @@
+{
+  "_nota": "Datos de la landing /tiendas-online. Los textos de la página salen de docs 03 (literal) y se completan con estos valores. Montos netos en CLP, sin IVA; el total con IVA se calcula al generar.",
+  "sitio": "https://espiritudigital.cl",
+  "ruta_landing": "/tiendas-online",
+  "marca": "Espíritu Digital",
+  "razon_social": "ESPIRITU DIGITAL SPA",
+  "nombre_spa": "Espíritu Digital SpA",
+  "rut": "78.484.436-6",
+  "localidad": "San José de Maipo",
+  "region": "Región Metropolitana",
+  "whatsapp": "56928117627",
+  "telefono_visible": "+56 9 2811 7627",
+  "correo": "espiritudigital.chile@gmail.com",
+  "ruta_privacidad": "/politica-privacidad",
+  "ruta_terminos": "/terminos",
+  "iva": 0.19,
+  "precio_esencial": 350000,
+  "precio_esencial_cuota": 175000,
+  "precio_pro": 480000,
+  "precio_web": 150000,
+  "mantencion_mes": 19990,
+  "mantencion_web_mes": 14990,
+  "mantencion_meses_incluidos": 1,
+  "horario_respuesta": "de lunes a sábado de 8:00 a 20:00 y domingo de 8:00 a 14:00",
+  "horario_corto": "Lun a sáb 8:00–20:00 · dom 8:00–14:00",
+  "fecha_revision": "5 nov 2026",
+  "plazo_avance": "2 semanas desde que llega el material completo",
+  "web_incluye": [
+    "Una página con hasta 6 secciones (inicio, servicios, nosotros o proceso, trabajos o testimonios, preguntas frecuentes y contacto)",
+    "adaptada a celular",
+    "botón de WhatsApp, botón de llamada y formulario de contacto",
+    "enlaces a tus redes",
+    "SEO básico (título, descripción, sitemap y datos estructurados de negocio)",
+    "política de privacidad",
+    "dominio .cl a tu nombre, incluido el primer año",
+    "textos",
+    "fotos"
+  ],
+  "boleta_activa": false,
+  "cierre_tramo": 1,
+  "gtm_id": "",
+  "fundador": {
+    "foto": "",
+    "foto_alt": "Cristian Sánchez, fundador de Espíritu Digital",
+    "video": "",
+    "video_portada": "",
+    "dato_ao_con_permiso": false,
+    "certificado_google_ads": false
+  },
+  "imagenes": {
+    "portada": {
+      "archivo": "",
+      "alt": "Tienda online de Imprenta Express vista en celular y computador",
+      "caso": "imprenta-express"
+    },
+    "og": {
+      "archivo": "",
+      "caso": "imprenta-express"
+    }
+  }
+}
