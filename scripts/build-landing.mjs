@@ -6,6 +6,8 @@
 //   node scripts/build-landing.mjs --produccion  falla si queda algo pendiente
 //   node scripts/build-landing.mjs --comprobar   no escribe; falla si los HTML del
 //                                                repositorio no coinciden con la salida
+//   --datos <carpeta>   lee los JSON de otra carpeta (pruebas); por defecto data/
+//   --salida <carpeta>  escribe en otra carpeta (pruebas); por defecto la raíz
 //
 // Lee data/*.json y scripts/plantillas/, y escribe tiendas-online.html y
 // tiendas-online/{casos,planes,gracias}.html (Vercel los sirve con cleanUrls).
@@ -18,9 +20,13 @@ import { fileURLToPath } from 'node:url';
 import { paginaLanding, paginaCasos, paginaPlanes, paginaGracias } from './plantillas/paginas.mjs';
 
 const RAIZ = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const args = new Set(process.argv.slice(2));
+const argv = process.argv.slice(2);
+const args = new Set(argv);
+const opcion = (nombre) => (argv.includes(nombre) ? resolve(argv[argv.indexOf(nombre) + 1]) : null);
 const PRODUCCION = args.has('--produccion');
 const COMPROBAR = args.has('--comprobar');
+const DATOS = opcion('--datos') || join(RAIZ, 'data');
+const SALIDA = opcion('--salida') || RAIZ;
 const MARCA_PENDIENTE = 'TODO-CRISTIAN';
 
 const errores = [];
@@ -34,7 +40,7 @@ function pendiente(texto) {
 
 function leerJson(ruta) {
   try {
-    return JSON.parse(readFileSync(join(RAIZ, ruta), 'utf8'));
+    return JSON.parse(readFileSync(join(DATOS, ruta.replace(/^data\//, '')), 'utf8'));
   } catch (e) {
     errores.push(`No se pudo leer ${ruta}: ${e.message}`);
     return null;
@@ -179,7 +185,7 @@ function filtrarCasos(lista, tipo) {
       else pendientes.push(`${MARCA_PENDIENTE}: permiso por escrito de ${caso.nombre} (data/casos.json → permiso: true)`);
     }
     if (!PRODUCCION && caso.requiere_arreglo === true) pendientes.push(`${MARCA_PENDIENTE}: confirmar el arreglo de ${caso.nombre} (en producción queda oculto)`);
-    if (caso.condicion) pendientes.push(`${MARCA_PENDIENTE}: ${caso.nombre}, condición: ${caso.condicion}`);
+    if (caso.condicion) (PRODUCCION ? avisos : pendientes).push(`${PRODUCCION ? '' : MARCA_PENDIENTE + ': '}${caso.nombre}, condición: ${caso.condicion} (confirmar antes de publicar)`);
     const copia = { ...caso };
     copia.img = caso.imagen ? cargarImagen(caso.imagen, `imagen de ${caso.nombre}`) : null;
     copia.imgCel = caso.imagen_celular ? cargarImagen(caso.imagen_celular, `captura en celular de ${caso.nombre}`) : null;
@@ -287,7 +293,7 @@ for (const [ruta, html] of paginas) {
 if (errores.length) terminarConError();
 
 if (COMPROBAR) {
-  const distintos = paginas.filter(([ruta, html]) => !existsSync(join(RAIZ, ruta)) || readFileSync(join(RAIZ, ruta), 'utf8') !== html);
+  const distintos = paginas.filter(([ruta, html]) => !existsSync(join(SALIDA, ruta)) || readFileSync(join(SALIDA, ruta), 'utf8') !== html);
   if (distintos.length) {
     console.error(`Desactualizados: ${distintos.map(([r]) => r).join(', ')}. Corre node scripts/build-landing.mjs`);
     process.exit(1);
@@ -297,8 +303,8 @@ if (COMPROBAR) {
 }
 
 for (const [ruta, html] of paginas) {
-  mkdirSync(dirname(join(RAIZ, ruta)), { recursive: true });
-  writeFileSync(join(RAIZ, ruta), html);
+  mkdirSync(dirname(join(SALIDA, ruta)), { recursive: true });
+  writeFileSync(join(SALIDA, ruta), html);
 }
 
 console.log(`Modo: ${PRODUCCION ? 'producción' : 'vista previa'}`);

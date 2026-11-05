@@ -157,6 +157,7 @@ ${indexar ? `<meta name="robots" content="index, follow, max-image-preview:large
 ${indexar ? `<meta property="og:url" content="${esc(canonica)}">\n` : ''}<meta property="og:title" content="${esc(titulo)}">
 <meta property="og:description" content="${esc(descripcion)}">
 ${og && ogImagen ? `<meta property="og:image" content="${esc(og.url)}">\n<meta property="og:image:width" content="${og.ancho}">\n<meta property="og:image:height" content="${og.alto}">\n<meta name="twitter:card" content="summary_large_image">\n` : ''}<link rel="icon" href="/assets/tiendas-online/img/logo-64.webp" type="image/webp">
+<link rel="preload" href="/assets/tiendas-online/fuentes/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/tiendas-online/fuentes/poppins-600.woff2" as="font" type="font/woff2" crossorigin>
 <style>${c.css}</style>
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, '\\u003c')}</script>\n` : ''}${gtm}<script src="${esc(c.js)}" defer></script>`;
@@ -169,7 +170,7 @@ function inicioCuerpo(c) {
 }
 
 function cabecera(c, { enlace }) {
-  return `<header class="cab"><div class="contenedor"><a class="logo" href="${esc(enlace)}"><img src="/assets/tiendas-online/img/logo-96.webp" width="36" height="36" alt=""><span>${esc(c.cfg.marca)}</span></a></div></header>`;
+  return `<header class="cab"><div class="contenedor"><a class="logo" href="${esc(enlace)}"><img src="/assets/tiendas-online/img/logo-64.webp" srcset="/assets/tiendas-online/img/logo-64.webp 64w, /assets/tiendas-online/img/logo-96.webp 96w" sizes="36px" width="36" height="36" alt=""><span>${esc(c.cfg.marca)}</span></a></div></header>`;
 }
 
 function pie(c) {

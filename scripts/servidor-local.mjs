@@ -144,12 +144,12 @@ function crearApiSimulada() {
 }
 
 // Adaptador para los handlers reales de api/ (firma Node de Vercel o Web estándar).
-function crearApiReal() {
+function crearApiReal(raizApi = RAIZ) {
   const cache = new Map();
   return async function api(req, res, ruta, url) {
     const nombre = ruta.slice('/api/'.length).replace(/\/+$/, '');
     if (!/^[a-z0-9_-]+$/i.test(nombre)) return enviar(res, 404, { ok: false });
-    const archivo = ['.js', '.mjs', '.cjs'].map((e) => join(RAIZ, 'api', nombre + e)).find((a) => existsSync(a));
+    const archivo = ['.js', '.mjs', '.cjs'].map((e) => join(raizApi, 'api', nombre + e)).find((a) => existsSync(a));
     if (!archivo) return enviar(res, 404, { ok: false, error: 'no_existe' });
     if (!cache.has(archivo)) cache.set(archivo, await import(pathToFileURL(archivo).href));
     const modulo = cache.get(archivo);
@@ -214,9 +214,10 @@ async function resolver(ruta) {
   return (await archivo(base + '.html')) || (await archivo(base)) || (await archivo(join(base, 'index.html')));
 }
 
-export function iniciarServidor({ puerto = 4173, api = 'auto', silencioso = false } = {}) {
-  const modo = api === 'auto' ? (existsSync(join(RAIZ, 'api')) ? 'real' : 'ninguna') : api;
-  const manejarApi = modo === 'simulada' ? crearApiSimulada() : modo === 'real' ? crearApiReal() : null;
+// apiRaiz: carpeta que contiene api/ (por defecto la raíz del repositorio).
+export function iniciarServidor({ puerto = 4173, api = 'auto', silencioso = false, apiRaiz = RAIZ } = {}) {
+  const modo = api === 'auto' ? (existsSync(join(apiRaiz, 'api')) ? 'real' : 'ninguna') : api;
+  const manejarApi = modo === 'simulada' ? crearApiSimulada() : modo === 'real' ? crearApiReal(apiRaiz) : null;
 
   const servidor = createServer(async (req, res) => {
     const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);

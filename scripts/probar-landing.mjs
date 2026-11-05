@@ -11,7 +11,7 @@
 // así la prueba detecta cualquier diferencia entre la página y el documento.
 
 import { createRequire } from 'node:module';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { gzipSync } from 'node:zlib';
@@ -144,7 +144,7 @@ function pruebasEstaticas() {
     const imgs = html.match(/<img\b[^>]*>/g) || [];
     registrar(`${ruta}: cada <img> con ancho, alto y alt`, imgs.every((i) => /\swidth="\d+"/.test(i) && /\sheight="\d+"/.test(i) && /\salt="/.test(i)), `${imgs.length} imágenes`);
     const prioridad = imgs.filter((i) => i.includes('fetchpriority="high"'));
-    const resto = imgs.filter((i) => !i.includes('fetchpriority="high"') && !i.includes('logo-96'));
+    const resto = imgs.filter((i) => !i.includes('fetchpriority="high"') && !i.includes('logo-64'));
     registrar(`${ruta}: imágenes bajo el pliegue con loading="lazy"`, resto.every((i) => i.includes('loading="lazy"')), `${prioridad.length} con fetchpriority`);
     registrar(`${ruta}: consentimiento sin marcar y sin ventanas emergentes`, !/type="checkbox"[^>]*\schecked/.test(html) && !/<dialog|window\.open|alert\(/.test(html));
     const texto = textoPlano(html);
@@ -190,7 +190,7 @@ function pruebasEstaticas() {
   mediciones.jsKbGzip = Number(kb.toFixed(2));
   registrar('JavaScript propio ≤ 15 KB comprimido', kb <= 15, `${kb.toFixed(1)} KB gzip (${(js.length / 1024).toFixed(1)} KB sin comprimir)`);
   const fuentes = new Set(landing.match(/poppins-\d+\.woff2/g));
-  registrar('Fuentes: Poppins autoalojada, 2 pesos, swap y precarga', fuentes.size === 2 && /font-display:swap/.test(landing) && /rel="preload" href="\/assets\/tiendas-online\/fuentes\/poppins-600\.woff2" as="font"/.test(landing));
+  registrar('Fuentes: Poppins autoalojada, 2 pesos, swap y precarga', fuentes.size === 2 && /font-display:swap/.test(landing) && /rel="preload" href="\/assets\/tiendas-online\/fuentes\/poppins-400\.woff2" as="font"/.test(landing) && /rel="preload" href="\/assets\/tiendas-online\/fuentes\/poppins-600\.woff2" as="font"/.test(landing));
   registrar('Variantes: script en <head> antes del CSS', landing.indexOf('data-h') < landing.indexOf('<style>') && landing.indexOf('setAttribute("data-h"') < landing.indexOf('</head>'));
 
   // Contraste AA, calculado sobre los colores de la marca.
@@ -225,6 +225,46 @@ function pruebaProduccion() {
   registrar('--produccion no escribe archivos al fallar', huella() === antes);
   const comprobar = spawnSync(process.execPath, [join(RAIZ, 'scripts/build-landing.mjs'), '--comprobar'], { encoding: 'utf8' });
   registrar('Los HTML del repositorio coinciden con la vista previa', comprobar.status === 0, (comprobar.stdout + comprobar.stderr).trim());
+}
+
+// ------------------------------------- 2b. producción con todo resuelto ---
+// Datos de prueba en una carpeta temporal (nunca se escriben en data/ ni se publican):
+// comprueba que --produccion pasa cuando no falta nada y que las secciones condicionales
+// (reseñas, estrellas, logos, testimonio, boleta, foto, video y GTM) se generan bien.
+function pruebaProduccionCompleta() {
+  console.log('\n2b. Producción con todo resuelto (datos de prueba temporales)');
+  const datos = mkdtempSync(join(tmpdir(), 'landing-datos-'));
+  const salida = mkdtempSync(join(tmpdir(), 'landing-salida-'));
+  try {
+    const dato = (n) => JSON.parse(leer('data/' + n));
+    const cfg = dato('config.json');
+    cfg.gtm_id = 'GTM-PRUEBA1';
+    cfg.boleta_activa = true;
+    cfg.fundador = { ...cfg.fundador, foto: 'assets/tiendas-online/img/caso-mielu-celular-390.webp', video: 'caso-mistergas-video.mp4', video_portada: 'caso-mistergas-poster.webp', dato_ao_con_permiso: true };
+    const casos = dato('casos.json');
+    for (const c of [...casos.tiendas, ...casos.webs]) c.permiso = true;
+    const resenas = { ficha_url: 'https://example.com/ficha', n: 5, promedio: 4.9, resenas: [1, 2, 3].map((i) => ({ texto: `Reseña de prueba ${i}`, nombre: `Cliente ${i}`, fecha: `2026-11-0${i}` })) };
+    const logos = [{ nombre: 'Logo de prueba', archivo: 'assets/tiendas-online/img/logo-64.webp', permiso: true }];
+    const testimonios = [{ nombre: 'Persona de prueba', negocio: 'Negocio de prueba', video: 'caso-mistergas-video.mp4', portada: 'caso-mistergas-poster.webp', transcripcion: 'Transcripción de prueba.', permiso: true }];
+    for (const [n, v] of Object.entries({ 'config.json': cfg, 'casos.json': casos, 'resenas.json': resenas, 'logos.json': logos, 'testimonios.json': testimonios })) writeFileSync(join(datos, n), JSON.stringify(v));
+    const r = spawnSync(process.execPath, [join(RAIZ, 'scripts/build-landing.mjs'), '--produccion', '--datos', datos, '--salida', salida], { encoding: 'utf8' });
+    registrar('--produccion pasa cuando no falta nada', r.status === 0, r.status === 0 ? '' : (r.stdout + r.stderr).slice(0, 400));
+    if (r.status !== 0) return;
+    const html = readFileSync(join(salida, 'tiendas-online.html'), 'utf8');
+    const texto = textoPlano(html);
+    const ld = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+    const faq = ld['@graph'].find((n) => n['@type'] === 'FAQPage');
+    registrar('Con gtm_id: snippet de GTM y noscript', html.includes("'dataLayer','GTM-PRUEBA1'") && html.includes('ns.html?id=GTM-PRUEBA1'));
+    registrar('requiere_arreglo: true oculta el caso en producción', !texto.includes('Vitrales del Cajón · Cajón del Maipo'));
+    registrar('3 reseñas o más: bloque "Lo que dicen nuestros clientes"', texto.includes('Lo que dicen nuestros clientes') && texto.includes('Reseña de prueba 3') && texto.includes('Ver todas en Google'));
+    registrar('5 reseñas o más: estrellas en la franja', texto.includes('★ 4,9 en Google · 5 reseñas'));
+    registrar('boleta_activa: true agrega la pregunta, también en el JSON-LD', texto.includes('¿Emiten boleta o factura?') && faq.mainEntity.length === 13);
+    registrar('Logos, testimonio, foto, video y dato de AO aparecen con datos', /<ul class="logos"/.test(html) && texto.includes('Transcripción de prueba.') && html.includes('caso-mielu-celular-390.webp" width') && html.includes('data-video="/caso-mistergas-video.mp4"') && texto.includes('También gestiono Google Ads para negocios como AO Construcciones.'));
+    registrar('La salida de producción no tiene TODO-CRISTIAN', ['tiendas-online.html', 'tiendas-online/casos.html', 'tiendas-online/planes.html', 'tiendas-online/gracias.html'].every((p) => !readFileSync(join(salida, p), 'utf8').includes('TODO-CRISTIAN')));
+  } finally {
+    rmSync(datos, { recursive: true, force: true });
+    rmSync(salida, { recursive: true, force: true });
+  }
 }
 
 // ---------------------------------------------------------- navegador ---
@@ -642,19 +682,36 @@ async function pruebasRendimiento(navegador, base) {
   }
 }
 
-function pruebasLighthouse(base) {
+// El servidor corre en este mismo proceso: Lighthouse se lanza con spawn asíncrono
+// para no bloquear el bucle de eventos que atiende sus peticiones.
+function ejecutar(comando, argumentos, opciones) {
+  return new Promise((ok) => {
+    const hijo = spawn(comando, argumentos, opciones);
+    let salida = '';
+    hijo.stdout.on('data', (d) => (salida += d));
+    hijo.stderr.on('data', (d) => (salida += d));
+    const reloj = setTimeout(() => hijo.kill('SIGKILL'), opciones.timeout || 240000);
+    hijo.on('close', (codigo) => {
+      clearTimeout(reloj);
+      ok({ status: codigo, salida });
+    });
+  });
+}
+
+async function pruebasLighthouse(base) {
   console.log('\n9. Lighthouse móvil');
   const rutas = VARIANTES.map((h) => `/tiendas-online?h=${h}`).concat(['/tiendas-online/casos', '/tiendas-online/planes']);
   const carpeta = mkdtempSync(join(tmpdir(), 'lh-'));
   const cli = process.env.LIGHTHOUSE_CLI;
+  const env = { ...process.env, CHROME_PATH: chromium.executablePath() };
   for (const ruta of rutas) {
     const salida = join(carpeta, 'informe.json');
     const banderas = [base + ruta, '--quiet', '--output=json', `--output-path=${salida}`, '--only-categories=performance,accessibility,seo,best-practices', '--chrome-flags=--headless=new --no-sandbox'];
     const r = cli
-      ? spawnSync(process.execPath, [cli, ...banderas], { encoding: 'utf8', env: { ...process.env, CHROME_PATH: chromium.executablePath() }, timeout: 180000 })
-      : spawnSync('npx', ['--yes', 'lighthouse@13.6.0', ...banderas], { encoding: 'utf8', env: { ...process.env, CHROME_PATH: chromium.executablePath() }, timeout: 300000 });
+      ? await ejecutar(process.execPath, [cli, ...banderas], { env, timeout: 240000 })
+      : await ejecutar('npx', ['--yes', 'lighthouse@13.6.0', ...banderas], { env, timeout: 400000 });
     if (r.status !== 0) {
-      registrar(`Lighthouse ${ruta}`, false, (r.stderr || r.stdout || '').slice(-300));
+      registrar(`Lighthouse ${ruta}`, false, r.salida.slice(-300));
       continue;
     }
     const informe = JSON.parse(readFileSync(salida, 'utf8'));
@@ -681,6 +738,7 @@ if (!SIN_BUILD) {
 }
 pruebasEstaticas();
 pruebaProduccion();
+pruebaProduccionCompleta();
 const { servidor, url: base } = await iniciarServidor({ puerto: 0, api: 'simulada', silencioso: true });
 const navegador = await chromium.launch();
 try {
@@ -695,7 +753,7 @@ try {
 } finally {
   await navegador.close();
 }
-if (LIGHTHOUSE) pruebasLighthouse(base);
+if (LIGHTHOUSE) await pruebasLighthouse(base);
 servidor.close();
 
 const fallas = resultados.filter((r) => !r.ok);

@@ -6,8 +6,10 @@
 
 @font-face{font-family:"Poppins";font-style:normal;font-weight:400;font-display:swap;src:url(/assets/tiendas-online/fuentes/poppins-400.woff2) format("woff2")}
 @font-face{font-family:"Poppins";font-style:normal;font-weight:600;font-display:swap;src:url(/assets/tiendas-online/fuentes/poppins-600.woff2) format("woff2")}
-/* Respaldo con las métricas de Poppins: evita saltos cuando llega la fuente. */
-@font-face{font-family:"Poppins Respaldo";src:local("Arial"),local("ArialMT"),local("Liberation Sans"),local("Helvetica"),local("Roboto");ascent-override:92.33%;descent-override:30.78%;line-gap-override:8.79%;size-adjust:113.73%}
+/* Respaldo con las métricas de Poppins (anchos medidos en Chromium contra Arial y su
+   equivalente Liberation Sans): evita saltos cuando llega la fuente. */
+@font-face{font-family:"Poppins Respaldo";font-weight:400;src:local("Arial"),local("ArialMT"),local("Liberation Sans"),local("LiberationSans"),local("Helvetica");size-adjust:111.23%;ascent-override:94.4%;descent-override:31.47%;line-gap-override:8.99%}
+@font-face{font-family:"Poppins Respaldo";font-weight:600;src:local("Arial Bold"),local("Arial-BoldMT"),local("Liberation Sans Bold"),local("LiberationSans-Bold"),local("Helvetica Bold");size-adjust:105.93%;ascent-override:99.12%;descent-override:33.04%;line-gap-override:9.44%}
 
 :root{
   --magenta:#E6007E;
