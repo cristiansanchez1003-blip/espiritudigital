@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es-CL" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Política de Privacidad | Espíritu Digital</title>
-    <meta name="description" content="Política de privacidad de Espíritu Digital, agencia de desarrollo web y agentes de IA en Santiago, Chile. Cómo recopilamos, usamos y protegemos tus datos personales conforme a la Ley 19.628.">
+    <meta name="description" content="Cómo ESPIRITU DIGITAL SPA trata tus datos personales: qué datos pedimos, para qué, quién más los trata, cuánto tiempo los guardamos y cómo ejercer tus derechos según la Ley 19.628 y la Ley 21.719.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://espiritudigital.cl/politica-privacidad">
 
@@ -12,10 +12,10 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://espiritudigital.cl/politica-privacidad">
     <meta property="og:title" content="Política de Privacidad | Espíritu Digital">
-    <meta property="og:description" content="Cómo Espíritu Digital recopila, usa y protege tus datos personales conforme a la Ley 19.628 de Chile.">
+    <meta property="og:description" content="Qué datos pedimos, para qué los usamos, cuánto tiempo los guardamos y cómo ejercer tus derechos.">
     <meta property="og:image" content="https://espiritudigital.cl/og-image.png">
 
-    <link rel="icon" href="logotipo.jpeg" type="image/jpeg">
+    <link rel="icon" href="/logotipo.webp" type="image/webp">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -43,10 +43,16 @@
             -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
         .legal-content h2 { font-family: 'Montserrat', sans-serif; }
+        .legal-content h3 { font-family: 'Montserrat', sans-serif; }
         .legal-content p, .legal-content li { line-height: 1.8; }
-        .legal-content a { color: #f056ff; }
+        .legal-content a { color: #f056ff; overflow-wrap: anywhere; }
         .legal-content a:hover { text-decoration: underline; }
+        .legal-content strong { color: #ffffff; font-weight: 500; }
     </style>
 </head>
 <body class="antialiased selection:bg-magenta-500 selection:text-white">
@@ -56,11 +62,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-12">
                 <a href="/" class="flex items-center gap-3">
-                    <img src="logotipo.jpeg" alt="Logo de Espíritu Digital" class="h-10 w-10 rounded-full object-cover shadow-[0_0_15px_rgba(217,0,255,0.4)]">
+                    <img src="/logotipo.webp" alt="Logo de Espíritu Digital" width="40" height="40" class="h-10 w-10 rounded-full object-cover shadow-[0_0_15px_rgba(217,0,255,0.4)]">
                     <span class="font-heading font-bold text-xl tracking-wide text-white">Espíritu Digital</span>
                 </a>
                 <a href="/" class="text-gray-300 hover:text-magenta-400 transition-colors text-sm font-medium flex items-center gap-2">
-                    <i class="fa-solid fa-arrow-left"></i> Volver al inicio
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Volver al inicio
                 </a>
             </div>
         </div>
@@ -68,87 +74,152 @@
 
     <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-36 pb-24">
         <div class="inline-block px-4 py-1.5 rounded-full bg-magenta-500/10 border border-magenta-500/30 text-magenta-400 font-medium text-sm mb-6">
-            <i class="fa-solid fa-shield-halved mr-2"></i> Privacidad
+            <i class="fa-solid fa-shield-halved mr-2" aria-hidden="true"></i> Privacidad
         </div>
         <h1 class="font-heading text-4xl md:text-5xl font-bold mb-4">Política de Privacidad</h1>
-        <p class="text-gray-500 text-sm mb-12">Última actualización: 29 de junio de 2026</p>
+        <p class="text-gray-400 text-sm mb-12">Versión 2 · Actualizada el 5 de noviembre de 2026</p>
 
         <div class="legal-content space-y-10 text-gray-300 font-light text-base">
 
-            <section>
-                <p>En <strong>Espíritu Digital</strong> respetamos tu privacidad y nos comprometemos a proteger los datos personales que compartes con nosotros. Esta política explica qué información recopilamos, con qué fines la usamos y qué derechos tienes sobre ella, conforme a la <strong>Ley N° 19.628 sobre Protección de la Vida Privada</strong> de Chile y su normativa complementaria.</p>
-            </section>
-
-            <section>
-                <h2 class="text-2xl font-semibold text-white mb-4">1. Responsable del tratamiento</h2>
-                <p>El responsable del tratamiento de tus datos es Espíritu Digital, agencia de desarrollo web y soluciones de inteligencia artificial con sede en Santiago, Chile. Para cualquier consulta relacionada con tus datos personales puedes escribirnos a <a href="mailto:hello@espiritudigital.cl">hello@espiritudigital.cl</a>.</p>
-            </section>
-
-            <section>
-                <h2 class="text-2xl font-semibold text-white mb-4">2. Qué datos recopilamos</h2>
-                <p>Recopilamos únicamente los datos que nos entregas de forma voluntaria o que son necesarios para el funcionamiento del sitio:</p>
-                <ul class="list-disc pl-6 mt-4 space-y-2">
-                    <li><strong>Datos de contacto:</strong> nombre, correo electrónico y número de teléfono cuando nos escribes por WhatsApp, correo o nuestros formularios.</li>
-                    <li><strong>Contenido de tus mensajes:</strong> la información que nos compartes al describir tu proyecto o consulta.</li>
-                    <li><strong>Datos de navegación:</strong> información técnica como tipo de dispositivo, navegador y páginas visitadas, recopilada mediante herramientas de analítica.</li>
-                </ul>
-            </section>
-
-            <section>
-                <h2 class="text-2xl font-semibold text-white mb-4">3. Con qué fines usamos tus datos</h2>
+            <section class="glass-card rounded-2xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-3">En corto</h2>
                 <ul class="list-disc pl-6 space-y-2">
-                    <li>Responder tus consultas y entregarte presupuestos o propuestas de servicio.</li>
-                    <li>Prestar y gestionar los servicios que contrates con nosotros.</li>
-                    <li>Mejorar nuestro sitio web y la experiencia de los visitantes.</li>
-                    <li>Enviarte comunicaciones relacionadas con tu solicitud (no enviamos publicidad sin tu consentimiento).</li>
+                    <li>Usamos tus datos para responderte, cotizar y, si nos contratas, prestar el servicio.</li>
+                    <li>No vendemos tus datos ni te enviamos publicidad sin tu permiso.</li>
+                    <li>Guardamos las consultas que no terminan en contrato por 24 meses como máximo.</li>
+                    <li>Puedes pedir ver, corregir, borrar o llevarte tus datos escribiendo a <a href="mailto:espiritudigital.chile@gmail.com">espiritudigital.chile@gmail.com</a>.</li>
                 </ul>
             </section>
 
             <section>
-                <h2 class="text-2xl font-semibold text-white mb-4">4. Base legal y consentimiento</h2>
-                <p>Tratamos tus datos sobre la base de tu consentimiento, otorgado al contactarnos o utilizar nuestros servicios, y conforme a las finalidades aquí descritas. Puedes revocar ese consentimiento en cualquier momento escribiéndonos a <a href="mailto:hello@espiritudigital.cl">hello@espiritudigital.cl</a>.</p>
+                <p>Esta política explica cómo <strong>ESPIRITU DIGITAL SPA</strong> trata los datos personales de quienes visitan espiritudigital.cl, nos escriben o completan un formulario, y de nuestros clientes. Se ajusta a la <strong>Ley N° 19.628 sobre protección de la vida privada</strong> y a las modificaciones que le introdujo la <strong>Ley N° 21.719</strong>.</p>
             </section>
 
             <section>
-                <h2 class="text-2xl font-semibold text-white mb-4">5. Con quién compartimos tus datos</h2>
-                <p>No vendemos ni cedemos tus datos personales a terceros. Podemos utilizar proveedores tecnológicos de confianza (por ejemplo, servicios de hosting, correo o analítica) que tratan datos por cuenta nuestra y bajo obligaciones de confidencialidad. Solo entregaremos información a autoridades cuando una norma legal así lo exija.</p>
+                <h2 class="text-2xl font-semibold text-white mb-4">1. Quién es responsable de tus datos</h2>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>Responsable:</strong> ESPIRITU DIGITAL SPA, RUT 78.484.436-6.</li>
+                    <li><strong>Representante legal:</strong> Cristian Sánchez.</li>
+                    <li><strong>Domicilio:</strong> El Algarrobo 10932, PC 11 ST 4, El Manzano, San José de Maipo, Región Metropolitana, Chile.</li>
+                    <li><strong>Correo para temas de datos personales:</strong> <a href="mailto:espiritudigital.chile@gmail.com">espiritudigital.chile@gmail.com</a></li>
+                    <li><strong>WhatsApp y teléfono:</strong> <a href="https://wa.me/56928117627">+56 9 2811 7627</a></li>
+                </ul>
             </section>
 
             <section>
-                <h2 class="text-2xl font-semibold text-white mb-4">6. Conservación de los datos</h2>
-                <p>Conservamos tus datos durante el tiempo necesario para cumplir las finalidades descritas y las obligaciones legales aplicables. Cuando dejen de ser necesarios, los eliminamos o anonimizamos de forma segura.</p>
-            </section>
-
-            <section>
-                <h2 class="text-2xl font-semibold text-white mb-4">7. Tus derechos</h2>
-                <p>De acuerdo con la Ley 19.628, tienes derecho a:</p>
+                <h2 class="text-2xl font-semibold text-white mb-4">2. Qué datos tratamos y de dónde vienen</h2>
+                <p>Tratamos datos de personas que visitan el sitio, que nos contactan y de nuestros clientes. Casi todos nos los entregas tú; los de navegación los registran automáticamente las herramientas de medición del sitio. No compramos datos ni los sacamos de fuentes públicas.</p>
                 <ul class="list-disc pl-6 mt-4 space-y-2">
-                    <li><strong>Acceso:</strong> conocer qué datos tuyos tenemos.</li>
-                    <li><strong>Rectificación:</strong> corregir datos inexactos o desactualizados.</li>
-                    <li><strong>Cancelación:</strong> solicitar la eliminación de tus datos cuando proceda.</li>
-                    <li><strong>Oposición:</strong> oponerte a determinados tratamientos.</li>
+                    <li><strong>Formulario de cotización:</strong> tu nombre, tu número de WhatsApp, qué vendes, si ya vendes en internet, cuándo quieres partir, tu presupuesto aproximado, el plan que te interesa y la fecha y hora en que aceptaste esta política. También guardamos de dónde llegaste: la página, el anuncio o enlace (parámetros como gclid o utm) y el código de quien te recomendó, si lo hay. A eso sumamos nuestras notas sobre el avance de tu cotización.</li>
+                    <li><strong>Formulario de Alma:</strong> tu nombre, tu WhatsApp y el mensaje que escribas.</li>
+                    <li><strong>Conversación por voz con Alma:</strong> tu voz y su transcripción, solo si inicias la conversación y das permiso al micrófono.</li>
+                    <li><strong>WhatsApp y correo:</strong> tu número o dirección, tu nombre de perfil y lo que nos cuentes, incluidos fotos y archivos.</li>
+                    <li><strong>Navegación:</strong> páginas que visitas, clics, desplazamiento, tipo de dispositivo y navegador, ubicación aproximada (ciudad o región), dirección IP e identificadores de cookies.</li>
+                    <li><strong>Grabaciones de sesión:</strong> una reproducción de cómo te mueves por la página (clics, toques y desplazamiento). Los campos de los formularios van enmascarados: lo que escribes en ellos no queda en la grabación.</li>
+                    <li><strong>Clientes:</strong> además, los datos para la propuesta, el contrato y la boleta o factura (nombre o razón social, RUT, dirección y correo).</li>
                 </ul>
-                <p class="mt-4">Para ejercer cualquiera de estos derechos, escríbenos a <a href="mailto:hello@espiritudigital.cl">hello@espiritudigital.cl</a>. Responderemos tu solicitud en los plazos que establece la ley.</p>
+                <p class="mt-4">No te pedimos datos sensibles, como salud, origen étnico u opiniones políticas, y este sitio está pensado para personas mayores de 18 años.</p>
             </section>
 
             <section>
-                <h2 class="text-2xl font-semibold text-white mb-4">8. Cookies y tecnologías similares</h2>
-                <p>Nuestro sitio puede utilizar cookies y tecnologías similares para su correcto funcionamiento y para medir su uso de forma estadística. Puedes configurar tu navegador para bloquear o eliminar cookies; ten en cuenta que algunas funciones podrían verse afectadas.</p>
+                <h2 class="text-2xl font-semibold text-white mb-4">3. Para qué los usamos</h2>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>Responder tu consulta y prepararte una cotización por WhatsApp, teléfono o correo.</li>
+                    <li>Registrar tu solicitud en nuestra planilla y recibir un aviso inmediato para responderte rápido.</li>
+                    <li>Hacer el seguimiento de tu cotización.</li>
+                    <li>Prestar el servicio que contrates y emitir la boleta o factura.</li>
+                    <li>Medir cómo se usa el sitio y qué anuncios traen consultas, para mejorar la página y las campañas.</li>
+                    <li>Revisar grabaciones de sesión para encontrar partes de la página que confunden o no funcionan.</li>
+                    <li>Proteger los formularios contra envíos automáticos y abusos.</li>
+                </ul>
+                <p class="mt-4">No vendemos ni arrendamos tus datos y no usamos listas de remarketing. Tampoco tomamos decisiones automatizadas que te afecten: Alma conversa contigo con inteligencia artificial, pero cada solicitud la revisa y responde una persona.</p>
             </section>
 
             <section>
-                <h2 class="text-2xl font-semibold text-white mb-4">9. Seguridad</h2>
-                <p>Adoptamos medidas técnicas y organizativas razonables para proteger tus datos frente a accesos no autorizados, pérdida o alteración. Ningún sistema es completamente infalible, pero trabajamos para mantener un nivel de seguridad adecuado.</p>
+                <h2 class="text-2xl font-semibold text-white mb-4">4. Con qué base legal</h2>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>Tu consentimiento,</strong> para los datos que nos envías: lo das al marcar la casilla del formulario, que nunca viene marcada, al escribirnos por WhatsApp o correo y al iniciar una conversación con Alma. Puedes retirarlo cuando quieras, con un mensaje al mismo correo o WhatsApp. Retirarlo no afecta lo que hicimos antes con tu permiso.</li>
+                    <li><strong>Nuestro interés legítimo,</strong> para la medición y las grabaciones de sesión: saber cómo se usa el sitio, corregir errores y medir qué anuncios funcionan. No la usamos para identificarte: los eventos de medición no llevan tu nombre ni tu número, y las grabaciones enmascaran los campos de los formularios. Puedes oponerte en cualquier momento (sección 8).</li>
+                    <li><strong>El contrato,</strong> si nos contratas: los datos necesarios para la propuesta, el trabajo y la entrega.</li>
+                    <li><strong>La ley,</strong> para guardar boletas, facturas y su respaldo según las normas tributarias.</li>
+                </ul>
             </section>
 
             <section>
-                <h2 class="text-2xl font-semibold text-white mb-4">10. Cambios en esta política</h2>
-                <p>Podemos actualizar esta Política de Privacidad para reflejar cambios legales o de nuestros servicios. Publicaremos la versión vigente en esta misma página, indicando la fecha de la última actualización.</p>
+                <h2 class="text-2xl font-semibold text-white mb-4">5. Quién más trata tus datos</h2>
+                <p>Trabajamos con proveedores que tratan datos por encargo nuestro, solo para los fines de esta política y bajo sus propias obligaciones de seguridad y confidencialidad:</p>
+                <ul class="list-disc pl-6 mt-4 space-y-2">
+                    <li><strong>Vercel</strong> (Estados Unidos): aloja el sitio y ejecuta las funciones que reciben los formularios.</li>
+                    <li><strong>Google</strong> (Estados Unidos): Google Analytics mide las visitas; Google Tag Manager carga las herramientas de medición; Google Sheets guarda el registro de solicitudes; Google Ads mide qué anuncios traen consultas; Gmail recibe tus correos, y Google Fonts entrega las tipografías del sitio.</li>
+                    <li><strong>Microsoft</strong> (Estados Unidos): Microsoft Clarity hace las grabaciones de sesión y los mapas de calor, con los campos de formulario enmascarados.</li>
+                    <li><strong>Telegram</strong> (servidores fuera de Chile): nos envía un aviso interno inmediato con los datos de cada solicitud para responderte a tiempo.</li>
+                    <li><strong>Supabase</strong> (servidores fuera de Chile): guarda los mensajes que envías desde el formulario de Alma.</li>
+                    <li><strong>ElevenLabs</strong> (servidores fuera de Chile): procesa la conversación de voz con Alma para generar sus respuestas.</li>
+                    <li><strong>Proveedores de bibliotecas y fuentes</strong>, como cdnjs de Cloudflare: reciben tu dirección IP cuando tu navegador descarga esos archivos.</li>
+                </ul>
+                <p class="mt-4">Si nos escribes por WhatsApp, tus mensajes pasan por WhatsApp, un servicio de Meta que trata tus datos según su propia política de privacidad.</p>
+                <p class="mt-4">Fuera de estos casos, solo entregamos datos a una autoridad cuando la ley lo exige.</p>
             </section>
 
             <section>
-                <h2 class="text-2xl font-semibold text-white mb-4">11. Contacto</h2>
-                <p>Si tienes dudas sobre esta política o sobre el tratamiento de tus datos, contáctanos en <a href="mailto:hello@espiritudigital.cl">hello@espiritudigital.cl</a>.</p>
+                <h2 class="text-2xl font-semibold text-white mb-4">6. Transferencias internacionales</h2>
+                <p>Los proveedores de la sección anterior guardan y procesan datos en servidores fuera de Chile, principalmente en Estados Unidos. Cuando el país de destino no cuente con una declaración de nivel adecuado de protección, la transferencia se ampara en las garantías contractuales de protección de datos que ofrece cada proveedor y, cuando corresponde, en tu consentimiento.</p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">7. Cuánto tiempo guardamos tus datos</h2>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>Consultas que no terminan en contrato</strong> (formularios, WhatsApp, correo y avisos internos): hasta 24 meses desde el último contacto. Después los eliminamos o anonimizamos.</li>
+                    <li><strong>Conversaciones de voz con Alma</strong> (audio y transcripción): hasta 90 días.</li>
+                    <li><strong>Clientes:</strong> mientras dure el servicio y, después, el plazo que exige la ley tributaria para respaldar boletas y facturas.</li>
+                    <li><strong>Google Analytics:</strong> 14 meses.</li>
+                    <li><strong>Microsoft Clarity:</strong> grabaciones, 30 días; las que marcamos para revisar y los mapas de calor, 13 meses.</li>
+                </ul>
+                <p class="mt-4">Si nos pides borrar tus datos antes, lo hacemos, salvo lo que la ley nos obligue a conservar.</p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">8. Tus derechos y cómo ejercerlos</h2>
+                <p>Puedes pedirnos en cualquier momento:</p>
+                <ul class="list-disc pl-6 mt-4 space-y-2">
+                    <li><strong>Acceso:</strong> saber si tratamos tus datos, cuáles, de dónde vienen, para qué y con quién los compartimos.</li>
+                    <li><strong>Rectificación:</strong> corregir datos inexactos o incompletos.</li>
+                    <li><strong>Supresión:</strong> borrar tus datos.</li>
+                    <li><strong>Oposición:</strong> que dejemos de usar tus datos para un fin, incluida la medición del sitio.</li>
+                    <li><strong>Portabilidad:</strong> recibir los datos que nos entregaste en un formato electrónico de uso común, o que los enviemos a otro responsable cuando sea técnicamente posible.</li>
+                    <li><strong>Bloqueo:</strong> que suspendamos temporalmente el uso de tus datos mientras resolvemos una solicitud de rectificación, supresión u oposición.</li>
+                </ul>
+                <h3 class="text-lg font-semibold text-white mt-6 mb-2">Cómo pedirlo</h3>
+                <p>Escríbenos a <a href="mailto:espiritudigital.chile@gmail.com">espiritudigital.chile@gmail.com</a> con tu nombre, un correo o domicilio para responderte, el derecho que quieres ejercer y los datos a los que se refiere. Si pides una corrección, indica el dato correcto. Podemos pedirte algo que confirme tu identidad antes de responder. Es gratis.</p>
+                <p class="mt-4">Acusamos recibo y te respondemos por escrito dentro de 30 días corridos desde que recibimos tu solicitud. Si necesitamos más tiempo, te avisamos y el plazo se puede extender una sola vez por otros 30 días corridos.</p>
+                <p class="mt-4">Si rechazamos tu solicitud o no respondemos a tiempo, puedes reclamar ante la <strong>Agencia de Protección de Datos Personales</strong> dentro de 30 días hábiles.</p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">9. Cookies y tecnologías similares</h2>
+                <p>El sitio usa cookies de Google Analytics, Google Ads y Microsoft Clarity para medir visitas y grabaciones de sesión, y el almacenamiento de sesión de tu navegador para recordar de qué anuncio o enlace llegaste mientras navegas. Puedes bloquear o borrar las cookies desde la configuración de tu navegador, y desactivar Google Analytics con su <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">complemento de inhabilitación</a>. El sitio seguirá funcionando.</p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">10. Cómo protegemos tus datos</h2>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>Todo el sitio funciona con conexión cifrada (HTTPS).</li>
+                    <li>Las cuentas de los proveedores usan contraseñas únicas y verificación en dos pasos.</li>
+                    <li>Las claves técnicas viven solo en el servidor, nunca en el código del sitio ni en tu navegador.</li>
+                    <li>Solo accede a tus datos quien los necesita para atenderte.</li>
+                    <li>Los formularios tienen filtros contra envíos automáticos.</li>
+                </ul>
+                <p class="mt-4">Si ocurre un incidente de seguridad que afecte tus datos, lo informaremos a la Agencia y, cuando corresponda, a ti, como exige la ley.</p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">11. Cambios a esta política</h2>
+                <p>Si cambiamos esta política, publicamos aquí la nueva versión con su fecha. Si el cambio es importante, lo destacamos en el sitio.</p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-white mb-4">12. Contacto</h2>
+                <p>ESPIRITU DIGITAL SPA · RUT 78.484.436-6 · El Algarrobo 10932, PC 11 ST 4, El Manzano, San José de Maipo · <a href="mailto:espiritudigital.chile@gmail.com">espiritudigital.chile@gmail.com</a> · <a href="https://wa.me/56928117627">+56 9 2811 7627</a></p>
             </section>
 
         </div>
@@ -156,11 +227,11 @@
 
     <!-- Footer -->
     <footer class="bg-[#020202] border-t border-white/10 py-10">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 font-light">
-            <p>&copy; <span id="anio-actual">2026</span> Espíritu Digital. Todos los derechos reservados.</p>
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-400 font-light">
+            <p>&copy; <span id="anio-actual">2026</span> ESPIRITU DIGITAL SPA · RUT 78.484.436-6</p>
             <div class="flex gap-6">
-                <a href="/" class="hover:text-gray-300 transition-colors">Inicio</a>
-                <a href="/terminos" class="hover:text-gray-300 transition-colors">Términos Legales</a>
+                <a href="/" class="hover:text-gray-200 transition-colors">Inicio</a>
+                <a href="/terminos" class="hover:text-gray-200 transition-colors">Términos Legales</a>
             </div>
         </div>
     </footer>
