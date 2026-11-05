@@ -79,6 +79,7 @@ No hay Google Tag Manager, GA4, Google Ads, píxel de Meta ni Microsoft Clarity 
 | `1c5bab0` | Artículo de precios (Fase 6) con su imagen (`cuanto-cuesta-imprentaexpress.webp`, captura real). |
 | `93538d7` | `scripts/probar-sitio.mjs`: pruebas con Playwright. |
 | `74fdc68` | Ajustes del artículo; las pruebas fallan si una página publicable contiene `TODO-CRISTIAN`. |
+| `73240c6`, `0e569ee`, `83ddca5` | Pruebas de términos, demo y code; precisión sobre el pago en 2 partes en el artículo; el servidor pasa a llamarse `servidor-vercel.mjs`. |
 
 ### Efecto de `vercel.json`
 
@@ -149,7 +150,9 @@ Requiere Node 18 o más y Playwright con Chromium (`npm install playwright` y `n
 - El sitemap es XML válido, trae las URLs nuevas y ninguna con `.html`, barra final o gracias.
 - Ningún enlace interno ni canónica usa `.html`, y ninguna página publicable contiene `TODO-CRISTIAN`.
 
-Resultado al cierre: **61 de 61**. Para comprobar que las pruebas detectan fallas, se rompieron a propósito en una copia Alma, el JSON-LD, el sitemap y el carrusel: las 5 pruebas afectadas fallaron.
+Resultado al cierre: **61 de 61**. Para comprobar que las pruebas detectan fallas, en una copia del sitio se rompieron a propósito Alma, el JSON-LD, el sitemap y el carrusel: fallaron las 5 pruebas afectadas.
+
+**Prueba de integración con la rama de la landing**, sin tocar ninguna rama (`git merge-tree` y una copia exportada): la unión no tiene conflictos; pasan las 61 pruebas de esta rama y las 206 de `scripts/probar-landing.mjs`, y `/tiendas-online`, `/tiendas-online/casos`, `/tiendas-online/planes` y `/tiendas-online/gracias` responden 200 sin redirección, también con `?h=precio&gclid=prueba&utm_source=google`. La unión con la rama de la API tampoco tiene conflictos.
 
 ## 4. Puntos de la Fase 0 que siguen abiertos
 
