@@ -271,6 +271,23 @@ try {
     }
     revisar('Enlaces internos y canónicas sin .html ni /alma/', malos.length === 0, malos.join(' | '));
   }
+
+  // 10. Ninguna página publicable contiene TODO-CRISTIAN (regla 4 del plan)
+  {
+    const conPendientes = [];
+    const recorrer = (dir) => {
+      for (const entrada of fs.readdirSync(dir, { withFileTypes: true })) {
+        if (entrada.name.startsWith('.') || ['node_modules', 'docs', 'scripts'].includes(entrada.name)) continue;
+        const ruta = path.join(dir, entrada.name);
+        if (entrada.isDirectory()) recorrer(ruta);
+        else if (entrada.name.endsWith('.html') && fs.readFileSync(ruta, 'utf8').includes('TODO-CRISTIAN')) {
+          conPendientes.push(path.relative(RAIZ, ruta));
+        }
+      }
+    };
+    recorrer(RAIZ);
+    revisar('Ninguna página publicable contiene TODO-CRISTIAN', conPendientes.length === 0, conPendientes.join(', '));
+  }
 } finally {
   await browser.close();
   servidor.close();
