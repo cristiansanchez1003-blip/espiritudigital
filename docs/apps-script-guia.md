@@ -7,6 +7,8 @@ Al terminar, cada formulario de `/tiendas-online` queda como una fila en tu plan
 
 Cada clic en un botón de WhatsApp queda en la pestaña "Clics WhatsApp". Los envíos que parecen de un robot quedan aparte, en "Descartados".
 
+Telegram te avisa al instante; el correo trae con quién hablar. Activa en el celular las notificaciones de Gmail para la cuenta de Espíritu Digital, así abres el detalle con un toque cuando suena Telegram.
+
 Tiempo: unos 30 minutos. Necesitas tu cuenta de Google de Espíritu Digital, Telegram en el celular y acceso al proyecto en Vercel.
 
 > **Regla de oro:** el secreto y el token del bot van solo en Vercel y en las propiedades del script. Nunca en un chat, un correo, una captura ni el repositorio.
