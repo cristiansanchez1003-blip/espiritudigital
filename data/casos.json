@@ -1,0 +1,113 @@
+{
+  "_nota": "Solo proyectos reales en producción. permiso: true cuando el cliente autorice por escrito mostrarlo; con --produccion la build falla si se muestra un caso sin permiso. requiere_arreglo: true oculta el caso en producción hasta que Cristian confirme que está listo. mostrar: false lo saca de la página. Las descripciones son las de docs 03, sección 3, literales.",
+  "tiendas": [
+    {
+      "slug": "imprenta-express",
+      "nombre": "Imprenta Express",
+      "subtitulo": "La Florida",
+      "url": "https://imprentaexpresslaflorida.cl",
+      "descripcion": "Imprenta con 10 categorías de productos, de tarjetas y pendones a timbres y talonarios. Carro de compras, pago con Flow y Mercado Pago, cotizador y guía para enviar archivos.",
+      "destacado": true,
+      "mostrar": true,
+      "permiso": false,
+      "requiere_arreglo": false,
+      "imagen": {
+        "archivo": "assets/tiendas-online/img/caso-imprenta-express-computador-1440.webp",
+        "variantes": [
+          "assets/tiendas-online/img/caso-imprenta-express-computador-720.webp",
+          "assets/tiendas-online/img/caso-imprenta-express-computador-1440.webp"
+        ],
+        "alt": "Catálogo de timbres de la tienda de Imprenta Express en computador"
+      },
+      "imagen_celular": {
+        "archivo": "assets/tiendas-online/img/caso-imprenta-express-celular-780.webp",
+        "variantes": [
+          "assets/tiendas-online/img/caso-imprenta-express-celular-390.webp",
+          "assets/tiendas-online/img/caso-imprenta-express-celular-780.webp"
+        ],
+        "alt": "Tienda de Imprenta Express en celular"
+      }
+    },
+    {
+      "slug": "vitrales-del-cajon",
+      "nombre": "Vitrales del Cajón",
+      "subtitulo": "Cajón del Maipo",
+      "url": "https://vitralesdelcajon.cl",
+      "descripcion": "Arte en vidrio hecho a mano. Catálogo por colecciones, carrito, pago con Flow, opción de pedir por WhatsApp y panel para subir obras nuevas.",
+      "destacado": false,
+      "mostrar": true,
+      "permiso": false,
+      "requiere_arreglo": true,
+      "imagen": {
+        "archivo": "assets/tiendas-online/img/caso-vitrales-del-cajon-computador-1440.webp",
+        "variantes": [
+          "assets/tiendas-online/img/caso-vitrales-del-cajon-computador-720.webp",
+          "assets/tiendas-online/img/caso-vitrales-del-cajon-computador-1440.webp"
+        ],
+        "alt": "Catálogo por colecciones de Vitrales del Cajón en computador"
+      },
+      "imagen_celular": {
+        "archivo": "assets/tiendas-online/img/caso-vitrales-del-cajon-celular-780.webp",
+        "variantes": [
+          "assets/tiendas-online/img/caso-vitrales-del-cajon-celular-390.webp",
+          "assets/tiendas-online/img/caso-vitrales-del-cajon-celular-780.webp"
+        ],
+        "alt": "Tienda de Vitrales del Cajón en celular"
+      }
+    },
+    {
+      "slug": "mielu",
+      "nombre": "Mielu",
+      "subtitulo": "Miel de bosque y montaña",
+      "url": "https://mielu.cl",
+      "descripcion": "Miel cruda 100% natural, con tienda propia, carro de compras y pago en línea.",
+      "destacado": false,
+      "mostrar": true,
+      "permiso": false,
+      "requiere_arreglo": false,
+      "condicion": "pago en línea activo",
+      "imagen": {
+        "archivo": "assets/tiendas-online/img/caso-mielu-computador-1440.webp",
+        "variantes": [
+          "assets/tiendas-online/img/caso-mielu-computador-720.webp",
+          "assets/tiendas-online/img/caso-mielu-computador-1440.webp"
+        ],
+        "alt": "Tienda de Mielu en computador"
+      },
+      "imagen_celular": {
+        "archivo": "assets/tiendas-online/img/caso-mielu-celular-780.webp",
+        "variantes": [
+          "assets/tiendas-online/img/caso-mielu-celular-390.webp",
+          "assets/tiendas-online/img/caso-mielu-celular-780.webp"
+        ],
+        "alt": "Tienda de Mielu en celular"
+      }
+    }
+  ],
+  "webs": [
+    {
+      "slug": "vet-integrativa",
+      "nombre": "Vet Integrativa",
+      "rubro": "Veterinaria",
+      "url": "https://vetintegrativa.cl",
+      "mostrar": true,
+      "permiso": false
+    },
+    {
+      "slug": "ao-construcciones",
+      "nombre": "AO Construcciones",
+      "rubro": "Constructora",
+      "url": "https://aoconstrucciones.cl",
+      "mostrar": true,
+      "permiso": false
+    },
+    {
+      "slug": "mister-gas",
+      "nombre": "Mister Gas",
+      "rubro": "Gasfitería y detección de fugas",
+      "url": "https://mistergas.cl",
+      "mostrar": true,
+      "permiso": false
+    }
+  ]
+}
