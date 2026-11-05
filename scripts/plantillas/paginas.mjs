@@ -131,7 +131,7 @@ export function preguntas(c) {
     ['¿También hacen la publicidad?', 'Sí. Gestiono Google Ads desde $150.000 + IVA al mes ($178.500 con IVA), para que tu tienda reciba visitas desde el primer día.'],
     [
       `¿Cómo funciona la página web de ${p.web} + IVA?`,
-      `Trae el dominio .cl a tu nombre el primer año, los textos y las fotos. Pagas 50% al partir y 50% al recibirla. A las 2 semanas de recibir tu material te muestro el primer avance, y tienes dos rondas de correcciones completas. El primer mes de mantención va incluido; después sigue solo si la pides, por ${p.mantWeb} + IVA al mes (${p.mantWebIva} con IVA). Sin mantención, tu página sigue publicada, solo sin soporte. El código lo administramos nosotros y el dominio queda a tu nombre.`,
+      `Trae el dominio .cl a tu nombre el primer año, los textos y la selección y edición de fotos (sin sesión fotográfica). Pagas 50% al partir y 50% al recibirla. A las 2 semanas de recibir tu material te muestro el primer avance, y tienes dos rondas de correcciones completas. El primer mes de mantención va incluido; después sigue solo si la pides, por ${p.mantWeb} + IVA al mes (${p.mantWebIva} con IVA). Sin mantención, tu página sigue publicada, solo sin soporte. El código lo administramos nosotros y el dominio queda a tu nombre.`,
     ],
   ].filter(Boolean);
 }
