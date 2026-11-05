@@ -1,0 +1,7 @@
+# Material interno: no se publica en el sitio.
+# Vercel publica como archivo todo lo que sube; esto lo deja fuera del despliegue.
+# Como segunda protección, vercel.json redirige estas mismas rutas a la portada.
+docs/
+scripts/
+data/
+*.md
