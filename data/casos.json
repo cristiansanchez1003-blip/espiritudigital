@@ -11,7 +11,22 @@
       "mostrar": true,
       "permiso": false,
       "requiere_arreglo": false,
-      "imagen": null
+      "imagen": {
+        "archivo": "assets/tiendas-online/img/caso-imprenta-express-computador-1440.webp",
+        "variantes": [
+          "assets/tiendas-online/img/caso-imprenta-express-computador-720.webp",
+          "assets/tiendas-online/img/caso-imprenta-express-computador-1440.webp"
+        ],
+        "alt": "Catálogo de timbres de la tienda de Imprenta Express en computador"
+      },
+      "imagen_celular": {
+        "archivo": "assets/tiendas-online/img/caso-imprenta-express-celular-780.webp",
+        "variantes": [
+          "assets/tiendas-online/img/caso-imprenta-express-celular-390.webp",
+          "assets/tiendas-online/img/caso-imprenta-express-celular-780.webp"
+        ],
+        "alt": "Tienda de Imprenta Express en celular"
+      }
     },
     {
       "slug": "vitrales-del-cajon",
@@ -23,7 +38,22 @@
       "mostrar": true,
       "permiso": false,
       "requiere_arreglo": true,
-      "imagen": null
+      "imagen": {
+        "archivo": "assets/tiendas-online/img/caso-vitrales-del-cajon-computador-1440.webp",
+        "variantes": [
+          "assets/tiendas-online/img/caso-vitrales-del-cajon-computador-720.webp",
+          "assets/tiendas-online/img/caso-vitrales-del-cajon-computador-1440.webp"
+        ],
+        "alt": "Catálogo por colecciones de Vitrales del Cajón en computador"
+      },
+      "imagen_celular": {
+        "archivo": "assets/tiendas-online/img/caso-vitrales-del-cajon-celular-780.webp",
+        "variantes": [
+          "assets/tiendas-online/img/caso-vitrales-del-cajon-celular-390.webp",
+          "assets/tiendas-online/img/caso-vitrales-del-cajon-celular-780.webp"
+        ],
+        "alt": "Tienda de Vitrales del Cajón en celular"
+      }
     },
     {
       "slug": "mielu",
@@ -36,7 +66,22 @@
       "permiso": false,
       "requiere_arreglo": false,
       "condicion": "pago en línea activo",
-      "imagen": null
+      "imagen": {
+        "archivo": "assets/tiendas-online/img/caso-mielu-computador-1440.webp",
+        "variantes": [
+          "assets/tiendas-online/img/caso-mielu-computador-720.webp",
+          "assets/tiendas-online/img/caso-mielu-computador-1440.webp"
+        ],
+        "alt": "Tienda de Mielu en computador"
+      },
+      "imagen_celular": {
+        "archivo": "assets/tiendas-online/img/caso-mielu-celular-780.webp",
+        "variantes": [
+          "assets/tiendas-online/img/caso-mielu-celular-390.webp",
+          "assets/tiendas-online/img/caso-mielu-celular-780.webp"
+        ],
+        "alt": "Tienda de Mielu en celular"
+      }
     }
   ],
   "webs": [

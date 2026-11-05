@@ -103,7 +103,10 @@ h3{font-size:1.125rem;line-height:1.35;font-weight:600}
 .casos{display:grid;gap:16px;margin-top:28px}
 .caso{display:flex;flex-direction:column}
 .caso-img img{width:100%;border-radius:12px;margin-bottom:16px}
-.caso-titulo{margin-bottom:8px}
+.caso-img--doble{display:grid;grid-template-columns:3.46fr 1fr;gap:10px;align-items:end;margin-bottom:16px}
+.caso-img--doble img{margin-bottom:0;border:1px solid var(--borde)}
+.caso-img--doble .caso-celular{border-radius:14px}
+.caso-titulo{margin-bottom:8px;font-size:1.125rem;line-height:1.35}
 .caso p{font-size:.9375rem;color:var(--texto-2)}
 .caso .btn{margin-top:16px;align-self:flex-start;min-height:48px;padding:10px 18px}
 .webs-titulo{margin:36px 0 12px;font-size:1.125rem}
@@ -255,7 +258,8 @@ html[data-plan="esencial"] .plan--esencial,html[data-plan="pro"] .plan--pro,html
   .caso--destacado .caso-img img{margin-bottom:0}
   .casos--grandes{grid-template-columns:1fr}
   .casos--grandes .caso{display:grid;grid-template-columns:1.3fr 1fr;gap:32px;align-items:center}
-  .casos--grandes .caso-img img{margin-bottom:0}
+  .casos--grandes .caso-titulo{font-size:1.5rem}
+  .casos--grandes .caso-img,.casos--grandes .caso-img img{margin-bottom:0}
   .lista-recibes{grid-template-columns:repeat(2,1fr);gap:22px 48px}
   .planes{grid-template-columns:repeat(3,1fr);align-items:stretch}
   .web-tarjeta{max-width:760px}

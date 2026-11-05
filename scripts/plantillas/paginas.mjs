@@ -243,9 +243,15 @@ ${logos}
 </div></section>`;
 }
 
-function tarjetaTienda(t, { nivel = 3, sizes = '' } = {}) {
+function tarjetaTienda(t, { nivel = 3, sizes = '', doble = false } = {}) {
+  const imagenes =
+    doble && t.img && t.imgCel
+      ? `<div class="caso-img caso-img--doble">${imagen(t.img, { sizes: '(min-width: 900px) 470px, calc((100vw - 72px) * .77)' })}${imagen(t.imgCel, { sizes: '(min-width: 900px) 140px, calc((100vw - 72px) * .23)', clase: 'caso-celular' })}</div>`
+      : t.img
+        ? `<div class="caso-img">${imagen(t.img, { sizes })}</div>`
+        : '';
   return `<article class="tarjeta caso${t.destacado ? ' caso--destacado' : ''}">
-${t.img ? `<div class="caso-img">${imagen(t.img, { sizes })}</div>` : ''}<div class="caso-texto">
+${imagenes}<div class="caso-texto">
 <h${nivel} class="caso-titulo">${esc(t.nombre)} · ${esc(t.subtitulo)}</h${nivel}>
 <p>${esc(t.descripcion)}</p>
 <a class="btn btn-sec" href="${esc(t.url)}" target="_blank" rel="noopener" data-caso="${esc(t.slug)}">Ver tienda<span class="sr"> ${esc(t.nombre)} (se abre en otra pestaña)</span>${icono('externo')}</a>
@@ -269,7 +275,7 @@ function bloqueTiendas(c) {
 <h2 id="titulo-tiendas">Tiendas reales, funcionando hoy</h2>
 <p class="bajada-seccion">No son maquetas. Entra, navega y agrega algo al carro.</p>
 <div class="casos">
-${c.casos.tiendas.map((t) => tarjetaTienda(t, { sizes: t.destacado ? '(min-width: 900px) 560px, calc(100vw - 72px)' : '(min-width: 900px) 520px, calc(100vw - 72px)' })).join('\n')}
+${c.casos.tiendas.map((t) => tarjetaTienda(t, { sizes: t.destacado ? '(min-width: 900px) 560px, calc(100vw - 72px)' : '(min-width: 900px) 510px, calc(100vw - 72px)' })).join('\n')}
 </div>
 ${listaWebs(c)}
 <div class="cta-bloque">${wa(c, { cta: 'tiendas', msg: MENSAJES.tiendas, texto: 'Quiero una tienda así', clase: 'btn btn-wa cta' })}</div>
@@ -627,7 +633,7 @@ export function paginaCasos(c) {
 <h1 id="titulo-casos">Tiendas reales, funcionando hoy</h1>
 <p class="bajada-seccion">No son maquetas. Entra, navega y agrega algo al carro.</p>
 <div class="casos casos--grandes">
-${c.casos.tiendas.map((t) => tarjetaTienda(t, { nivel: 2, sizes: '(min-width: 900px) 1088px, calc(100vw - 72px)' })).join('\n')}
+${c.casos.tiendas.map((t) => tarjetaTienda(t, { nivel: 2, doble: true })).join('\n')}
 </div>
 ${listaWebs(c, { nivel: 2 })}
 </div></section>

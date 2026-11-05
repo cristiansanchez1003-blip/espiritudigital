@@ -182,6 +182,7 @@ function filtrarCasos(lista, tipo) {
     if (caso.condicion) pendientes.push(`${MARCA_PENDIENTE}: ${caso.nombre}, condición: ${caso.condicion}`);
     const copia = { ...caso };
     copia.img = caso.imagen ? cargarImagen(caso.imagen, `imagen de ${caso.nombre}`) : null;
+    copia.imgCel = caso.imagen_celular ? cargarImagen(caso.imagen_celular, `captura en celular de ${caso.nombre}`) : null;
     if (tipo === 'tiendas' && !caso.imagen) avisos.push(`${caso.nombre}: sin captura (data/casos.json → imagen)`);
     visibles.push(copia);
   }

@@ -49,12 +49,16 @@
   },
   "imagenes": {
     "portada": {
-      "archivo": "",
-      "alt": "Tienda online de Imprenta Express vista en celular y computador",
+      "archivo": "assets/tiendas-online/img/portada-imprenta-express-1200.webp",
+      "variantes": [
+        "assets/tiendas-online/img/portada-imprenta-express-720.webp",
+        "assets/tiendas-online/img/portada-imprenta-express-1200.webp"
+      ],
+      "alt": "Tienda online de Imprenta Express vista en computador y celular",
       "caso": "imprenta-express"
     },
     "og": {
-      "archivo": "",
+      "archivo": "assets/tiendas-online/img/og-tiendas-online.jpg",
       "caso": "imprenta-express"
     }
   }
