@@ -26,6 +26,15 @@ function crearHoja(nombre) {
     getLastRow() { let m = 0; for (const [k, v] of this.celdas) if (v !== '' && v !== null && v !== undefined) m = Math.max(m, +k.split(',')[0]); return m; },
     getLastColumn() { let m = 0; for (const [k, v] of this.celdas) if (v !== '' && v !== null && v !== undefined) m = Math.max(m, +k.split(',')[1]); return m; },
     setFrozenRows(n) { this.congeladas = n; }, setFrozenColumns() {}, setColumnWidth() {}, setColumnWidths() {}, setRowHeight() {},
+    // Como en Sheets: las filas de abajo suben una posición y la pestaña queda con una fila menos.
+    deleteRow(fila) {
+      for (const mapa of [this.celdas, this.formatos, this.validaciones]) {
+        const movidas = [];
+        for (const [k, v] of mapa) { const [r, c] = k.split(',').map(Number); if (r >= fila) { mapa.delete(k); if (r > fila) movidas.push([`${r - 1},${c}`, v]); } }
+        for (const [k, v] of movidas) mapa.set(k, v);
+      }
+      this.filas -= 1;
+    },
     getRange(a, b, c, d) {
       let r, col, nr = 1, nc = 1;
       if (typeof a === 'string') {
@@ -84,9 +93,20 @@ function crearPlanilla() {
 const ss = crearPlanilla();
 const props = new Map();
 let candadoTomado = false;
+const disparadores = [];
 const contexto = {
   console: { log: () => {}, warn: () => {}, error: (m) => { contexto.errores.push(m); } },
   errores: [],
+  MailApp: { enviados: [], falla: false, sendEmail(o) { if (this.falla) throw new Error('cuota de correo agotada'); this.enviados.push(o); } },
+  ScriptApp: {
+    getProjectTriggers: () => disparadores.slice(),
+    deleteTrigger: (t) => { disparadores.splice(disparadores.indexOf(t), 1); },
+    newTrigger: (fn) => {
+      const t = { getHandlerFunction: () => fn };
+      const b = { timeBased: () => b, onMonthDay: (d) => { t.dia = d; return b; }, atHour: (h) => { t.hora = h; return b; }, create: () => { disparadores.push(t); return t; } };
+      return b;
+    },
+  },
   SpreadsheetApp: {
     getActiveSpreadsheet: () => ss,
     openById: () => ss,
@@ -129,7 +149,7 @@ ok('lead antes de configurar: crea Leads con 27 columnas (amplía de 26) y escri
   const fila = h.getRange(2, 1, 1, 27).getValues()[0];
   assert.equal(Object.prototype.toString.call(fila[0]), '[object Date]');
   assert.equal(fila[2], '+56912345678', 'el teléfono conserva el +');
-  assert.equal(fila[3], '=HYPERLINK("x")', 'la fórmula queda como texto');
+  assert.equal(fila[3], ' =HYPERLINK("x")', 'la fórmula queda como texto, con un espacio que sobrevive al CSV');
   assert.equal(h.formulas || 0, 0, 'ninguna fórmula en Leads');
   assert.equal(fila[8], true);
   assert.equal(fila[20], 'nuevo');
@@ -154,14 +174,18 @@ ok('tipo desconocido, JSON malo y cuerpo enorme → errores lógicos', () => {
 ok('configurar: pestañas, Resumen primero, secreto existente intacto, Hoja 1 vacía borrada', () => {
   G('configurar')();
   assert.equal(ss.zona, 'America/Santiago');
-  assert.deepEqual(ss.hojas.map((x) => x.nombre), ['Resumen', 'Leads', 'Clics WhatsApp', 'Referidos']);
+  assert.deepEqual(ss.hojas.map((x) => x.nombre), ['Resumen', 'Leads', 'Clics WhatsApp', 'Referidos', 'Descartados']);
   assert.equal(props.get('APPS_SCRIPT_SECRET'), 'a'.repeat(40));
   assert.equal(props.get('PLANILLA_ID'), 'ID-PLANILLA');
+  assert.equal(props.get('EMAIL_AVISO'), 'espiritudigital.chile@gmail.com');
   const leads = ss.getSheetByName('Leads');
   assert.equal(leads.validaciones.get('500,21').tipo, 'lista');
   assert.equal(JSON.stringify(leads.validaciones.get('500,21').lista), JSON.stringify(['nuevo', 'contactado', 'llamada', 'vista_previa', 'propuesta', 'ganado', 'perdido', 'mas_adelante']));
-  G('configurar')(); // segunda vez: no duplica ni falla
-  assert.equal(ss.hojas.length, 4);
+  props.set('EMAIL_AVISO', 'otro@ejemplo.cl');
+  G('configurar')(); // segunda vez: no duplica, no falla y no pisa el correo elegido
+  assert.equal(ss.hojas.length, 5);
+  assert.equal(props.get('EMAIL_AVISO'), 'otro@ejemplo.cl');
+  props.set('EMAIL_AVISO', 'espiritudigital.chile@gmail.com');
 });
 
 ok('Resumen: fórmulas con las columnas correctas y semanas desde un lunes', () => {
@@ -181,12 +205,13 @@ ok('Resumen: fórmulas con las columnas correctas y semanas desde un lunes', () 
 });
 
 ok('wa_click escribe en Clics WhatsApp por nombre de columna', () => {
-  assert.deepEqual(post({ secreto: 'a'.repeat(40), tipo: 'wa_click', datos: { fecha: new Date().toISOString(), cta_location: 'portada', plan: 'pro', gclid: '-1+1', utm_term: '@x' } }), { ok: true });
+  assert.deepEqual(post({ secreto: 'a'.repeat(40), tipo: 'wa_click', datos: { fecha: new Date().toISOString(), cta_location: 'portada', plan: 'pro', gclid: '-Cj0KCQ_x1', utm_source: '-1+1', utm_term: '@x' } }), { ok: true });
   const h = ss.getSheetByName('Clics WhatsApp');
   const fila = h.getRange(2, 1, 1, 10).getValues()[0];
   assert.equal(fila[1], 'portada');
-  assert.equal(fila[4], '-1+1', 'no se convierte en número ni fórmula');
-  assert.equal(fila[7], '@x');
+  assert.equal(fila[4], '-Cj0KCQ_x1', 'el gclid sale intacto, sin espacio');
+  assert.equal(fila[5], ' -1+1', 'no se convierte en número ni fórmula');
+  assert.equal(fila[7], ' @x');
   assert.ok(!(h.convertidos || []).length, 'ningún texto convertido a número');
 });
 
@@ -225,6 +250,104 @@ ok('cuando se acaban las filas, agrega más en vez de fallar', () => {
 ok('tipo referido directo exige slug', () => {
   assert.equal(post({ secreto: 'a'.repeat(40), tipo: 'referido', datos: {} }).codigo, 400);
   assert.deepEqual(post({ secreto: 'a'.repeat(40), tipo: 'referido', datos: { slug: 'juan', referidor: 'Juan' } }), { ok: true });
+});
+
+const S = 'a'.repeat(40);
+const leerFila = (h, fila) => h.getRange(fila, 1, 1, G('leerEncabezados_')(h).length).getValues()[0];
+const columna = (h, nombre) => G('leerEncabezados_')(h).indexOf(nombre);
+
+ok('descartado: fila en Descartados con sus columnas, sin correo y sin fórmulas', () => {
+  const correos = contexto.MailApp.enviados.length;
+  assert.deepEqual(post({ secreto: S, tipo: 'descartado', datos: { fecha: new Date().toISOString(), motivo: 'rapido', ms: 1200, nombre: 'Bot', whatsapp: '+56933333333', que_vende: '=1+1', h: 'tienda', landing_path: '/tiendas-online', utm_source: 'google', gclid: 'abc' } }), { ok: true });
+  const h = ss.getSheetByName('Descartados');
+  assert.deepEqual(G('leerEncabezados_')(h), ['fecha', 'motivo', 'ms', 'nombre', 'whatsapp', 'que_vende', 'h', 'landing_path', 'utm_source', 'gclid']);
+  const fila = leerFila(h, h.getLastRow());
+  assert.equal(Object.prototype.toString.call(fila[0]), '[object Date]');
+  assert.equal(fila[1], 'rapido');
+  assert.equal(fila[2], 1200);
+  assert.equal(fila[3], 'Bot');
+  assert.equal(fila[5], ' =1+1');
+  assert.equal(h.formulas || 0, 0);
+  assert.equal(contexto.MailApp.enviados.length, correos, 'un descartado no avisa');
+  assert.equal(post({ secreto: S, tipo: 'descartado', datos: { motivo: 'trampa', ms: 'x' } }).ok, true, 'ms no numérico queda vacío');
+  assert.equal(leerFila(h, h.getLastRow())[2], '');
+});
+
+ok('mismo WhatsApp dentro de 10 minutos: no duplica la fila ni el correo', () => {
+  const leads = ss.getSheetByName('Leads');
+  const filas = leads.getLastRow();
+  const correos = contexto.MailApp.enviados.length;
+  const ahora = Date.now();
+  const datos = { fecha: new Date(ahora).toISOString(), nombre: 'Dup', whatsapp: '+56944444444', consentimiento: true };
+  assert.deepEqual(post({ secreto: S, tipo: 'lead', datos }), { ok: true });
+  assert.deepEqual(post({ secreto: S, tipo: 'lead', datos: { ...datos, fecha: new Date(ahora + 9 * 60000).toISOString() } }), { ok: true });
+  assert.equal(leads.getLastRow(), filas + 1);
+  assert.equal(contexto.MailApp.enviados.length, correos + 1);
+  assert.deepEqual(post({ secreto: S, tipo: 'lead', datos: { ...datos, fecha: new Date(ahora + 11 * 60000).toISOString() } }), { ok: true });
+  assert.equal(leads.getLastRow(), filas + 2, 'pasados 10 minutos es otro lead');
+  assert.equal(contexto.MailApp.enviados.length, correos + 2);
+});
+
+ok('correo de aviso: a EMAIL_AVISO, texto plano, enlace de WhatsApp y origen; si falla, la fila queda', () => {
+  props.set('EMAIL_AVISO', 'otro@ejemplo.cl');
+  const n = contexto.MailApp.enviados.length;
+  assert.deepEqual(post({ secreto: S, tipo: 'lead', datos: { fecha: new Date().toISOString(), nombre: 'Rosa <b>', whatsapp: '+56955555555', que_vende: 'velas', plazo: 'este_mes', presupuesto: '350_500', plan_interes: 'pro', utm_source: 'google', utm_medium: 'cpc', utm_campaign: 'tiendas', utm_term: 'tienda online', h: 'tienda', consentimiento: true } }), { ok: true });
+  const m = contexto.MailApp.enviados[n];
+  assert.equal(m.to, 'otro@ejemplo.cl');
+  assert.ok(!('htmlBody' in m), 'solo texto plano');
+  assert.equal(m.subject, 'Nuevo lead de tiendas: Rosa <b>');
+  assert.match(m.body, /https:\/\/wa\.me\/56955555555\n/);
+  assert.match(m.body, /Origen: google \/ cpc \/ tiendas · término: tienda online/);
+  assert.match(m.body, /Plan: pro/);
+  props.set('EMAIL_AVISO', 'espiritudigital.chile@gmail.com');
+
+  const leads = ss.getSheetByName('Leads');
+  const filas = leads.getLastRow();
+  contexto.MailApp.falla = true;
+  assert.deepEqual(post({ secreto: S, tipo: 'lead', datos: { fecha: new Date().toISOString(), nombre: 'Sin correo', whatsapp: '+56966666666', consentimiento: true } }), { ok: true });
+  contexto.MailApp.falla = false;
+  assert.equal(leads.getLastRow(), filas + 1, 'la fila se anota aunque el correo falle');
+  assert.equal(contexto.errores.length, 1);
+  assert.match(contexto.errores[0], /^Correo de aviso: /);
+  contexto.errores.length = 0;
+});
+
+ok('limpiarAntiguos borra lo de más de 24 meses, salvo clientes y recontactos recientes', () => {
+  const viejo = new Date(); viejo.setMonth(viejo.getMonth() - 25);
+  const reciente = new Date(); reciente.setMonth(reciente.getMonth() - 2);
+  const leads = ss.getSheetByName('Leads');
+  const base = leads.getLastRow();
+  ['+56920000001', '+56920000002', '+56920000003'].forEach((whatsapp, i) => {
+    assert.deepEqual(post({ secreto: S, tipo: 'lead', datos: { fecha: viejo.toISOString(), nombre: `Viejo ${i}`, whatsapp, consentimiento: true } }), { ok: true });
+  });
+  leads.getRange(base + 2, columna(leads, 'etapa') + 1).setValues([['ganado']]);
+  leads.getRange(base + 3, columna(leads, 'fecha_recontacto') + 1).setValues([[reciente]]);
+  assert.deepEqual(post({ secreto: S, tipo: 'wa_click', datos: { fecha: viejo.toISOString(), cta_location: 'viejo' } }), { ok: true });
+  assert.deepEqual(post({ secreto: S, tipo: 'descartado', datos: { fecha: viejo.toISOString(), motivo: 'rapido', nombre: 'Bot viejo' } }), { ok: true });
+
+  const nombres = () => Array.from({ length: leads.getLastRow() - 1 }, (_, i) => leerFila(leads, i + 2)[1]);
+  const clics = ss.getSheetByName('Clics WhatsApp');
+  const descartados = ss.getSheetByName('Descartados');
+  const antes = { leads: leads.getLastRow(), clics: clics.getLastRow(), descartados: descartados.getLastRow() };
+  assert.equal(G('limpiarAntiguos')(), 3);
+  assert.equal(leads.getLastRow(), antes.leads - 1);
+  assert.ok(!nombres().includes('Viejo 0'), 'lead viejo sin cierre: se borra');
+  assert.ok(nombres().includes('Viejo 1'), 'cliente (ganado): se conserva');
+  assert.ok(nombres().includes('Viejo 2'), 'recontactado hace poco: se conserva');
+  assert.ok(nombres().includes('Ana') && nombres().includes('Rosa <b>'), 'lo reciente no se toca');
+  assert.equal(clics.getLastRow(), antes.clics - 1);
+  assert.equal(clics.getRange(1001, 2).getValues()[0][0], 'flotante', 'el clic reciente sigue');
+  assert.equal(descartados.getLastRow(), antes.descartados - 1);
+  assert.equal(G('limpiarAntiguos')(), 0, 'una segunda pasada no borra nada más');
+});
+
+ok('instalarLimpiezaMensual deja un solo disparador, el día 1 a las 4:00', () => {
+  G('instalarLimpiezaMensual')();
+  G('instalarLimpiezaMensual')();
+  assert.equal(disparadores.length, 1);
+  assert.equal(disparadores[0].getHandlerFunction(), 'limpiarAntiguos');
+  assert.equal(disparadores[0].dia, 1);
+  assert.equal(disparadores[0].hora, 4);
 });
 
 ok('probarAnotacion funciona tras configurar y doGet responde ok', () => {

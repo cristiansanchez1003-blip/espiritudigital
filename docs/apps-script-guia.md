@@ -1,8 +1,13 @@
 # Guía: planilla de leads, Apps Script y Telegram
 
-Al terminar, cada formulario de `/tiendas-online` queda como una fila en tu planilla y te llega un aviso por Telegram con un enlace directo a su WhatsApp. Cada clic en un botón de WhatsApp queda en la pestaña "Clics WhatsApp".
+Al terminar, cada formulario de `/tiendas-online` queda como una fila en tu planilla y te llegan dos avisos:
 
-Tiempo: unos 25 minutos. Necesitas tu cuenta de Google de Espíritu Digital, Telegram en el celular y acceso al proyecto en Vercel.
+- **Un correo** a tu Gmail con todo el detalle y un enlace directo a su WhatsApp. Lo envía la propia planilla.
+- **Un mensaje breve por Telegram**, para enterarte al instante, **sin nombre ni teléfono**: Telegram no firma un acuerdo de tratamiento de datos, así que la política de privacidad promete no mandarle datos personales.
+
+Cada clic en un botón de WhatsApp queda en la pestaña "Clics WhatsApp". Los envíos que parecen de un robot quedan aparte, en "Descartados".
+
+Tiempo: unos 30 minutos. Necesitas tu cuenta de Google de Espíritu Digital, Telegram en el celular y acceso al proyecto en Vercel.
 
 > **Regla de oro:** el secreto y el token del bot van solo en Vercel y en las propiedades del script. Nunca en un chat, un correo, una captura ni el repositorio.
 
@@ -25,10 +30,11 @@ Tiempo: unos 25 minutos. Necesitas tu cuenta de Google de Espíritu Digital, Tel
 2. Google pide autorización la primera vez:
    - **Revisar permisos** → elige la cuenta de Espíritu Digital.
    - Aparece "Google no verificó esta app": es normal, porque el script es tuyo. Toca **Configuración avanzada → Ir a Leads tiendas (no seguro)**.
-   - **Permitir**. El script pide ver y editar tus hojas de cálculo: solo escribe en esta planilla.
-3. Espera el mensaje "Ejecución completada". En la planilla vas a ver las pestañas **Resumen**, **Leads**, **Clics WhatsApp** y **Referidos**.
+   - **Permitir**. El script pide ver y editar tus hojas de cálculo (solo escribe en esta planilla) y **enviar correo como tú** (solo el aviso de cada lead, a tu propio correo).
+3. Espera el mensaje "Ejecución completada". En la planilla vas a ver las pestañas **Resumen**, **Leads**, **Clics WhatsApp**, **Referidos** y **Descartados**.
+4. Ahora elige **instalarLimpiezaMensual** y presiona **Ejecutar**. Pide un permiso más (ejecutarse cuando no estás). Deja programado que el día 1 de cada mes se borren las filas con más de 24 meses, como promete la política de privacidad. No toca a los clientes (etapa "ganado") y cuenta desde el último contacto (`fecha_recontacto`) si es más reciente.
 
-`configurar` se puede ejecutar de nuevo cuando quieras: no borra datos, no duplica pestañas y no cambia el secreto.
+`configurar` se puede ejecutar de nuevo cuando quieras: no borra datos, no duplica pestañas, no cambia el secreto ni el correo de avisos.
 
 ## 4. Copiar el secreto
 
@@ -37,6 +43,7 @@ Tiempo: unos 25 minutos. Necesitas tu cuenta de Google de Espíritu Digital, Tel
 1. En el editor, a la izquierda: **Configuración del proyecto** (ícono de engranaje).
 2. Baja hasta **Propiedades del script**.
 3. Copia el valor de **APPS_SCRIPT_SECRET**. Lo pegas en Vercel en el paso 8.
+4. Ahí mismo está **EMAIL_AVISO**, el correo que recibe el detalle de cada lead (por defecto, espiritudigital.chile@gmail.com). Si quieres otro, cambia el valor y guarda.
 
 ## 5. Implementar como aplicación web
 
@@ -68,10 +75,10 @@ Usa un bot nuevo, separado del de Alma.
 2. Nombre: **Leads Espíritu Digital**. Usuario: uno que termine en `bot`, por ejemplo `leads_espiritudigital_bot`.
 3. BotFather te entrega el **token**: va en Vercel como `TELEGRAM_BOT_TOKEN`.
 4. Abre el chat con tu bot nuevo, toca **Iniciar** y escríbele "hola".
-5. Para saber tu **chat ID**, abre en el navegador esta dirección, reemplazando `TOKEN` por el token:
+5. Para saber tu **chat ID**, abre una **ventana de incógnito** (así la dirección no queda en el historial ni se sincroniza con otros equipos) y entra a esta dirección, reemplazando `TOKEN` por el token:
    `https://api.telegram.org/botTOKEN/getUpdates`
    Busca `"chat":{"id":` seguido de un número. Ese número es `TELEGRAM_CHAT_ID`. Si ves `"result":[]`, escríbele otro mensaje al bot y recarga.
-6. Cierra esa pestaña: la dirección lleva el token.
+6. Cierra la ventana de incógnito: la dirección lleva el token.
 
 ## 8. Cargar las variables en Vercel
 
@@ -100,10 +107,12 @@ No agregues `LEADS_MODO_PRUEBA` en Vercel: es solo para pruebas en un computador
 Llena el formulario con datos de prueba y un WhatsApp tuyo. Debes ver:
 
 - Una fila nueva en **Leads**, con `gclid` = prueba, `utm_term` = prueba, `h` = precio y `etapa` = nuevo.
-- Un mensaje en Telegram que empieza con "🛒 Lead tiendas" y termina con el enlace `https://wa.me/569...`. Tócalo: debe abrir el chat con ese número.
+- Un correo "Nuevo lead de tiendas: (nombre)" con el detalle y el enlace `https://wa.me/569...`. Tócalo: debe abrir el chat con ese número. Si no llega en un par de minutos, revisa Spam y marca "No es spam".
+- Un mensaje en Telegram que empieza con "🛒 Nuevo lead de tiendas", con plazo, presupuesto, plan, origen y variante, **sin nombre ni teléfono**.
 - Al tocar un botón de WhatsApp de la landing, una fila en **Clics WhatsApp**.
+- Si envías el mismo formulario otra vez antes de 10 minutos, no aparece una segunda fila ni un segundo correo: se toma como el mismo lead.
 
-**c) Limpieza.** Borra las filas de prueba de Leads, Clics WhatsApp y Referidos (clic derecho en el número de fila → Borrar fila).
+**c) Limpieza.** Borra las filas de prueba de Leads, Clics WhatsApp y Referidos (clic derecho en el número de fila → Borrar fila) y el correo de prueba.
 
 ## 10. Cómo se usa la planilla
 
@@ -123,6 +132,10 @@ Los leads que llegan directo por WhatsApp también puedes anotarlos aquí a mano
 
 **Resumen.** Cada fila es una semana, de lunes a domingo. Solo anotas el **gasto de Google Ads** de la semana en la columna amarilla; los leads, clics, calificados, propuestas, ventas, el tiempo de respuesta y los costos por lead y por calificado se calculan solos. Trae 30 semanas; para agregar más, copia la última fila hacia abajo.
 
+**Descartados.** Envíos que la API tomó por un robot: llenaron el campo oculto o completaron el formulario en menos de 3 segundos. La API le respondió como si todo hubiera salido bien (a un robot no se le enseña qué lo delató), pero no llega correo ni Telegram. Revísala una vez por semana: si ves a una persona real (nombre y negocio con sentido), escríbele por WhatsApp y copia la fila a Leads.
+
+**Correos de aviso.** La limpieza mensual borra filas, no correos. Una vez al mes, busca en Gmail `subject:"Nuevo lead de tiendas" older_than:2y` y borra lo que aparezca (salvo clientes). Así el correo también cumple los 24 meses de la política.
+
 **Referidos.** El script `scripts/generar_enlaces_referidos.py` crea los enlaces de cada referidor y un CSV. Para cargarlo: en la pestaña Referidos, **Archivo → Importar → Subir**, elige el CSV, "Ubicación de importación": **Anexar a la hoja actual**, y deja **desmarcado** "Convertir texto en números, fechas y fórmulas". Cuando llega un lead con `?ref=`, el script agrega solo una fila con estado "lead" y el nombre del referidor.
 
 ## 11. Si cambias el script
@@ -137,13 +150,14 @@ Si en cambio creas una "Nueva implementación", la URL cambia y hay que actualiz
 
 | Qué pasa | Qué revisar |
 | --- | --- |
-| Llega Telegram con "⚠️ La planilla no confirmó..." | Que el lead esté en la planilla; si no está, anótalo a mano. Luego revisa en Apps Script → **Ejecuciones** si hay errores, y que `APPS_SCRIPT_SECRET` en Vercel sea igual al de las propiedades del script |
-| No llega nada y la página muestra el error con el botón de WhatsApp | Fallaron la planilla y Telegram a la vez. Revisa las 4 variables en Vercel y que hiciste Redeploy |
-| La planilla funciona pero Telegram no | Que hayas tocado **Iniciar** en el chat con el bot y que `TELEGRAM_CHAT_ID` sea el número correcto |
+| Llega Telegram con "⚠️ La planilla no confirmó..." | A esa persona la página le mostró el error con el botón de WhatsApp: lo más probable es que te escriba por ahí. Mira si la fila quedó igual (Apps Script a veces tarda más de 7 s pero escribe). Luego revisa en Apps Script → **Ejecuciones** si hay errores, y que `APPS_SCRIPT_SECRET` en Vercel sea igual al de las propiedades del script |
+| No llega nada y la página muestra el error con el botón de WhatsApp | La planilla no respondió y Telegram tampoco. Revisa las 4 variables en Vercel y que hiciste Redeploy |
+| La planilla funciona pero Telegram no | Que hayas tocado **Iniciar** en el chat con el bot y que `TELEGRAM_CHAT_ID` sea el número correcto. El lead no se pierde: está en la planilla y en el correo |
+| La fila llega pero el correo no | Revisa Spam. En Apps Script → **Ejecuciones**, busca "Correo de aviso:". Si dice que falta permiso, ejecuta `probarAnotacion` desde el editor y autoriza. Gmail personal permite unos 100 correos al día desde scripts |
 | La URL `/exec` muestra una página de Google | El acceso no está en "Cualquier usuario" (paso 5) |
 | Cambiaste el script y no se nota | Falta publicar una nueva versión (paso 11) |
 
-Los registros de Vercel (**Deployments → la implementación → Functions / Logs**) muestran por cada lead si respondieron la planilla y Telegram, sin nombres ni teléfonos.
+Los registros de Vercel (**Deployments → la implementación → Functions / Logs**) muestran por cada lead si respondieron la planilla y Telegram, sin nombres ni teléfonos. Por eso no sirven para recuperar a una persona: lo que no quedó en la planilla solo puede llegar por WhatsApp.
 
 ## 13. Si se filtra el secreto o el token
 

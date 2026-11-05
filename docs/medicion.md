@@ -36,7 +36,8 @@ En [analytics.google.com](https://analytics.google.com), en la propiedad de espi
 3. **Administrar → Definiciones personalizadas → Crear dimensión personalizada**, con alcance **Evento**, una por parámetro: `h`, `caso`, `cta_location`, `plan`, `plan_interes`, `presupuesto` y `plazo`. Nombre y parámetro iguales. Sin esto, los parámetros no aparecen en los informes.
 4. **Administrar → Configuración de datos → Retención de datos**: 14 meses.
 5. **Administrar → Eventos clave**: marca `generate_lead` y `whatsapp_click`. Sirve para los informes de GA4; en Google Ads **no** se importan como principales (paso 8).
-6. **Administrar → Vínculos de productos → Google Ads**: vincula la cuenta.
+6. **Administrar → Vínculos de productos → Google Ads**: vincula la cuenta y deja **desmarcada** la opción **Habilitar la publicidad personalizada**.
+7. **Administrar → Recopilación de datos**: deja **Google Signals** desactivado y, en la configuración avanzada, desactiva **Permitir señales de personalización de anuncios** para todas las regiones. La política de privacidad dice que no usas listas de remarketing: así GA4 no le pasa audiencias a Google Ads. La campaña es de búsqueda y no las necesita.
 
 ## 2. Tag Manager: variables
 
@@ -114,6 +115,8 @@ En Google Ads: **Objetivos → Conversiones → Resumen → Crear acción de con
 - **Recuento "Una"**: si alguien toca WhatsApp tres veces después de un clic en el anuncio, cuenta una.
 - Para marcar la secundaria: en la acción, **Configuración → Optimización de la acción → Acción secundaria**.
 - Al guardar cada una, elige **Usar Google Tag Manager** y anota el **ID de conversión** (el mismo para las 3) y la **Etiqueta de conversión** (distinta en cada una).
+- **No actives las conversiones mejoradas** (datos proporcionados por los usuarios): mandarían a Google el teléfono del formulario, cifrado con hash, y la política de privacidad no lo declara. Si Google Ads lo sugiere, descarta la sugerencia.
+- **Sin remarketing:** en **Herramientas → Administrador de públicos → Tus fuentes de datos**, si la etiqueta de Google Ads aparece recopilando datos para remarketing, edítala y desactiva esa recopilación. No crees listas de público.
 
 ## 6. Tag Manager: etiquetas de Google Ads
 

@@ -2,8 +2,10 @@
  * Planilla de leads · Espíritu Digital
  *
  * Recibe lo que envían las funciones de Vercel /api/lead y /api/wa-click y lo anota
- * en las pestañas "Leads", "Clics WhatsApp" y "Referidos". La función configurar()
- * prepara todo, incluida la pestaña "Resumen" con fórmulas.
+ * en las pestañas "Leads", "Clics WhatsApp", "Referidos" y "Descartados". Por cada
+ * lead nuevo envía un correo con el detalle a EMAIL_AVISO. La función configurar()
+ * prepara todo, incluida la pestaña "Resumen" con fórmulas; instalarLimpiezaMensual()
+ * activa el borrado de datos con más de 24 meses.
  *
  * Seguridad:
  * - El secreto vive en Propiedades del script (APPS_SCRIPT_SECRET), nunca en este archivo.
@@ -17,9 +19,14 @@ const HOJA_LEADS = 'Leads';
 const HOJA_CLICS = 'Clics WhatsApp';
 const HOJA_REFERIDOS = 'Referidos';
 const HOJA_RESUMEN = 'Resumen';
+const HOJA_DESCARTADOS = 'Descartados';
 const ZONA_HORARIA = 'America/Santiago';
 const PROP_SECRETO = 'APPS_SCRIPT_SECRET';
 const PROP_PLANILLA = 'PLANILLA_ID';
+const PROP_EMAIL = 'EMAIL_AVISO';
+const EMAIL_POR_DEFECTO = 'espiritudigital.chile@gmail.com';
+const RETENCION_MESES = 24; // lo que promete la política de privacidad
+const VENTANA_DUPLICADO_MIN = 10; // mismo WhatsApp dentro de este plazo = mismo lead
 const ENLACE_REFERIDOS = 'https://espiritudigital.cl/tiendas-online?ref=';
 const SEMANAS_RESUMEN = 30;
 const MAX_CUERPO = 20000;
@@ -41,6 +48,11 @@ COLUMNAS[HOJA_CLICS] = [
 COLUMNAS[HOJA_REFERIDOS] = [
   'fecha', 'referidor', 'slug', 'enlace', 'referido', 'estado', 'recompensa_entregada', 'notas',
 ];
+// Envíos que la API descartó como posible bot (campo trampa o llenado en menos de 3 s).
+// Quedan aquí para recuperar a mano un lead real descartado por error. No avisan.
+COLUMNAS[HOJA_DESCARTADOS] = [
+  'fecha', 'motivo', 'ms', 'nombre', 'whatsapp', 'que_vende', 'h', 'landing_path', 'utm_source', 'gclid',
+];
 
 // Lo que llega desde Vercel y se copia tal cual (como texto). El resto de las
 // columnas de Leads (etapa en adelante) las llena Cristian.
@@ -57,7 +69,7 @@ const ESTADOS_REFERIDO = ['enlace', 'lead', 'calificado', 'ganado', 'perdido'];
 // Aplicación web
 // ---------------------------------------------------------------------------
 
-/** Recibe { secreto, tipo: 'lead' | 'wa_click' | 'referido', datos }. */
+/** Recibe { secreto, tipo: 'lead' | 'wa_click' | 'referido' | 'descartado', datos }. */
 function doPost(e) {
   try {
     const contenido = e && e.postData ? e.postData.contents : '';
@@ -77,7 +89,7 @@ function doPost(e) {
 
     const tipo = cuerpo.tipo;
     const datos = cuerpo.datos && typeof cuerpo.datos === 'object' ? cuerpo.datos : {};
-    if (['lead', 'wa_click', 'referido'].indexOf(tipo) === -1) {
+    if (['lead', 'wa_click', 'referido', 'descartado'].indexOf(tipo) === -1) {
       return responder_({ ok: false, error: 'tipo', codigo: 400 });
     }
     if (tipo === 'referido' && !limpiar_(datos.slug, 200)) {
@@ -85,16 +97,27 @@ function doPost(e) {
     }
 
     // Un envío a la vez: dos leads simultáneos nunca pisan la misma fila.
+    let leadNuevo = false;
     const candado = LockService.getScriptLock();
     if (!candado.tryLock(10000)) return responder_({ ok: false, error: 'ocupado', codigo: 503 });
     try {
       const ss = planilla_();
-      if (tipo === 'lead') anotarLead_(ss, datos);
+      if (tipo === 'lead') leadNuevo = anotarLead_(ss, datos);
       else if (tipo === 'wa_click') anotarClic_(ss, datos);
+      else if (tipo === 'descartado') anotarDescartado_(ss, datos);
       else anotarReferido_(ss, datos);
       SpreadsheetApp.flush();
     } finally {
       candado.releaseLock();
+    }
+    // El correo con el detalle va fuera del candado. Si falla, la fila ya quedó anotada
+    // y Telegram ya avisó (sin datos personales) que llegó un lead.
+    if (leadNuevo) {
+      try {
+        enviarAvisoCorreo_(datos);
+      } catch (err) {
+        console.error('Correo de aviso: ' + (err && err.message ? err.message : err));
+      }
     }
     return responder_({ ok: true });
   } catch (err) {
@@ -136,6 +159,12 @@ function configurar() {
   prepararClics_(clics);
   const referidos = asegurarHoja_(ss, HOJA_REFERIDOS);
   prepararReferidos_(referidos);
+  asegurarHoja_(ss, HOJA_DESCARTADOS);
+
+  if (!props.getProperty(PROP_EMAIL)) {
+    props.setProperty(PROP_EMAIL, EMAIL_POR_DEFECTO);
+    console.log('Los avisos de leads llegarán a ' + EMAIL_POR_DEFECTO + '. Para cambiarlo, edita la propiedad ' + PROP_EMAIL + '.');
+  }
 
   if (ss.getSheetByName(HOJA_RESUMEN)) {
     console.log('La pestaña Resumen ya existe y no se tocó. Para recrearla, bórrala y vuelve a ejecutar configurar.');
@@ -191,10 +220,57 @@ function probarAnotacion() {
   console.log('Respuesta: ' + doPost(evento).getContent());
 }
 
+/**
+ * Borra las filas con más de RETENCION_MESES meses en Leads, Clics WhatsApp y Descartados,
+ * como promete la política de privacidad. En Leads respeta a los clientes (etapa
+ * "ganado") y cuenta desde el último contacto (fecha_recontacto, si es posterior).
+ */
+function limpiarAntiguos() {
+  const ss = planilla_();
+  const corte = new Date();
+  corte.setMonth(corte.getMonth() - RETENCION_MESES);
+  let borradas = 0;
+  [HOJA_LEADS, HOJA_CLICS, HOJA_DESCARTADOS].forEach(function (nombre) {
+    const hoja = ss.getSheetByName(nombre);
+    if (!hoja || hoja.getLastRow() < 2) return;
+    const encabezados = leerEncabezados_(hoja);
+    const cFecha = encabezados.indexOf('fecha');
+    const cRecontacto = encabezados.indexOf('fecha_recontacto');
+    const cEtapa = encabezados.indexOf('etapa');
+    if (cFecha < 0) return;
+    const valores = hoja.getRange(2, 1, hoja.getLastRow() - 1, encabezados.length).getValues();
+    // De abajo hacia arriba, para que borrar no corra las filas pendientes.
+    for (let i = valores.length - 1; i >= 0; i--) {
+      if (cEtapa >= 0 && String(valores[i][cEtapa]).trim() === 'ganado') continue;
+      let referencia = new Date(valores[i][cFecha]);
+      if (cRecontacto >= 0) {
+        const recontacto = new Date(valores[i][cRecontacto]);
+        if (!isNaN(recontacto.getTime()) && recontacto > referencia) referencia = recontacto;
+      }
+      if (!isNaN(referencia.getTime()) && referencia < corte) {
+        hoja.deleteRow(i + 2);
+        borradas++;
+      }
+    }
+  });
+  console.log('limpiarAntiguos: ' + borradas + ' filas borradas (anteriores a ' + corte.toISOString().slice(0, 10) + ').');
+  return borradas;
+}
+
+/** Ejecutar una sola vez: crea el disparador mensual de limpiarAntiguos (día 1, 4:00). */
+function instalarLimpiezaMensual() {
+  ScriptApp.getProjectTriggers().forEach(function (t) {
+    if (t.getHandlerFunction() === 'limpiarAntiguos') ScriptApp.deleteTrigger(t);
+  });
+  ScriptApp.newTrigger('limpiarAntiguos').timeBased().onMonthDay(1).atHour(4).create();
+  console.log('Listo: limpiarAntiguos correrá el día 1 de cada mes.');
+}
+
 // ---------------------------------------------------------------------------
 // Anotar filas
 // ---------------------------------------------------------------------------
 
+/** @returns {boolean} true si anotó una fila nueva; false si era un reenvío del mismo lead. */
 function anotarLead_(ss, d) {
   const info = asegurarHoja_(ss, HOJA_LEADS);
   const valores = {
@@ -204,8 +280,10 @@ function anotarLead_(ss, d) {
     calificado: false,
   };
   CAMPOS_LEAD.forEach(function (campo) {
-    valores[campo] = texto_(d[campo], 500);
+    valores[campo] = texto_(d[campo], 500, campo === 'whatsapp');
   });
+  // Si la API reintenta o la persona reenvía, no se duplica la fila ni el correo.
+  if (esDuplicado_(info, limpiar_(d.whatsapp, 30), valores.fecha)) return false;
   const fila = agregarFila_(info, valores);
   formatearFila_(info, fila, {
     fecha: FORMATO_FECHA_HORA,
@@ -223,6 +301,70 @@ function anotarLead_(ss, d) {
       console.error('Referidos: ' + err.message);
     }
   }
+  return true;
+}
+
+// Mismo WhatsApp en las últimas filas, dentro de VENTANA_DUPLICADO_MIN minutos.
+function esDuplicado_(info, whatsapp, fecha) {
+  const digitos = String(whatsapp || '').replace(/\D/g, '');
+  const cFecha = info.encabezados.indexOf('fecha');
+  const cWhatsapp = info.encabezados.indexOf('whatsapp');
+  const filas = info.hoja.getLastRow() - 1;
+  if (!digitos || cFecha < 0 || cWhatsapp < 0 || filas < 1) return false;
+  const revisar = Math.min(filas, 50);
+  const valores = info.hoja.getRange(info.hoja.getLastRow() - revisar + 1, 1, revisar, info.encabezados.length).getValues();
+  const limite = VENTANA_DUPLICADO_MIN * 60 * 1000;
+  for (let i = 0; i < valores.length; i++) {
+    const otro = String(valores[i][cWhatsapp]).replace(/\D/g, '');
+    const cuando = new Date(valores[i][cFecha]);
+    if (otro === digitos && !isNaN(cuando.getTime()) && Math.abs(fecha.getTime() - cuando.getTime()) < limite) return true;
+  }
+  return false;
+}
+
+function anotarDescartado_(ss, d) {
+  const info = asegurarHoja_(ss, HOJA_DESCARTADOS);
+  const ms = Number(d.ms);
+  const valores = {
+    fecha: fecha_(d.fecha),
+    motivo: texto_(d.motivo, 30),
+    ms: Number.isFinite(ms) ? ms : '',
+  };
+  ['nombre', 'whatsapp', 'que_vende', 'h', 'landing_path', 'utm_source', 'gclid'].forEach(function (campo) {
+    valores[campo] = texto_(d[campo], 300);
+  });
+  const fila = agregarFila_(info, valores);
+  formatearFila_(info, fila, { fecha: FORMATO_FECHA_HORA });
+}
+
+// Aviso con el detalle del lead al correo de Cristian (Gmail, el mismo proveedor de la
+// planilla). Texto plano: nada de lo que escribió la persona se interpreta como HTML.
+function enviarAvisoCorreo_(d) {
+  const destino = PropertiesService.getScriptProperties().getProperty(PROP_EMAIL) || EMAIL_POR_DEFECTO;
+  const numero = String(d.whatsapp || '').replace(/\D/g, '');
+  const origen = [d.utm_source, d.utm_medium, d.utm_campaign].filter(Boolean).join(' / ') ||
+    (d.gclid || d.gbraid || d.wbraid ? 'Google Ads (sin UTM)' : 'directo');
+  const lineas = [
+    'Nuevo lead de tiendas online',
+    '',
+    'Nombre: ' + limpiar_(d.nombre, 80),
+    'Qué vende: ' + limpiar_(d.que_vende, 200),
+    'Vende online: ' + limpiar_(d.vende_online, 40),
+    'Plazo: ' + limpiar_(d.plazo, 40),
+    'Presupuesto (sin IVA): ' + limpiar_(d.presupuesto, 40),
+    'Plan: ' + (limpiar_(d.plan_interes, 40) || 'sin plan'),
+    'Origen: ' + limpiar_(origen, 200) + (d.utm_term ? ' · término: ' + limpiar_(d.utm_term, 200) : ''),
+    'Variante: ' + (limpiar_(d.h, 20) || '-') + ' · Ref: ' + (limpiar_(d.ref, 200) || '-'),
+    '',
+    'Escríbele ahora: https://wa.me/' + numero,
+    '',
+    'Recuerda anotar la etapa y los minutos de primera respuesta en la planilla.',
+  ];
+  MailApp.sendEmail({
+    to: destino,
+    subject: 'Nuevo lead de tiendas: ' + limpiar_(d.nombre, 60),
+    body: lineas.join('\n'),
+  });
 }
 
 function anotarClic_(ss, d) {
@@ -576,11 +718,17 @@ function limpiar_(valor, maximo) {
 /**
  * Texto seguro para una celda. El apóstrofo inicial obliga a Sheets a guardarlo como
  * texto y no se ve: neutraliza fórmulas (=, +, -, @) y evita que "+569..." pierda el
- * "+" o que "10-12" se convierta en fecha.
+ * "+" o que "10-12" se convierta en fecha. Pero el apóstrofo se pierde al descargar la
+ * planilla como CSV o Excel, así que a los textos que empiezan con = + - @ se les
+ * antepone además un espacio. No lo necesitan el teléfono ya validado (+569...) ni un
+ * identificador de solo letras, números, _ y - (sin paréntesis no hay fórmula que
+ * ejecute): un gclid puede empezar con "-" y debe salir intacto para importar conversiones.
  */
-function texto_(valor, maximo) {
-  const s = limpiar_(valor, maximo || 500);
-  return s ? "'" + s : '';
+function texto_(valor, maximo, esTelefono) {
+  let s = limpiar_(valor, maximo || 500);
+  if (!s) return '';
+  if (!esTelefono && /^[=+\-@]/.test(s) && !/^[A-Za-z0-9_-]+$/.test(s)) s = ' ' + s;
+  return "'" + s;
 }
 
 function reglaLista_(lista) {

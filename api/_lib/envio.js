@@ -7,7 +7,11 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
+// Telegram responde en menos de 1 s; Apps Script puede tardar varios (redirección 302,
+// candado y escritura). Peor caso de /api/lead: 7 s (planilla y Telegram en paralelo)
+// + 2 s (aviso de planilla) = 9 s, bajo los 10 s por defecto de una función en Vercel.
 const TIMEOUT_MS = 4000;
+const TIMEOUT_APPS_SCRIPT_MS = 7000;
 let avisoModoPrueba = false;
 
 function entorno(nombre) {
@@ -64,4 +68,13 @@ function describirError(e) {
   return codigo ? `red_${String(codigo).slice(0, 30)}` : String(e.name || 'error').slice(0, 30);
 }
 
-module.exports = { TIMEOUT_MS, entorno, modoPrueba, rutaPrueba, escribirPrueba, senalConLimite, describirError };
+module.exports = {
+  TIMEOUT_MS,
+  TIMEOUT_APPS_SCRIPT_MS,
+  entorno,
+  modoPrueba,
+  rutaPrueba,
+  escribirPrueba,
+  senalConLimite,
+  describirError,
+};

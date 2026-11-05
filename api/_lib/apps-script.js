@@ -4,14 +4,14 @@
 // (docs/apps-script.gs). Apps Script siempre responde HTTP 200: el éxito se lee
 // del JSON ({ ok: true }). Si el secreto no coincide, responde { ok: false, codigo: 403 }.
 
-const { TIMEOUT_MS, entorno, modoPrueba, escribirPrueba, senalConLimite, describirError } = require('./envio');
+const { TIMEOUT_APPS_SCRIPT_MS, entorno, modoPrueba, escribirPrueba, senalConLimite, describirError } = require('./envio');
 
 /**
- * @param {'lead'|'wa_click'|'referido'} tipo
+ * @param {'lead'|'wa_click'|'referido'|'descartado'} tipo
  * @param {object} datos
  * @returns {Promise<{ok: boolean, motivo?: string}>} nunca rechaza
  */
-async function enviarAAppsScript(tipo, datos, { id = '', timeoutMs = TIMEOUT_MS } = {}) {
+async function enviarAAppsScript(tipo, datos, { id = '', timeoutMs = TIMEOUT_APPS_SCRIPT_MS } = {}) {
   if (modoPrueba()) return escribirPrueba({ id, destino: 'apps_script', tipo, datos });
 
   const url = entorno('APPS_SCRIPT_URL');

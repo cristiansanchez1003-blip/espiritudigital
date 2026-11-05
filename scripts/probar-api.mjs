@@ -264,22 +264,21 @@ prueba('claveIP agrupa IPv6 por /64 y deja IPv4 tal cual', () => {
   assert.equal(claveIP(''), 'desconocida');
 });
 
-prueba('mensaje de Telegram con el formato de 2.3 y etiquetas legibles', () => {
+prueba('mensaje de Telegram: aviso mínimo, sin ningún dato personal', () => {
   const texto = telegram.mensajeLead({ fecha: 'x', ...validacion.validarLead(leadValido({ ref: 'maria-perez' })).datos });
-  assert.match(texto, /^🛒 <b>Lead tiendas<\/b>/);
+  assert.match(texto, /^🛒 <b>Nuevo lead de tiendas<\/b>/);
   for (const parte of [
-    '<b>Nombre:</b> Persona Prueba',
-    '<b>Qué vende:</b> Velas y jabones artesanales',
-    '<b>Vende online:</b> Sí, por Instagram o WhatsApp',
     '<b>Plazo:</b> Este mes',
     '<b>Presupuesto (sin IVA):</b> $350.000 a $500.000',
     '<b>Plan:</b> Pro',
     '<b>Origen:</b> google / cpc / tiendas-online · término: tienda online a medida',
-    '<b>h:</b> precio',
-    '<b>Ref:</b> maria-perez',
-    '<b>WhatsApp:</b> https://wa.me/56912345678',
+    '<b>Variante:</b> precio',
   ]) {
     assert.ok(texto.includes(parte), `falta: ${parte}`);
+  }
+  // Telegram no ofrece acuerdo de tratamiento de datos: ni nombre, ni qué vende, ni teléfono, ni ref.
+  for (const dato of ['Persona Prueba', 'Velas y jabones', '56912345678', 'wa.me', 'maria-perez']) {
+    assert.ok(!texto.includes(dato), `Telegram no debe llevar: ${dato}`);
   }
 });
 
@@ -311,7 +310,7 @@ prueba('lead válido → 200, teléfono normalizado y 2 eventos en el archivo de
     assert.ok(!Number.isNaN(Date.parse(planilla.datos.fecha)));
     assert.equal(planilla.datos.consentimiento, true);
     assert.ok(!('hp' in planilla.datos) && !('t0' in planilla.datos));
-    assert.ok(aviso.texto.includes('https://wa.me/56912345678'));
+    assert.ok(!aviso.texto.includes('56912345678') && !aviso.texto.includes('Persona Prueba'), 'Telegram sin datos personales');
     assert.equal(llamadas.length, 0, 'el modo de prueba no debe usar la red');
     assert.ok(!fs.readFileSync(archivoPrueba, 'utf8').includes(SECRETO));
   })
@@ -377,14 +376,26 @@ prueba('sin consentimiento → 400 ["consentimiento"]', () =>
   })
 );
 
-prueba('campo trampa con contenido → 200 {ok:true} sin enviar nada', () =>
+// Un descartado no avisa a nadie, pero queda en la pestaña "Descartados" por si era una persona.
+function soloDescartado(antes, motivo) {
+  const nuevas = lineasPrueba().slice(antes);
+  assert.equal(nuevas.length, 1, 'solo una línea: la de Descartados');
+  assert.equal(nuevas[0].destino, 'apps_script');
+  assert.equal(nuevas[0].tipo, 'descartado');
+  assert.equal(nuevas[0].datos.motivo, motivo);
+  assert.ok(!nuevas.some((l) => l.destino === 'telegram'), 'sin aviso por Telegram');
+  return nuevas[0];
+}
+
+prueba('campo trampa con contenido → 200 {ok:true}, sin avisos, anotado en Descartados', () =>
   conEntorno(ENTORNO_PRUEBA, async () => {
     prepararFetch();
     const antes = lineasPrueba().length;
     const r = await llamar(lead, { body: leadValido({ hp: 'https://spam.example' }) });
     assert.equal(r.status, 200);
     assert.deepEqual(r.json, { ok: true });
-    assert.equal(lineasPrueba().length, antes);
+    const fila = soloDescartado(antes, 'trampa');
+    assert.equal(fila.datos.nombre, 'Persona Prueba');
     assert.equal(llamadas.length, 0);
   })
 );
@@ -397,13 +408,14 @@ prueba('trampa con el resto inválido → igual 200 (no enseña al bot)', () =>
   })
 );
 
-prueba('llenado en menos de 3 s desde t0 → 200 {ok:true} sin enviar nada', () =>
+prueba('llenado en menos de 3 s desde t0 → 200 {ok:true}, sin avisos, anotado en Descartados', () =>
   conEntorno(ENTORNO_PRUEBA, async () => {
     const antes = lineasPrueba().length;
     const r = await llamar(lead, { body: leadValido({ t0: Date.now() - 1200 }) });
     assert.equal(r.status, 200);
     assert.deepEqual(r.json, { ok: true });
-    assert.equal(lineasPrueba().length, antes);
+    const fila = soloDescartado(antes, 'rapido');
+    assert.ok(typeof fila.datos.ms === 'number' && fila.datos.ms < 3000);
   })
 );
 
@@ -411,7 +423,21 @@ prueba('t0 como texto numérico también cuenta para el tiempo mínimo', () =>
   conEntorno(ENTORNO_PRUEBA, async () => {
     const antes = lineasPrueba().length;
     await llamar(lead, { body: leadValido({ t0: String(Date.now() - 500) }) });
-    assert.equal(lineasPrueba().length, antes);
+    soloDescartado(antes, 'rapido');
+  })
+);
+
+prueba('camino real: descartado → solo la planilla recibe tipo "descartado"; Telegram nada; si la planilla falla, igual 200', () =>
+  conEntorno(ENTORNO_REAL, async () => {
+    prepararFetch();
+    let r = await llamar(lead, { body: leadValido({ hp: 'x' }) });
+    assert.equal(r.status, 200);
+    assert.equal(llamadasA('telegram').length, 0);
+    assert.equal(llamadasA('apps_script')[0].cuerpo.tipo, 'descartado');
+    prepararFetch({ apps_script: 'http500' });
+    r = await llamar(lead, { body: leadValido({ hp: 'x' }) });
+    assert.equal(r.status, 200);
+    assert.deepEqual(r.json, { ok: true });
   })
 );
 
@@ -593,15 +619,18 @@ prueba('camino real: ambos responden → 200; la planilla recibe secreto, tipo y
   })
 );
 
-prueba('camino real: la planilla falla y Telegram responde → 200 y aviso "la planilla no confirmó"', () =>
+// Telegram no lleva datos personales: si la planilla no guardó el lead, nadie podría
+// identificarlo. Por eso la página recibe 500 y le ofrece WhatsApp a la persona.
+prueba('camino real: la planilla falla y Telegram responde → 500 (la página ofrece WhatsApp) y aviso "la planilla no confirmó"', () =>
   conEntorno(ENTORNO_REAL, async () => {
     prepararFetch({ apps_script: 'http500' });
     const r = await llamar(lead, { body: leadValido() });
-    assert.equal(r.status, 200);
-    assert.deepEqual(r.json, { ok: true });
+    assert.equal(r.status, 500);
+    assert.deepEqual(r.json, { ok: false, error: 'envio' });
     const avisos = llamadasA('telegram');
     assert.equal(avisos.length, 2);
     assert.match(avisos[1].cuerpo.text, /La planilla no confirmó/);
+    assert.ok(!avisos[1].cuerpo.text.includes('56912345678'), 'el aviso tampoco lleva datos personales');
   })
 );
 
@@ -610,7 +639,7 @@ prueba('camino real: secreto incorrecto (403 lógico) o respuesta HTML cuentan c
     for (const modo of ['secreto', 'html']) {
       prepararFetch({ apps_script: modo });
       const r = await llamar(lead, { body: leadValido() });
-      assert.equal(r.status, 200, modo);
+      assert.equal(r.status, 500, modo);
       assert.equal(llamadasA('telegram').length, 2, `${modo}: debe avisar que la planilla no confirmó`);
     }
   })
@@ -634,14 +663,26 @@ prueba('camino real: ambos fallan → 500 {ok:false,error:"envio"}', () =>
   })
 );
 
-prueba('camino real: ambos se cuelgan → corte a los 4 s en paralelo y 500', () =>
+prueba('camino real: ambos se cuelgan → corte a los 7 s en paralelo y 500 (bajo los 10 s de Vercel)', () =>
   conEntorno(ENTORNO_REAL, async () => {
     prepararFetch({ apps_script: 'colgado', telegram: 'colgado' });
     const inicio = Date.now();
     const r = await llamar(lead, { body: leadValido() });
     const ms = Date.now() - inicio;
     assert.equal(r.status, 500);
-    assert.ok(ms >= 3900 && ms < 6000, `tardó ${ms} ms`);
+    assert.ok(ms >= 6900 && ms < 9000, `tardó ${ms} ms`);
+  })
+);
+
+prueba('camino real: la planilla se cuelga y Telegram responde → 500 con aviso incluido, todo bajo 10 s', () =>
+  conEntorno(ENTORNO_REAL, async () => {
+    prepararFetch({ apps_script: 'colgado' });
+    const inicio = Date.now();
+    const r = await llamar(lead, { body: leadValido() });
+    const ms = Date.now() - inicio;
+    assert.equal(r.status, 500);
+    assert.equal(llamadasA('telegram').length, 2, 'aviso del lead + aviso de planilla');
+    assert.ok(ms < 10000, `tardó ${ms} ms`);
   })
 );
 
@@ -654,12 +695,13 @@ prueba('camino real: sin variables de entorno → 500 (nunca un éxito falso)', 
   })
 );
 
-prueba('camino real: APPS_SCRIPT_URL sin https → no se envía el secreto', () =>
+prueba('camino real: APPS_SCRIPT_URL sin https → no se envía el secreto, 500 y aviso por Telegram', () =>
   conEntorno({ ...ENTORNO_REAL, APPS_SCRIPT_URL: 'http://script.google.com/macros/s/X/exec' }, async () => {
     prepararFetch();
     const r = await llamar(lead, { body: leadValido() });
-    assert.equal(r.status, 200, 'Telegram sigue funcionando');
+    assert.equal(r.status, 500, 'sin planilla no hay éxito');
     assert.equal(llamadasA('apps_script').length, 0);
+    assert.equal(llamadasA('telegram').length, 2);
   })
 );
 
@@ -684,9 +726,9 @@ prueba('escape HTML en Telegram: el contenido del formulario nunca llega como et
       }),
     });
     const texto = llamadasA('telegram')[0].cuerpo.text;
-    assert.ok(texto.includes('<b>Nombre:</b> &lt;b&gt;Ana&lt;/b&gt; &amp; "Co"'));
-    assert.ok(texto.includes('&lt;a href="https://phishing.example"&gt;clic&lt;/a&gt;'));
-    assert.ok(texto.includes('&lt;script&gt;'));
+    // Lo que escribió la persona ni siquiera viaja a Telegram; lo que sí viaja (el término) va escapado.
+    assert.ok(!texto.includes('Ana') && !texto.includes('phishing') && !texto.includes('script') && !texto.includes('<i>'));
+    assert.ok(texto.includes('término: &lt;u&gt;tienda&lt;/u&gt;'));
     // Las únicas etiquetas reales son las <b> del propio mensaje.
     const etiquetas = texto.match(/<\/?[a-z][^>]*>/gi) || [];
     assert.ok(etiquetas.every((t) => t === '<b>' || t === '</b>'), `etiquetas: ${etiquetas.join(' ')}`);
@@ -694,12 +736,13 @@ prueba('escape HTML en Telegram: el contenido del formulario nunca llega como et
   })
 );
 
-prueba('escape HTML también en el aviso de planilla', () =>
+prueba('el aviso de planilla tampoco lleva datos personales', () =>
   conEntorno(ENTORNO_REAL, async () => {
     prepararFetch({ apps_script: 'http500' });
     await llamar(lead, { body: leadValido({ nombre: '<i>Eva</i>' }) });
     const aviso = llamadasA('telegram')[1].cuerpo.text;
-    assert.ok(aviso.includes('&lt;i&gt;Eva&lt;/i&gt;'));
+    assert.ok(aviso.includes('no confirmó'));
+    assert.ok(!aviso.includes('Eva') && !aviso.includes('56912345678'));
   })
 );
 

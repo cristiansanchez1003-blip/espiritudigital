@@ -2,6 +2,10 @@
 
 // Aviso por Telegram (sendMessage con parse_mode HTML). Todo lo que viene del
 // formulario se escapa: solo las etiquetas <b> del propio mensaje llegan como HTML.
+//
+// Telegram no ofrece un acuerdo de tratamiento de datos, así que el aviso NO lleva
+// datos personales: ni nombre, ni teléfono, ni qué vende, ni ref. El detalle completo
+// llega por correo desde la planilla (Apps Script → Gmail) y queda en la planilla.
 
 const { TIMEOUT_MS, entorno, modoPrueba, escribirPrueba, senalConLimite, describirError } = require('./envio');
 
@@ -52,24 +56,21 @@ function linea(etiqueta, valor) {
 }
 
 function mensajeLead(d) {
-  const numero = String(d.whatsapp || '').replace(/\D/g, '');
   return [
-    '🛒 <b>Lead tiendas</b>',
-    linea('Nombre', d.nombre),
-    linea('Qué vende', d.que_vende),
-    linea('Vende online', ETIQUETAS.vende_online[d.vende_online] || d.vende_online),
+    '\u{1F6D2} <b>Nuevo lead de tiendas</b>',
     linea('Plazo', ETIQUETAS.plazo[d.plazo] || d.plazo),
     linea('Presupuesto (sin IVA)', ETIQUETAS.presupuesto[d.presupuesto] || d.presupuesto),
     linea('Plan', ETIQUETAS.plan_interes[d.plan_interes] || 'sin plan'),
     linea('Origen', origen(d)),
-    linea('h', d.h || '\u2014'),
-    linea('Ref', d.ref || '\u2014'),
-    `<b>WhatsApp:</b> https://wa.me/${numero}`,
+    linea('Variante', d.h || '—'),
+    'Revisa tu correo o la planilla para responder.',
   ].join('\n');
 }
 
-function mensajeAvisoPlanilla(d) {
-  return `⚠️ La planilla no confirmó el lead de <b>${escaparHTML(d.nombre)}</b>. Revisa si quedó anotado; si no, agrégalo a mano.`;
+// Sin datos personales: si la planilla no confirmó, tampoco salió el correo con el detalle,
+// y la página le ofreció a la persona escribir por WhatsApp.
+function mensajeAvisoPlanilla() {
+  return '⚠️ La planilla no confirmó el lead anterior: no salió el correo con el detalle y a la persona se le ofreció escribirte por WhatsApp. Revisa si la fila quedó igual en la planilla y, si no, Apps Script → Ejecuciones.';
 }
 
 /** @returns {Promise<{ok: boolean, motivo?: string}>} nunca rechaza */
