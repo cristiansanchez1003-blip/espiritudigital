@@ -1,0 +1,7 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/privacidad", "destination": "/politica-privacidad", "permanent": true }
+  ]
+}
