@@ -2,11 +2,54 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/privacidad", "destination": "/politica-privacidad", "permanent": true },
-    { "source": "/docs/:path*", "destination": "/", "permanent": false },
-    { "source": "/scripts/:path*", "destination": "/", "permanent": false },
-    { "source": "/data/:path*", "destination": "/", "permanent": false },
-    { "source": "/DESIGN.md", "destination": "/", "permanent": false },
-    { "source": "/seo-auditoria-espiritu-digital.md", "destination": "/", "permanent": false }
+    {
+      "source": "/privacidad",
+      "destination": "/politica-privacidad",
+      "permanent": true
+    },
+    {
+      "source": "/docs/:path*",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/scripts/:path*",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/data/:path*",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/DESIGN.md",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/seo-auditoria-espiritu-digital.md",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
   ]
 }

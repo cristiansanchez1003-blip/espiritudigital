@@ -24,6 +24,11 @@ const { enviarTelegram, mensajeLead, mensajeAvisoPlanilla } = require('./_lib/te
 // 5 leads válidos por IP cada 10 minutos: holgado para reintentos y para varias
 // personas detrás de la misma IP móvil (con 1 a 5 leads al mes, coincidir es casi imposible).
 const limitador = crearLimitador({ max: 5, ventanaMs: 10 * 60 * 1000 });
+// Los envíos que parecen de un robot también tienen tope antes de llegar a la planilla:
+// una ráfaga no debe ocupar el candado de Apps Script mientras llega un lead real.
+// 3 por IP cada 10 minutos y 30 por instancia; sobre eso se responde igual, sin anotar.
+const limitadorDescartados = crearLimitador({ max: 3, ventanaMs: 10 * 60 * 1000 });
+const topeDescartados = crearLimitador({ max: 30, ventanaMs: 10 * 60 * 1000 });
 
 const sinRechazo = (promesa) => promesa.catch(() => ({ ok: false, motivo: 'excepcion' }));
 const estado = (r) => (r.ok ? 'ok' : r.motivo || 'error');
@@ -78,7 +83,10 @@ module.exports = async function lead(req, res) {
     // queda en la pestaña "Descartados" (sin correo ni Telegram) por si era una persona.
     const trampa = revisarTrampa(cuerpo);
     if (trampa.trampa) {
-      const anotado = await sinRechazo(enviarAAppsScript('descartado', datosDescartado(cuerpo, trampa), { id, timeoutMs: 3000 }));
+      const cabe = limitadorDescartados.permitir(claveIP(obtenerIP(req))) && topeDescartados.permitir('todas');
+      const anotado = cabe
+        ? await sinRechazo(enviarAAppsScript('descartado', datosDescartado(cuerpo, trampa), { id, timeoutMs: 3000 }))
+        : { ok: false, motivo: 'omitido_limite' };
       registrar('lead', { id, descartado: trampa.motivo, ms: trampa.ms, planilla: estado(anotado) });
       return responderJSON(res, 200, { ok: true });
     }

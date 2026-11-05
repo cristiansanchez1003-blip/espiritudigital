@@ -61,7 +61,8 @@
   if (PLAN.test(planUrl)) guardar('plan', planUrl);
 
   var pagina = raiz.getAttribute('data-pagina') || '';
-  var hVista = raiz.getAttribute('data-h') || '';
+  // En gracias no hay portada: vale la variante con que llegó a la landing (sesión).
+  var hVista = raiz.getAttribute('data-h') || (pagina === 'gracias' ? ctx.h : '');
   var numero = raiz.getAttribute('data-wa') || '56928117627';
 
   function evento(datos) {

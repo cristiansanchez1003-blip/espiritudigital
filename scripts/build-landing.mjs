@@ -149,6 +149,7 @@ const p = {
   esencial: clp(cfg.precio_esencial),
   esencialIva: clp(conIva(cfg.precio_esencial)),
   cuota: clp(cfg.precio_esencial_cuota),
+  cuotaIva: clp(conIva(cfg.precio_esencial_cuota)),
   pro: clp(cfg.precio_pro),
   proIva: clp(conIva(cfg.precio_pro)),
   web: clp(cfg.precio_web),

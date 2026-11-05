@@ -419,6 +419,22 @@ prueba('llenado en menos de 3 s desde t0 → 200 {ok:true}, sin avisos, anotado 
   })
 );
 
+prueba('ráfaga de envíos trampa desde una IP → todos 200, pero solo 3 llegan a la planilla', () =>
+  conEntorno(ENTORNO_PRUEBA, async () => {
+    const antes = lineasPrueba().length;
+    const ip = '198.51.100.120';
+    for (let i = 0; i < 6; i++) {
+      const r = await llamar(lead, { body: leadValido({ hp: 'x' }), ip });
+      assert.equal(r.status, 200);
+      assert.deepEqual(r.json, { ok: true });
+    }
+    const anotadas = lineasPrueba().slice(antes).filter((l) => l.tipo === 'descartado');
+    assert.equal(anotadas.length, 3);
+    assert.equal((await llamar(lead, { body: leadValido({ hp: 'x' }) })).status, 200, 'otra IP sigue anotándose');
+    assert.equal(lineasPrueba().slice(antes).filter((l) => l.tipo === 'descartado').length, 4);
+  })
+);
+
 prueba('t0 como texto numérico también cuenta para el tiempo mínimo', () =>
   conEntorno(ENTORNO_PRUEBA, async () => {
     const antes = lineasPrueba().length;

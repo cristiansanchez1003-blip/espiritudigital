@@ -34,7 +34,7 @@ Tiempo: unos 30 minutos. Necesitas tu cuenta de Google de Espíritu Digital, Tel
    - Aparece "Google no verificó esta app": es normal, porque el script es tuyo. Toca **Configuración avanzada → Ir a Leads tiendas (no seguro)**.
    - **Permitir**. El script pide ver y editar tus hojas de cálculo (solo escribe en esta planilla) y **enviar correo como tú** (solo el aviso de cada lead, a tu propio correo).
 3. Espera el mensaje "Ejecución completada". En la planilla vas a ver las pestañas **Resumen**, **Leads**, **Clics WhatsApp**, **Referidos** y **Descartados**.
-4. Ahora elige **instalarLimpiezaMensual** y presiona **Ejecutar**. Pide un permiso más (ejecutarse cuando no estás). Deja programado que el día 1 de cada mes se borren las filas con más de 24 meses, como promete la política de privacidad. No toca a los clientes (etapa "ganado") y cuenta desde el último contacto (`fecha_recontacto`) si es más reciente.
+4. Ahora elige **instalarLimpiezaMensual** y presiona **Ejecutar**. Pide un permiso más (ejecutarse cuando no estás). Deja programado que el día 1 de cada mes se borren las filas con más de 24 meses de Leads, Clics WhatsApp, Descartados y Referidos, como promete la política de privacidad. No toca a los clientes (etapa o estado "ganado") ni los enlaces de tus referidores, y cuenta desde el último contacto (`fecha_recontacto`) si es más reciente. Los clientes se guardan por el plazo que exige la ley tributaria: una vez al año, revisa con tu contador si hay clientes antiguos que ya se puedan borrar.
 
 `configurar` se puede ejecutar de nuevo cuando quieras: no borra datos, no duplica pestañas, no cambia el secreto ni el correo de avisos.
 

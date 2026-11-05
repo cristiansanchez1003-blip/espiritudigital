@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Genera enlaces de referidos para la landing de tiendas online.
 
-Recibe nombres por argumento o desde un archivo (uno por línea), crea un slug en
-minúsculas y sin tildes para cada uno, imprime los enlaces y escribe un CSV con las
-columnas de la pestaña "Referidos" de la planilla, listo para importar.
+Recibe nombres por argumento o desde un archivo (uno por línea), crea para cada uno
+un código con el primer nombre y 4 caracteres al azar ('María José Pérez' -> 'maria-k7q2'),
+imprime los enlaces y escribe un CSV con las columnas de la pestaña "Referidos" de la
+planilla, listo para importar.
+
+El código viaja en la URL: llega a Google Analytics, a Clarity y al mensaje de WhatsApp.
+Por eso no lleva el nombre completo. La planilla traduce el código al nombre del referidor.
 
 Ejemplos:
     python3 scripts/generar_enlaces_referidos.py "María José Pérez" "Sebastián Muñoz"
@@ -19,6 +23,7 @@ import argparse
 import csv
 import datetime
 import re
+import secrets
 import sys
 import unicodedata
 from pathlib import Path
@@ -26,7 +31,9 @@ from pathlib import Path
 BASE = "https://espiritudigital.cl/tiendas-online"
 # Mismo orden que la pestaña "Referidos" de docs/apps-script.gs.
 COLUMNAS = ["fecha", "referidor", "slug", "enlace", "referido", "estado", "recompensa_entregada", "notas"]
-LARGO_MAXIMO = 40
+LARGO_NOMBRE = 20
+# Sin 0/o ni 1/l/i, para que el código se pueda dictar sin errores.
+ALFABETO = "abcdefghjkmnpqrstuvwxyz23456789"
 
 
 def limpiar_nombre(nombre: str) -> str:
@@ -36,23 +43,23 @@ def limpiar_nombre(nombre: str) -> str:
     return re.sub(r"^[=+\-@\s]+", "", texto)
 
 
-def slug_de(nombre: str) -> str:
-    """'María José Pérez' -> 'maria-jose-perez'. Minúsculas, sin tildes, solo a-z, 0-9 y guiones."""
+def primer_nombre(nombre: str) -> str:
+    """'María José Pérez' -> 'maria'. Minúsculas, sin tildes, solo a-z y 0-9."""
     sin_tildes = unicodedata.normalize("NFKD", nombre).encode("ascii", "ignore").decode("ascii")
-    slug = re.sub(r"[^a-z0-9]+", "-", sin_tildes.lower()).strip("-")
-    if len(slug) > LARGO_MAXIMO:
-        slug = slug[:LARGO_MAXIMO].rsplit("-", 1)[0] or slug[:LARGO_MAXIMO]
-    return slug.strip("-")
+    partes = re.findall(r"[a-z0-9]+", sin_tildes.lower())
+    return partes[0][:LARGO_NOMBRE] if partes else ""
 
 
-def slug_unico(base: str, usados: set) -> str:
-    """Si el slug ya existe, agrega -2, -3, ... para que cada referidor tenga el suyo."""
-    candidato, n = base, 2
-    while candidato in usados:
-        candidato = f"{base}-{n}"
-        n += 1
-    usados.add(candidato)
-    return candidato
+def slug_de(nombre: str, usados: set) -> str:
+    """'María José Pérez' -> 'maria-k7q2', distinto de todos los ya usados. '' si no hay letras."""
+    base = primer_nombre(nombre)
+    if not base:
+        return ""
+    while True:
+        candidato = f"{base}-{''.join(secrets.choice(ALFABETO) for _ in range(4))}"
+        if candidato not in usados:
+            usados.add(candidato)
+            return candidato
 
 
 def leer_existentes(ruta: Path) -> set:
@@ -93,13 +100,10 @@ def main() -> int:
     filas, avisos = [], []
     for original in nombres:
         nombre = limpiar_nombre(original)
-        base = slug_de(nombre)
-        if not base:
+        slug = slug_de(nombre, usados)
+        if not slug:
             avisos.append(f"Se omitió {original!r}: no deja letras ni números para el enlace.")
             continue
-        slug = slug_unico(base, usados)
-        if slug != base:
-            avisos.append(f"{nombre}: '{base}' ya existía; se usó '{slug}'.")
         enlace = f"{args.base}?ref={slug}"
         filas.append({"fecha": hoy, "referidor": nombre, "slug": slug, "enlace": enlace,
                       "referido": "", "estado": "enlace", "recompensa_entregada": "", "notas": ""})

@@ -85,12 +85,12 @@ const LITERALES = [
   'Te enseño a usarla: 1 hora por videollamada.', 'Y es tuya', 'Sin comisión por venta: solo pagas la de tu pasarela.',
   'Al terminar de pagar, el código, el dominio y la base de datos quedan a tu nombre.', 'Mantención opcional, con el primer mes incluido.',
   'Cotiza tu tienda por WhatsApp', 'Elige tu plan', 'Pagas 50% al partir y 50% al recibir tu tienda.',
-  '$416.500 con IVA · o 2 pagos de $175.000 + IVA', 'Para quién: quien vende por Instagram o WhatsApp y quiere su tienda.',
+  '$416.500 con IVA · o 2 pagos de $175.000 + IVA ($208.250 con IVA cada uno)', 'Para quién: quien vende por Instagram o WhatsApp y quiere su tienda.',
   'Hasta 20 productos con variantes, cargados por mí', 'Para crecer', '$571.200 con IVA', 'Todo lo del Esencial, más:',
   'Integración con tu ERP, courier o boleta automática. Alcance a tu medida.', 'Cotizar plan Empresa',
   'Incluido en todos los planes: optimización de tu ficha de Google y 1 mes de mantención.', 'Qué no incluye',
   '¿Todavía no necesitas tienda? Página web profesional desde $150.000 + IVA ($178.500 con IVA).', 'Cotizar página web',
-  '$178.500 con IVA', '50% al partir y 50% al recibirla · primer avance a las 2 semanas de recibir tu material · 2 rondas de correcciones completas · 1 mes de mantención incluido; después $14.990 + IVA al mes, solo si la pides',
+  '$178.500 con IVA', '50% al partir y 50% al recibirla · primer avance a las 2 semanas de recibir tu material · 2 rondas de correcciones completas · 1 mes de mantención incluido; después $14.990 + IVA al mes ($17.838 con IVA), solo si la pides',
   'Quiero mi página web', 'Así de simple', 'Conversamos 15 minutos. Me cuentas qué vendes y te digo qué plan te sirve. Sin compromiso.',
   'Ves tu portada antes de pagar. En 48 horas te muestro tu tienda con tu logo y tres de tus productos.',
   'El plazo te lo doy por escrito en la propuesta, según tu material, antes de que pagues.', 'Partamos por los 15 minutos',
@@ -314,8 +314,11 @@ async function enlacesWa(pagina) {
   );
 }
 
+// Con h=web, la portada y los botones genéricos de cierre piden cotizar una página web.
+const CTA_CON_WEB = new Set(['portada', 'cierre', 'formulario_error', 'gracias']);
 function esperado(cta, plan, h) {
-  if (cta === 'portada') return h === 'web' ? MSG.portada_web : MSG.portada;
+  if (h === 'web' && CTA_CON_WEB.has(cta)) return MSG.portada_web;
+  if (cta === 'portada') return MSG.portada;
   if (cta === 'plan') return MSG['plan_' + plan];
   return MSG[cta];
 }

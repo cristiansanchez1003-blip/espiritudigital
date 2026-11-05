@@ -5,3 +5,15 @@ docs/
 scripts/
 data/
 *.md
+
+# Archivos viejos que ninguna página usa: casos retirados (Vigila, Sabores del Sur),
+# maquetas y una exportación antigua (code.html). Siguen en el repositorio; borrarlos
+# queda a decisión de Cristian. Sin publicar, /code responde 404, que es lo correcto.
+code.html
+screen.png
+caso-vigila-*
+caso-saboresdelsur-*
+mockup 2.jpeg
+mockup barber 1.jpeg
+cerebro en neon.jpg
+robot.ia.jpeg

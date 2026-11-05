@@ -128,7 +128,7 @@ export function preguntas(c) {
     ['¿Y si después quiero más funciones?', 'Se programan a tu medida y se cotizan aparte. No dependes de apps con cobro mensual.'],
     ['¿Qué pasa si no me gusta el diseño?', 'Antes de pagar ves tu portada con tu logo. Después tienes dos rondas de correcciones, y el 50% final se paga cuando tu tienda está lista.'],
     ['¿Trabajas con negocios de regiones?', 'Sí, con todo Chile, por videollamada y WhatsApp.'],
-    ['¿También hacen la publicidad?', 'Sí. Gestiono Google Ads desde $150.000 + IVA al mes, para que tu tienda reciba visitas desde el primer día.'],
+    ['¿También hacen la publicidad?', 'Sí. Gestiono Google Ads desde $150.000 + IVA al mes ($178.500 con IVA), para que tu tienda reciba visitas desde el primer día.'],
     [
       `¿Cómo funciona la página web de ${p.web} + IVA?`,
       `Trae el dominio .cl a tu nombre el primer año, los textos y las fotos. Pagas 50% al partir y 50% al recibirla. A las 2 semanas de recibir tu material te muestro el primer avance, y tienes dos rondas de correcciones completas. El primer mes de mantención va incluido; después sigue solo si la pides, por ${p.mantWeb} + IVA al mes (${p.mantWebIva} con IVA). Sin mantención, tu página sigue publicada, solo sin soporte. El código lo administramos nosotros y el dominio queda a tu nombre.`,
@@ -342,7 +342,7 @@ function tarjetaWeb(c, { encabezado = 'h2' } = {}) {
 <p class="plan-precio">Desde <span class="monto">${p.web}</span> + IVA</p>
 <p class="plan-chica">${p.webIva} con IVA</p>
 ${listaCheck(c.cfg.web_incluye)}
-<p class="plan-condiciones">50% al partir y 50% al recibirla · primer avance a las 2 semanas de recibir tu material · 2 rondas de correcciones completas · ${esc(meses)} mes de mantención incluido; después ${p.mantWeb} + IVA al mes, solo si la pides</p>
+<p class="plan-condiciones">50% al partir y 50% al recibirla · primer avance a las 2 semanas de recibir tu material · 2 rondas de correcciones completas · ${esc(meses)} mes de mantención incluido; después ${p.mantWeb} + IVA al mes (${p.mantWebIva} con IVA), solo si la pides</p>
 ${wa(c, { cta: 'pagina_web', msg: MENSAJES.pagina_web, plan: 'web', texto: 'Quiero mi página web', clase: 'btn btn-wa cta' })}
 </article>`;
 }
@@ -362,7 +362,7 @@ function tarjetasPlanes(c, { nivel = 3 } = {}) {
 <article class="tarjeta plan plan--esencial" aria-labelledby="titulo-plan-esencial">
 <${h} class="plan-nombre" id="titulo-plan-esencial">Esencial</${h}>
 <p class="plan-precio">Desde <span class="monto">${p.esencial}</span> + IVA</p>
-<p class="plan-chica">${p.esencialIva} con IVA · o 2 pagos de ${p.cuota} + IVA</p>
+<p class="plan-chica">${p.esencialIva} con IVA · o 2 pagos de ${p.cuota} + IVA (${p.cuotaIva} con IVA cada uno)</p>
 <p class="plan-para"><strong>Para quién:</strong> quien vende por Instagram o WhatsApp y quiere su tienda.</p>
 <p class="plan-sub">Incluye:</p>
 ${listaCheck(ESENCIAL)}
@@ -519,7 +519,7 @@ ${radios('presupuesto', 'Presupuesto, sin IVA', [
 ${ocultos}
 <button class="btn btn-wa btn-grande cta" type="submit">Enviar y recibir mi cotización</button>
 <p class="form-nota">Te escribo por WhatsApp en menos de 15 minutos, ${esc(c.cfg.horario_respuesta)}. No comparto tus datos.</p>
-<div class="form-falla" id="form-falla" role="alert" hidden><p>${esc(ERRORES.falla)}</p>${wa(c, { cta: 'formulario_error', msg: MENSAJES.cierre, texto: 'Cotiza por WhatsApp', clase: 'btn btn-wa cta' })}</div>
+<div class="form-falla" id="form-falla" role="alert" hidden><p>${esc(ERRORES.falla)}</p>${wa(c, { cta: 'formulario_error', msg: MENSAJES.cierre, msgWeb: MENSAJES.portada_web, texto: 'Cotiza por WhatsApp', clase: 'btn btn-wa cta' })}</div>
 </form>`;
 }
 
@@ -528,7 +528,7 @@ function bloqueCierre(c) {
   return `<section id="cotizar" class="cierre" aria-labelledby="titulo-cierre"><div class="contenedor cierre-grid">
 <div class="cierre-texto">
 <h2 id="titulo-cierre">${esc(titulo)}</h2>
-<div class="cta-bloque">${wa(c, { cta: 'cierre', msg: MENSAJES.cierre, texto: 'Cotiza por WhatsApp', clase: 'btn btn-wa btn-grande cta' })}</div>
+<div class="cta-bloque">${wa(c, { cta: 'cierre', msg: MENSAJES.cierre, msgWeb: MENSAJES.portada_web, texto: 'Cotiza por WhatsApp', clase: 'btn btn-wa btn-grande cta' })}</div>
 </div>
 ${formulario(c)}
 </div></section>`;
@@ -684,7 +684,7 @@ export function paginaGracias(c) {
 <h1 id="titulo-gracias">¡Listo<span id="nombre-gracias"></span>! Te escribo en menos de 15 minutos, ${esc(f.horario_respuesta)}.</h1>
 <script>try{var n=sessionStorage.getItem("ed_nombre");n&&(n=n.replace(/\\s+/g," ").trim().slice(0,80))&&(document.getElementById("nombre-gracias").textContent=", "+n)}catch(e){}</script>
 <p class="bajada-seccion">Para cotizarte más rápido, ten a mano tu logo, cuántos productos tienes y cómo despachas.</p>
-<div class="cta-bloque">${wa(c, { cta: 'gracias', msg: MENSAJES.cierre, texto: '¿Apurado? Escríbeme ahora por WhatsApp', clase: 'btn btn-wa btn-grande cta' })}</div>
+<div class="cta-bloque">${wa(c, { cta: 'gracias', msg: MENSAJES.cierre, msgWeb: MENSAJES.portada_web, texto: '¿Apurado? Escríbeme ahora por WhatsApp', clase: 'btn btn-wa btn-grande cta' })}</div>
 ${imprenta ? `<p class="gracias-enlace">Mientras tanto, <a href="${esc(imprenta.url)}" target="_blank" rel="noopener" data-caso="${esc(imprenta.slug)}">mira la tienda de Imprenta Express<span class="sr"> (se abre en otra pestaña)</span></a>.</p>` : ''}
 </div></section>
 </main>

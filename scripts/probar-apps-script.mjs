@@ -312,7 +312,7 @@ ok('correo de aviso: a EMAIL_AVISO, texto plano, enlace de WhatsApp y origen; si
   contexto.errores.length = 0;
 });
 
-ok('limpiarAntiguos borra lo de más de 24 meses, salvo clientes y recontactos recientes', () => {
+ok('limpiarAntiguos borra lo de más de 24 meses, salvo clientes, enlaces de referidores y recontactos recientes', () => {
   const viejo = new Date(); viejo.setMonth(viejo.getMonth() - 25);
   const reciente = new Date(); reciente.setMonth(reciente.getMonth() - 2);
   const leads = ss.getSheetByName('Leads');
@@ -324,12 +324,20 @@ ok('limpiarAntiguos borra lo de más de 24 meses, salvo clientes y recontactos r
   leads.getRange(base + 3, columna(leads, 'fecha_recontacto') + 1).setValues([[reciente]]);
   assert.deepEqual(post({ secreto: S, tipo: 'wa_click', datos: { fecha: viejo.toISOString(), cta_location: 'viejo' } }), { ok: true });
   assert.deepEqual(post({ secreto: S, tipo: 'descartado', datos: { fecha: viejo.toISOString(), motivo: 'rapido', nombre: 'Bot viejo' } }), { ok: true });
+  const referidos = ss.getSheetByName('Referidos');
+  const baseRef = referidos.getLastRow();
+  referidos.getRange(baseRef + 1, 1, 3, 8).setValues([
+    [viejo, "'Rosa", "'rosa-k7q2", "'https://espiritudigital.cl/tiendas-online?ref=rosa-k7q2", "'Referido viejo", 'lead', false, ''],
+    [viejo, "'Rosa", "'rosa-k7q2", "'https://espiritudigital.cl/tiendas-online?ref=rosa-k7q2", '', 'enlace', false, ''],
+    [viejo, "'Rosa", "'rosa-k7q2", "'https://espiritudigital.cl/tiendas-online?ref=rosa-k7q2", "'Cliente referido", 'ganado', true, ''],
+  ]);
+  const referidosDe = () => Array.from({ length: referidos.getLastRow() - 1 }, (_, i) => leerFila(referidos, i + 2)[4]);
 
   const nombres = () => Array.from({ length: leads.getLastRow() - 1 }, (_, i) => leerFila(leads, i + 2)[1]);
   const clics = ss.getSheetByName('Clics WhatsApp');
   const descartados = ss.getSheetByName('Descartados');
   const antes = { leads: leads.getLastRow(), clics: clics.getLastRow(), descartados: descartados.getLastRow() };
-  assert.equal(G('limpiarAntiguos')(), 3);
+  assert.equal(G('limpiarAntiguos')(), 4);
   assert.equal(leads.getLastRow(), antes.leads - 1);
   assert.ok(!nombres().includes('Viejo 0'), 'lead viejo sin cierre: se borra');
   assert.ok(nombres().includes('Viejo 1'), 'cliente (ganado): se conserva');
@@ -338,6 +346,9 @@ ok('limpiarAntiguos borra lo de más de 24 meses, salvo clientes y recontactos r
   assert.equal(clics.getLastRow(), antes.clics - 1);
   assert.equal(clics.getRange(1001, 2).getValues()[0][0], 'flotante', 'el clic reciente sigue');
   assert.equal(descartados.getLastRow(), antes.descartados - 1);
+  assert.ok(!referidosDe().includes('Referido viejo'), 'referido viejo sin compra: se borra');
+  assert.ok(referidosDe().includes('Cliente referido'), 'referido que compró: se conserva');
+  assert.equal(referidos.getLastRow(), baseRef + 2, 'el enlace viejo del referidor se conserva');
   assert.equal(G('limpiarAntiguos')(), 0, 'una segunda pasada no borra nada más');
 });
 

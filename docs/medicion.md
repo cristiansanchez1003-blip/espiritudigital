@@ -38,6 +38,7 @@ En [analytics.google.com](https://analytics.google.com), en la propiedad de espi
 5. **Administrar → Eventos clave**: marca `generate_lead` y `whatsapp_click`. Sirve para los informes de GA4; en Google Ads **no** se importan como principales (paso 8).
 6. **Administrar → Vínculos de productos → Google Ads**: vincula la cuenta y deja **desmarcada** la opción **Habilitar la publicidad personalizada**.
 7. **Administrar → Recopilación de datos**: deja **Google Signals** desactivado y, en la configuración avanzada, desactiva **Permitir señales de personalización de anuncios** para todas las regiones. La política de privacidad dice que no usas listas de remarketing: así GA4 no le pasa audiencias a Google Ads. La campaña es de búsqueda y no las necesita.
+8. **Administrar → Flujos de datos → Web → Redactar datos**: activa **Parámetros de consulta de URL** y agrega `ref`. El código de referido (`maria-k7q2`) no lleva el nombre completo, pero así tampoco queda en los informes.
 
 ## 2. Tag Manager: variables
 

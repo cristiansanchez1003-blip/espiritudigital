@@ -17,7 +17,7 @@ Rama `wip/api-medicion`, 5 nov 2026. Nada se publicó: sin push, sin cambios en 
 | `docs/apps-script.gs` | `doPost` con secreto, `LockService`, pestañas, listas desplegables, Resumen, correo con el detalle, duplicados, Descartados y limpieza a 24 meses |
 | `docs/apps-script-guia.md` | Paso a paso: planilla, script, aplicación web, bot de Telegram, variables en Vercel y pruebas |
 | `docs/medicion.md` | Paso a paso: GA4, Tag Manager, las 3 conversiones de Google Ads, Clarity, limpieza y pruebas en celular |
-| `scripts/probar-api.mjs` | Banco de pruebas de la API, sin red: 64 pruebas |
+| `scripts/probar-api.mjs` | Banco de pruebas de la API, sin red: 65 pruebas |
 | `scripts/probar-apps-script.mjs` | Simulación del Apps Script en Node: 17 pruebas |
 | `scripts/generar_enlaces_referidos.py` | Slugs y enlaces `?ref=` y CSV para la pestaña "Referidos" |
 
@@ -56,14 +56,14 @@ Validación: `nombre` 2 a 80 caracteres; `whatsapp` móvil chileno (`+56 9`, `56
 8. **Temporizador propio.** `AbortSignal.timeout` no mantiene vivo el proceso de Node; la prueba de "ambos colgados" lo detectó. Se usa un `AbortController` con `setTimeout` que se limpia al terminar.
 9. **Telegram sin datos personales; el detalle, por correo.** Telegram no ofrece un acuerdo de tratamiento de datos. El aviso dice plazo, presupuesto, plan, origen y variante, nada más. El detalle (nombre, WhatsApp, qué vende, ref) llega por correo desde la propia planilla (`MailApp`, a la propiedad `EMAIL_AVISO`), en texto plano y con el enlace `wa.me`. Google ya trata esos datos por la planilla, así que no se suma un proveedor.
 10. **Duplicados.** El mismo WhatsApp dentro de 10 minutos se toma como el mismo lead: ni fila ni correo nuevos. Cubre reintentos de la persona y el caso de Apps Script lento.
-11. **Descartados con rastro.** Un envío con el campo trampa o llenado en menos de 3 s recibe 200 igual, pero queda en la pestaña "Descartados" con lo mínimo para reconocer y recuperar a mano a una persona real descartada por error. Sin correo ni Telegram.
-12. **Retención de 24 meses.** `limpiarAntiguos()` corre el día 1 de cada mes (lo instala `instalarLimpiezaMensual()`), borra filas de más de 24 meses en Leads, Clics WhatsApp y Descartados, respeta a los clientes (etapa "ganado") y cuenta desde `fecha_recontacto` si es más reciente. Los correos de aviso se borran a mano con una búsqueda de Gmail (guía, paso 10).
+11. **Descartados con rastro y con tope.** Un envío con el campo trampa o llenado en menos de 3 s recibe 200 igual, pero queda en la pestaña "Descartados" con lo mínimo para reconocer y recuperar a mano a una persona real descartada por error. Sin correo ni Telegram. Solo se anotan 3 por IP cada 10 minutos y 30 por instancia: una ráfaga de robots no debe ocupar el candado de Apps Script mientras llega un lead real.
+12. **Retención de 24 meses.** `limpiarAntiguos()` corre el día 1 de cada mes (lo instala `instalarLimpiezaMensual()`), borra filas de más de 24 meses en Leads, Clics WhatsApp, Descartados y Referidos, respeta a los clientes (etapa o estado "ganado") y los enlaces de los referidores, y en Leads cuenta desde `fecha_recontacto` si es más reciente. Los correos de aviso se borran a mano con una búsqueda de Gmail (guía, paso 10).
 13. **Fórmulas también fuera de Sheets.** El apóstrofo se pierde al descargar como CSV o Excel, así que a un texto que empieza con `=`, `+`, `-` o `@` se le antepone además un espacio. No lo necesitan el teléfono validado ni un identificador de solo letras, números, `_` y `-`: un `gclid` puede empezar con `-` y debe salir intacto para importar conversiones.
 
 ## 4. Cómo se prueba
 
 ```bash
-node scripts/probar-api.mjs            # API: 64 pruebas, sin red
+node scripts/probar-api.mjs            # API: 65 pruebas, sin red
 node scripts/probar-apps-script.mjs    # Apps Script simulado: 17 pruebas
 python3 scripts/generar_enlaces_referidos.py "María José Pérez" --salida /tmp/referidos.csv
 ```
@@ -74,13 +74,13 @@ En la cuenta real: `probarAnotacion()` en el editor de Apps Script y el formular
 
 ## 5. Resultados
 
-**`scripts/probar-api.mjs`: 64 de 64 pasan.**
+**`scripts/probar-api.mjs`: 65 de 65 pasan.**
 
 | Grupo | Qué comprueba |
 | --- | --- |
 | Normalización | 9 formatos de WhatsApp dan `+56912345678`; 10 números no móviles se rechazan; limpieza de caracteres de control y de dirección |
 | Validación | Cada campo inválido da 400 con ese campo (15 casos, incluido `consentimiento: "true"`); cuerpo vacío lista los 7 obligatorios en orden |
-| Bots | Trampa con contenido y llenado en menos de 3 s dan 200 y solo se anotan en "Descartados" (si esa anotación falla, igual 200); `t0` como texto cuenta; `t0` futuro o ausente se envía |
+| Bots | Trampa con contenido y llenado en menos de 3 s dan 200 y solo se anotan en "Descartados" (si esa anotación falla, igual 200); una ráfaga desde una IP anota solo 3; `t0` como texto cuenta; `t0` futuro o ausente se envía |
 | HTTP | 405 con `Allow` y sin CORS; 413 por Content-Length, por stream y por cuerpo ya leído; 10 KB exactos pasan; 400 con text/plain, JSON malo o arreglo; ayudantes de Vercel |
 | Límite | El 6.º lead da 429 y otra IP sigue; validación y trampas no gastan cupo; IPv6 del mismo /64 comparte cupo |
 | Envíos reales con fetch simulado | Ambos bien: 200, secreto, tipo, gclid y UTM a la planilla; planilla caída, 403 lógico o HTML: 500 y aviso por Telegram; Telegram caído: 200; ambos caídos: 500; ambos colgados: corte a los 7 s y 500; planilla colgada con Telegram arriba: 500 con aviso, bajo 10 s; sin variables: 500; URL sin https: no se envía el secreto y 500; variables con espacios se recortan |
@@ -90,7 +90,7 @@ En la cuenta real: `probarAnotacion()` en el editor de Apps Script y el formular
 
 **`scripts/probar-apps-script.mjs`: 17 de 17 pasan.** Secreto ausente o incorrecto da 403 lógico sin escribir; la pestaña Leads se amplía a 27 columnas; `=HYPERLINK(...)`, `-1+1` y `@x` quedan como texto con un espacio delante y un `gclid` que empieza con `-` sale intacto; `+569...` conserva el `+`; Descartados recibe sus columnas sin correo; el mismo WhatsApp en 10 minutos no duplica fila ni correo; el correo va a `EMAIL_AVISO` en texto plano con el enlace `wa.me`, y si falla la fila queda; `limpiarAntiguos` borra lo de más de 24 meses salvo clientes y recontactos recientes; `instalarLimpiezaMensual` deja un solo disparador; `configurar` se puede repetir; las fórmulas del Resumen apuntan a las columnas correctas y parten un lunes; Referidos encuentra al referidor; las filas siguen cuadrando si Cristian agrega una columna; se agregan filas cuando se acaban.
 
-**Referidos:** probado con tildes, ñ, nombres repetidos (`jose-perez-2`), slugs ya existentes, nombres largos (corte en 40 caracteres) y entradas sin letras (se omiten con aviso).
+**Referidos:** el código es el primer nombre y 4 caracteres al azar (`maria-k7q2`), porque viaja en la URL hacia Analytics, Clarity y WhatsApp y no debe llevar el nombre completo. Probado con tildes, ñ, nombres repetidos (cada uno recibe otro código), códigos ya existentes (`--existentes`) y entradas sin letras (se omiten con aviso).
 
 ## 6. Controles de `08-GOAL-AUDITORIA.md`
 

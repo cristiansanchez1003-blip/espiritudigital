@@ -16,6 +16,9 @@ const require = createRequire(join(repo, 'package.json'));
 const { chromium } = require('playwright');
 const { iniciarServidor } = await import(join(repo, 'scripts/servidor-local.mjs'));
 
+// Sin red de verdad: aunque el shell tenga credenciales reales cargadas, aquí no se usan.
+for (const k of ['APPS_SCRIPT_URL', 'APPS_SCRIPT_SECRET', 'TELEGRAM_BOT_TOKEN', 'TELEGRAM_CHAT_ID', 'VERCEL_ENV']) delete process.env[k];
+
 const registro = join(tmpdir(), 'leads-prueba.jsonl');
 const lineas = () => (existsSync(registro) ? readFileSync(registro, 'utf8').trim().split('\n').filter(Boolean).map((l) => JSON.parse(l)) : []);
 rmSync(registro, { force: true });
@@ -40,7 +43,6 @@ async function llenar(pagina) {
 
 await paso('A · con LEADS_MODO_PRUEBA=1: 200, gracias, planilla y Telegram reciben el lead', async () => {
   process.env.LEADS_MODO_PRUEBA = '1';
-  delete process.env.VERCEL_ENV;
   const ctx = await navegador.newContext({ viewport: { width: 360, height: 740 } });
   const pagina = await ctx.newPage();
   await pagina.goto(`${url}/tiendas-online?h=precio&gclid=gclid-e2e&utm_source=google&utm_medium=cpc&utm_campaign=tiendas-online&utm_term=tienda%20online`);
@@ -105,6 +107,21 @@ await paso('C · clic en WhatsApp: beacon a /api/wa-click real y línea wa_click
   assert.equal(clic.datos.h, 'carrito');
   assert.equal(clic.datos.gclid, 'g2');
   assert.ok(clic.datos.cta_location, 'sin cta_location');
+  await ctx.close();
+});
+
+await paso('D · lead de página web (h=web): en gracias, WhatsApp pide cotizar una página web', async () => {
+  process.env.LEADS_MODO_PRUEBA = '1';
+  const ctx = await navegador.newContext({ viewport: { width: 360, height: 740 } });
+  const pagina = await ctx.newPage();
+  await pagina.goto(`${url}/tiendas-online?h=web`);
+  await llenar(pagina);
+  await Promise.all([
+    pagina.waitForURL(/\/tiendas-online\/gracias$/, { timeout: 8000 }),
+    pagina.click('#form-cotizar button[type="submit"]'),
+  ]);
+  const href = await pagina.locator('a[data-wa="gracias"]').getAttribute('href');
+  assert.match(decodeURIComponent(href), /quiero cotizar una página web/);
   await ctx.close();
 });
 

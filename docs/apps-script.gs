@@ -221,27 +221,30 @@ function probarAnotacion() {
 }
 
 /**
- * Borra las filas con más de RETENCION_MESES meses en Leads, Clics WhatsApp y Descartados,
- * como promete la política de privacidad. En Leads respeta a los clientes (etapa
- * "ganado") y cuenta desde el último contacto (fecha_recontacto, si es posterior).
+ * Borra las filas con más de RETENCION_MESES meses en Leads, Clics WhatsApp, Descartados
+ * y Referidos, como promete la política de privacidad. Respeta a los clientes (etapa o
+ * estado "ganado") y los enlaces de cada referidor (estado "enlace"), y en Leads cuenta
+ * desde el último contacto (fecha_recontacto, si es posterior).
  */
 function limpiarAntiguos() {
   const ss = planilla_();
   const corte = new Date();
   corte.setMonth(corte.getMonth() - RETENCION_MESES);
   let borradas = 0;
-  [HOJA_LEADS, HOJA_CLICS, HOJA_DESCARTADOS].forEach(function (nombre) {
+  [HOJA_LEADS, HOJA_CLICS, HOJA_DESCARTADOS, HOJA_REFERIDOS].forEach(function (nombre) {
     const hoja = ss.getSheetByName(nombre);
     if (!hoja || hoja.getLastRow() < 2) return;
     const encabezados = leerEncabezados_(hoja);
     const cFecha = encabezados.indexOf('fecha');
     const cRecontacto = encabezados.indexOf('fecha_recontacto');
     const cEtapa = encabezados.indexOf('etapa');
+    const cEstado = encabezados.indexOf('estado');
     if (cFecha < 0) return;
     const valores = hoja.getRange(2, 1, hoja.getLastRow() - 1, encabezados.length).getValues();
     // De abajo hacia arriba, para que borrar no corra las filas pendientes.
     for (let i = valores.length - 1; i >= 0; i--) {
       if (cEtapa >= 0 && String(valores[i][cEtapa]).trim() === 'ganado') continue;
+      if (cEstado >= 0 && ['ganado', 'enlace'].indexOf(String(valores[i][cEstado]).trim()) >= 0) continue;
       let referencia = new Date(valores[i][cFecha]);
       if (cRecontacto >= 0) {
         const recontacto = new Date(valores[i][cRecontacto]);
